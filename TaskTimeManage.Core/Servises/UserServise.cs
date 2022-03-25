@@ -1,5 +1,9 @@
-﻿using TaskTimeManage.Domain.Context;
+﻿using Microsoft.EntityFrameworkCore;
+
+using TaskTimeManage.Core.Security;
+using TaskTimeManage.Domain.Context;
 using TaskTimeManage.Domain.Entity;
+using TaskTimeManage.Domain.Exceptions;
 
 namespace TaskTimeManage.Core.Servises
 {
@@ -22,6 +26,29 @@ namespace TaskTimeManage.Core.Servises
             {
                 return false;
             }
+        }
+
+        public async Task<string> Login(string username, string password)
+        {
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                throw new ArgumentException($"'{nameof(username)}' cannot be null or whitespace.", nameof(username));
+            }
+
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                throw new ArgumentException($"'{nameof(password)}' cannot be null or whitespace.", nameof(password));
+            }
+
+            User? user = await context.User.FirstOrDefaultAsync(u => u.UserName == username);
+            if (user == null)
+                throw new LogInWrongException();
+
+            string hashedPassword = Cryptography.Encrypt(Cryptography.Hash(Cryptography.Encrypt(password, user.Salt), user.Salt), user.Salt);
+            if (hashedPassword != user.Password)
+                throw new LogInWrongException();
+
+            return Token.GenerateToken(user);
         }
     }
 }

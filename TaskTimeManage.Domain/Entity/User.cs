@@ -1,25 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TaskTimeManage.Domain.Entity
+﻿namespace TaskTimeManage.Domain.Entity
 {
     public class User
     {
-        public User(string userName, string password)
+        public User(string userName, string password, string salt)
         {
             UserName = userName;
             Password = password;
+            Salt = salt;
         }
 
-        public User(int id, string userName, string password, DateTime creationTime)
+        public User(int id, string userName, string password, DateTime creationTime, string salt)
         {
             Id = id;
             UserName = userName;
             Password = password;
             CreationTime = creationTime;
+            Salt = salt;
         }
 
         public int Id
@@ -31,6 +27,10 @@ namespace TaskTimeManage.Domain.Entity
             get; set;
         }
         public string Password
+        {
+            get; set;
+        }
+        public string Salt
         {
             get; set;
         }
