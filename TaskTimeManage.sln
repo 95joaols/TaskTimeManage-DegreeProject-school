@@ -5,11 +5,13 @@ VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{C044CD24-AF9E-4A56-919B-6D0AC816875C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTimeManage.Core", "TaskTimeManage.Core\TaskTimeManage.Core.csproj", "{C6780957-D1A9-4D98-8E1D-2F9777F32B6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskTimeManage.Core", "TaskTimeManage.Core\TaskTimeManage.Core.csproj", "{C6780957-D1A9-4D98-8E1D-2F9777F32B6B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{91D3D95E-4261-44A1-9CD7-28CC104D7C96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTimeManage.Core.Tester", "TaskTimeManage.Core.Tester\TaskTimeManage.Core.Tester.csproj", "{F5685A90-8949-4FFB-9361-CD7848493878}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskTimeManage.Core.Tester", "TaskTimeManage.Core.Tester\TaskTimeManage.Core.Tester.csproj", "{F5685A90-8949-4FFB-9361-CD7848493878}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTimeManage.Domain", "TaskTimeManage.Domain\TaskTimeManage.Domain.csproj", "{318E7D0E-4FEC-40D9-A19E-0EBA42E70A2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +27,10 @@ Global
 		{F5685A90-8949-4FFB-9361-CD7848493878}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5685A90-8949-4FFB-9361-CD7848493878}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5685A90-8949-4FFB-9361-CD7848493878}.Release|Any CPU.Build.0 = Release|Any CPU
+		{318E7D0E-4FEC-40D9-A19E-0EBA42E70A2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{318E7D0E-4FEC-40D9-A19E-0EBA42E70A2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{318E7D0E-4FEC-40D9-A19E-0EBA42E70A2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{318E7D0E-4FEC-40D9-A19E-0EBA42E70A2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C6780957-D1A9-4D98-8E1D-2F9777F32B6B} = {C044CD24-AF9E-4A56-919B-6D0AC816875C}
 		{F5685A90-8949-4FFB-9361-CD7848493878} = {91D3D95E-4261-44A1-9CD7-28CC104D7C96}
+		{318E7D0E-4FEC-40D9-A19E-0EBA42E70A2C} = {C044CD24-AF9E-4A56-919B-6D0AC816875C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D6173A2-8480-4765-84AE-6FC9889350CB}
