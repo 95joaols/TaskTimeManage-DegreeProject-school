@@ -2,8 +2,6 @@
 
 using Npgsql;
 
-using SverigesForenadeFilmstudios.Repository;
-
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -12,7 +10,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskTimeManage.Core.Tester
+using TaskTimeManage.Domain.Context;
+
+namespace TaskTimeManage.Core
 {
     public class TTMContextPostgresqlFixture : IDisposable
     {

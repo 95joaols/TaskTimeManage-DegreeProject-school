@@ -1,18 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-using TaskTimeManage.Core.User;
+using TaskTimeManage.Domain.Entity;
 
-namespace SverigesForenadeFilmstudios.Repository
+namespace TaskTimeManage.Domain.Context
 {
     public class TTMDbContext : DbContext
     {
-        public DbSet<UserEntity> User
+        public DbSet<User> User
         {
             get; set;
         }
 
-       
+
 
         public TTMDbContext(DbContextOptions options) : base(options)
         {
