@@ -12,7 +12,7 @@ namespace TaskTimeManage.Core.Security
             byte[] clearBytes = Encoding.Unicode.GetBytes(encryptString);
             using (Aes encryptor = Aes.Create())
             {
-                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(EncryptionKey, new byte[]
+                Rfc2898DeriveBytes pdb = new(EncryptionKey, new byte[]
                 {
                     0x49,
                     0x76,
@@ -30,8 +30,8 @@ namespace TaskTimeManage.Core.Security
                 });
                 encryptor.Key = pdb.GetBytes(32);
                 encryptor.IV = pdb.GetBytes(16);
-                using MemoryStream ms = new MemoryStream();
-                using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
+                using MemoryStream ms = new();
+                using (CryptoStream cs = new(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
                 {
                     cs.Write(clearBytes, 0, clearBytes.Length);
                     cs.Close();
