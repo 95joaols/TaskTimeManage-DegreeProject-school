@@ -14,6 +14,13 @@ namespace TaskTimeManage.Core.Servises
         {
             this.context = context;
         }
+        public async Task<User?> GetUserByNameAsync(string username)
+        {
+            return await context.User.FirstOrDefaultAsync(u => u.UserName == username);
+
+        }
+
+
         public async Task<bool> CreateUserAsync(string username, string password)
         {
             User? user = await context.User.FirstOrDefaultAsync(u => u.UserName == username);

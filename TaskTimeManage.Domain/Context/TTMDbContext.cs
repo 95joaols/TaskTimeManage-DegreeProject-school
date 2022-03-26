@@ -11,6 +11,10 @@ namespace TaskTimeManage.Domain.Context
         {
             get; set;
         }
+        public DbSet<Entity.Task> Task
+        {
+            get; set;
+        }
 
 
 

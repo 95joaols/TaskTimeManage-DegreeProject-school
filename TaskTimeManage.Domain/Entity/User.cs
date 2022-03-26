@@ -9,13 +9,14 @@
             Salt = salt;
         }
 
-        public User(int id, string userName, string password, DateTime creationTime, string salt)
+        public User(int id, string userName, string password, DateTime creationTime, string salt, IEnumerable<Task> tasks)
         {
             Id = id;
             UserName = userName;
             Password = password;
             CreationTime = creationTime;
             Salt = salt;
+            Tasks = tasks;
         }
 
         public int Id
@@ -34,6 +35,11 @@
         {
             get; set;
         }
+        IEnumerable<Task> Tasks
+        {
+            get; set;
+        }
+
         public DateTime CreationTime
         {
             get; set;
