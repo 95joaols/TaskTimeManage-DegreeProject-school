@@ -4,7 +4,10 @@ using FluentAssertions;
 using System;
 using System.Threading.Tasks;
 
+using TaskTimeManage.Domain.Context;
 using TaskTimeManage.Domain.Exceptions;
+
+using Test.Helpers;
 
 using Xunit;
 
@@ -20,7 +23,12 @@ namespace TaskTimeManage.Core.Servises
         public async Task I_Can_Create_A_New_User()
         {
             //Arrange
-            UserServise sut = new(new SetUp().SetUpContext());
+            var option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
+            using var context = new TTMDbContext(option);
+            await context.Database.EnsureDeletedAsync();
+            await context.Database.EnsureCreatedAsync();
+
+            UserServise sut = new(context);
 
             //Act
             bool Created = await sut.CreateUserAsync(username, password);
@@ -32,7 +40,12 @@ namespace TaskTimeManage.Core.Servises
         public async Task I_Can_Login()
         {
             //Arrange
-            UserServise sut = new(new SetUp().SetUpContext());
+            var option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
+            using var context = new TTMDbContext(option);
+            await context.Database.EnsureDeletedAsync();
+            await context.Database.EnsureCreatedAsync();
+
+            UserServise sut = new(context);
             await sut.CreateUserAsync(username, password);
 
             //Act
@@ -42,11 +55,17 @@ namespace TaskTimeManage.Core.Servises
 
         }
 
+        //I_Get_A_Error_If_I_Try_Create_User_Whit_Same_Name
         [Fact]
-        public async Task I_Get_A_Error_If_I_Try_Create_User_Whit_Same_Name()
+        public async Task Error_Create_User_Same_Name()
         {
             //Arrange
-            UserServise sut = new(new SetUp().SetUpContext());
+            var option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
+            using var context = new TTMDbContext(option);
+            await context.Database.EnsureDeletedAsync();
+            await context.Database.EnsureCreatedAsync();
+
+            UserServise sut = new(context);
             await sut.CreateUserAsync(username, password);
 
             //Act

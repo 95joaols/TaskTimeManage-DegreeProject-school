@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using TaskTimeManage.Domain.Context;
 using TaskTimeManage.Domain.Entity;
 
+using Test.Helpers;
+
 using Xunit;
 
 namespace TaskTimeManage.Core.Servises
@@ -19,13 +21,17 @@ namespace TaskTimeManage.Core.Servises
         public async System.Threading.Tasks.Task I_can_create_a_new_task()
         {
             //Arrange
-            TTMDbContext Context = new SetUp().SetUpContext();
-            UserServise userServise = new(Context);
+            var option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
+            using var context = new TTMDbContext(option);
+            await context.Database.EnsureDeletedAsync();
+            await context.Database.EnsureCreatedAsync();
+
+            UserServise userServise = new(context);
             await userServise.CreateUserAsync(username, password);
             User? user = await userServise.GetUserByNameAsync(username);
             Assert.NotNull(user);
 
-            TaskServise sut = new(Context);
+            TaskServise sut = new(context);
 
             //Act
             Domain.Entity.Task task = await sut.CreateTaskAsync("name of task", user);
@@ -40,13 +46,17 @@ namespace TaskTimeManage.Core.Servises
         public async System.Threading.Tasks.Task I_Can_Get_All_Task_From_User()
         {
             //Arrange
-            TTMDbContext Context = new SetUp().SetUpContext();
-            UserServise userServise = new(Context);
+            var option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
+            using var context = new TTMDbContext(option);
+            await context.Database.EnsureDeletedAsync();
+            await context.Database.EnsureCreatedAsync();
+
+            UserServise userServise = new(context);
             await userServise.CreateUserAsync(username, password);
             User? user = await userServise.GetUserByNameAsync(username);
             Assert.NotNull(user);
 
-            TaskServise sut = new(Context);
+            TaskServise sut = new(context);
             //Act
             await sut.CreateTaskAsync("name of task1", user);
             await sut.CreateTaskAsync("name of task2", user);
