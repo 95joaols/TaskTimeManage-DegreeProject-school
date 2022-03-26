@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TaskTimeManage.Domain.Entity
 {
@@ -16,6 +17,12 @@ namespace TaskTimeManage.Domain.Entity
         }
         [Key]
         public int Id
+        {
+            get; set;
+        }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid PublicId
         {
             get; set;
         }

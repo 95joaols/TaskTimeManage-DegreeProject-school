@@ -1,6 +1,4 @@
 ﻿
-using System.Runtime.Serialization;
-
 using TaskTimeManage.Domain.Context;
 using TaskTimeManage.Domain.Entity;
 using TaskTimeManage.Domain.Enum;
@@ -28,12 +26,12 @@ namespace TaskTimeManage.Core.Servises
 
             WorkTime workTime = new(time, type);
             task.WorkTimes.Add(workTime);
-            context.Task.Update(task);   
+            context.Task.Update(task);
             await context.SaveChangesAsync();
 
             return workTime;
         }
     }
 
-    
+
 }

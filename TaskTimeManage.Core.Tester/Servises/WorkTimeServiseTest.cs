@@ -1,15 +1,12 @@
 ﻿using FluentAssertions;
 
 using System;
-using System.Threading.Tasks;
 
 using TaskTimeManage.Domain.Context;
 using TaskTimeManage.Domain.Entity;
 using TaskTimeManage.Domain.Enum;
 
 using Test.Helpers;
-
-using TestSupport.EfHelpers;
 
 using Xunit;
 
@@ -32,9 +29,8 @@ namespace TaskTimeManage.Core.Servises
 
 
             UserServise userServise = new(context);
-            await userServise.CreateUserAsync(username, password);
-            User? user = await userServise.GetUserByNameAsync(username);
-            Assert.NotNull(user);
+            User user = await userServise.CreateUserAsync(username, password);
+
 
             TaskServise taskServise = new(context);
             Domain.Entity.Task task = await taskServise.CreateTaskAsync("name of task", user);

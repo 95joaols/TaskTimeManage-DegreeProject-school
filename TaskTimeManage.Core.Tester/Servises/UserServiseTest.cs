@@ -2,9 +2,9 @@
 using FluentAssertions;
 
 using System;
-using System.Threading.Tasks;
 
 using TaskTimeManage.Domain.Context;
+using TaskTimeManage.Domain.Entity;
 using TaskTimeManage.Domain.Exceptions;
 
 using Test.Helpers;
@@ -20,7 +20,7 @@ namespace TaskTimeManage.Core.Servises
 
 
         [Fact]
-        public async Task I_Can_Create_A_New_User()
+        public async System.Threading.Tasks.Task I_Can_Create_A_New_User()
         {
             //Arrange
             var option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
@@ -31,13 +31,15 @@ namespace TaskTimeManage.Core.Servises
             UserServise sut = new(context);
 
             //Act
-            bool Created = await sut.CreateUserAsync(username, password);
+            User Created = await sut.CreateUserAsync(username, password);
             //Assert
-            Created.Should().BeTrue();
+            Created.Should().NotBeNull();
+            Created.Id.Should().NotBe(0);
+            Created.PublicId.Should().NotBe(Guid.Empty);
 
         }
         [Fact]
-        public async Task I_Can_Login()
+        public async System.Threading.Tasks.Task I_Can_Login()
         {
             //Arrange
             var option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
@@ -57,7 +59,7 @@ namespace TaskTimeManage.Core.Servises
 
         //I_Get_A_Error_If_I_Try_Create_User_Whit_Same_Name
         [Fact]
-        public async Task Error_Create_User_Same_Name()
+        public async System.Threading.Tasks.Task Error_Create_User_Same_Name()
         {
             //Arrange
             var option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
@@ -69,7 +71,7 @@ namespace TaskTimeManage.Core.Servises
             await sut.CreateUserAsync(username, password);
 
             //Act
-            Func<Task> act = () => sut.CreateUserAsync(username, password);
+            Func<System.Threading.Tasks.Task> act = () => sut.CreateUserAsync(username, password);
             //Assert
             await act.Should().ThrowAsync<UserAlreadyExistsException>();
         }

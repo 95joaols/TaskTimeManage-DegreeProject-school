@@ -20,7 +20,6 @@ namespace TaskTimeManage.Domain.Entity
         {
             get; set;
         }
-
         [Required]
         public DateTime Time
         {

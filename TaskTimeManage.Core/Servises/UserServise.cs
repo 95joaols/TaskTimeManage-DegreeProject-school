@@ -14,14 +14,14 @@ namespace TaskTimeManage.Core.Servises
         {
             this.context = context;
         }
-        public async Task<User?> GetUserByNameAsync(string username)
+        public async Task<User?> GetUserByPublicIdAsync(Guid publicId)
         {
-            return await context.User.FirstOrDefaultAsync(u => u.UserName == username);
+            return await context.User.FirstOrDefaultAsync(u => u.PublicId == publicId);
 
         }
 
 
-        public async Task<bool> CreateUserAsync(string username, string password)
+        public async Task<User> CreateUserAsync(string username, string password)
         {
             User? user = await context.User.FirstOrDefaultAsync(u => u.UserName == username);
             if (user != null)
@@ -31,13 +31,14 @@ namespace TaskTimeManage.Core.Servises
 
                 string salt = Cryptography.CreatSalt();
                 string hashedPassword = Cryptography.Encrypt(Cryptography.Hash(Cryptography.Encrypt(password, salt), salt), salt);
-                await context.User.AddAsync(new User(username, hashedPassword, salt));
+                User createdUser = new(username, hashedPassword, salt);
+                await context.User.AddAsync(createdUser);
                 int count = await context.SaveChangesAsync();
-                return count > 0;
+                return createdUser;
             }
             catch (Exception)
             {
-                return false;
+                throw new Exception();
             }
         }
 

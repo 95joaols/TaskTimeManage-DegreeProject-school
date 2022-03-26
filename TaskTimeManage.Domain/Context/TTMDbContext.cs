@@ -24,9 +24,16 @@ namespace TaskTimeManage.Domain.Context
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            // Addd the Postgres Extension for UUID generation
+            builder.HasPostgresExtension("uuid-ossp");
+
             builder.Entity<User>()
                 .HasIndex(u => u.UserName)
                 .IsUnique();
+
+            builder.Entity<Entity.Task>().Property(x => x.PublicId).HasDefaultValueSql("uuid_generate_v4()");
+            builder.Entity<User>().Property(x => x.PublicId).HasDefaultValueSql("uuid_generate_v4()");
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

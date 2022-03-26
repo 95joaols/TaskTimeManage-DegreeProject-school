@@ -20,6 +20,11 @@ namespace TaskTimeManage.Domain.Entity
         {
             get; set;
         }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid PublicId
+        {
+            get; set;
+        }
         [Required]
         public string Name
         {

@@ -21,6 +21,7 @@ namespace TaskTimeManage.Domain.Security
             {
                 Subject = new ClaimsIdentity(new[]
                 {
+                    new Claim("PublicId",user.PublicId.ToString()),
                     new Claim(ClaimTypes.Name, user.UserName)
                 }),
 
