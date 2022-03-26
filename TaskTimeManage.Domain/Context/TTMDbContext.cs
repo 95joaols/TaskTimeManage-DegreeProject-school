@@ -18,6 +18,13 @@ namespace TaskTimeManage.Domain.Context
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<User>()
+                .HasIndex(u => u.UserName)
+                .IsUnique();
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             _ = optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);

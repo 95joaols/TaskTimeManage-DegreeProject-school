@@ -1,11 +1,10 @@
 ﻿
 using FluentAssertions;
 
-using TaskTimeManage.Core.Security;
-using TaskTimeManage.Domain.Context;
-using TaskTimeManage.Domain.Entity;
+using System;
+using System.Threading.Tasks;
 
-using TestSupport.EfHelpers;
+using TaskTimeManage.Domain.Exceptions;
 
 using Xunit;
 
@@ -15,30 +14,26 @@ namespace TaskTimeManage.Core.Servises
     {
         const string username = "username";
         const string password = "pass!03";
-        const string salt = "$2a$11$BfZDWZ58tnozI.PsoJPl8O";
 
 
         [Fact]
-        public async void I_Can_Create_A_New_User()
+        public async Task I_Can_Create_A_New_User()
         {
             //Arrange
-            UserServise sut = new(SetUpContext());
-            string hashedPassword = Cryptography.Encrypt(Cryptography.Hash(Cryptography.Encrypt(password, salt), salt), salt);
+            UserServise sut = new(new SetUp().SetUpContext());
 
             //Act
-            bool Created = await sut.CreateUserAsync(new User(username, hashedPassword, salt));
+            bool Created = await sut.CreateUserAsync(username, password);
             //Assert
             Created.Should().BeTrue();
 
         }
         [Fact]
-        public async void I_Can_Login()
+        public async Task I_Can_Login()
         {
             //Arrange
-            UserServise sut = new(SetUpContext());
-            string hashedPassword = Cryptography.Encrypt(Cryptography.Hash(Cryptography.Encrypt(password, salt), salt), salt);
-
-            await sut.CreateUserAsync(new User(username, hashedPassword, salt));
+            UserServise sut = new(new SetUp().SetUpContext());
+            await sut.CreateUserAsync(username, password);
 
             //Act
             string token = await sut.Login(username, password);
@@ -47,14 +42,18 @@ namespace TaskTimeManage.Core.Servises
 
         }
 
-
-
-        private static TTMDbContext SetUpContext()
+        [Fact]
+        public async Task I_Get_A_Error_If_I_Try_Create_User_Whit_Same_Name()
         {
-            var option = SqliteInMemory.CreateOptions<TTMDbContext>();
-            var context = new TTMDbContext(option);
-            context.Database.EnsureCreated();
-            return context;
+            //Arrange
+            UserServise sut = new(new SetUp().SetUpContext());
+            await sut.CreateUserAsync(username, password);
+
+            //Act
+            Func<Task> act = () => sut.CreateUserAsync(username, password);
+            //Assert
+            await act.Should().ThrowAsync<UserAlreadyExists>();
         }
+
     }
 }

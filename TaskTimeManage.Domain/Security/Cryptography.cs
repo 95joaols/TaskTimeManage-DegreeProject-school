@@ -1,7 +1,9 @@
-﻿using System.Security.Cryptography;
+﻿using BCrypt.Net;
+
+using System.Security.Cryptography;
 using System.Text;
 
-namespace TaskTimeManage.Core.Security
+namespace TaskTimeManage.Domain.Security
 {
     public static class Cryptography
     {

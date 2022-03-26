@@ -5,9 +5,9 @@ using System.Security.Claims;
 
 using TaskTimeManage.Domain.Entity;
 
-namespace TaskTimeManage.Core.Security
+namespace TaskTimeManage.Domain.Security
 {
-    internal class Token
+    public class Token
     {
         private const string Secret = "GCuwl/Jf8ob5vNDTSsrorORpr81X5FV818rnsvhRfK1KqJ/xobg6M9VCxjVyGGbxnO0LwsI5IjLrbogshFVXTg==";
 

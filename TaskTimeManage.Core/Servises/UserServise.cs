@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-using TaskTimeManage.Core.Security;
 using TaskTimeManage.Domain.Context;
 using TaskTimeManage.Domain.Entity;
 using TaskTimeManage.Domain.Exceptions;
+using TaskTimeManage.Domain.Security;
 
 namespace TaskTimeManage.Core.Servises
 {
@@ -14,11 +14,17 @@ namespace TaskTimeManage.Core.Servises
         {
             this.context = context;
         }
-        public async Task<bool> CreateUserAsync(User user)
+        public async Task<bool> CreateUserAsync(string username, string password)
         {
+            User? user = await context.User.FirstOrDefaultAsync(u => u.UserName == username);
+            if (user != null)
+                throw new UserAlreadyExists();
             try
             {
-                await context.User.AddAsync(user);
+
+                string salt = Cryptography.CreatSalt();
+                string hashedPassword = Cryptography.Encrypt(Cryptography.Hash(Cryptography.Encrypt(password, salt), salt), salt);
+                await context.User.AddAsync(new User(username, hashedPassword, salt));
                 int count = await context.SaveChangesAsync();
                 return count > 0;
             }
