@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
+using TaskTimeManage.Core.Security;
 using TaskTimeManage.Domain.Context;
 using TaskTimeManage.Domain.Entity;
 using TaskTimeManage.Domain.Exceptions;
-using TaskTimeManage.Domain.Security;
 
 namespace TaskTimeManage.Core.Servises
 {

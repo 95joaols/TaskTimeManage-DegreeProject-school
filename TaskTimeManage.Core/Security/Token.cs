@@ -5,7 +5,7 @@ using System.Security.Claims;
 
 using TaskTimeManage.Domain.Entity;
 
-namespace TaskTimeManage.Domain.Security
+namespace TaskTimeManage.Core.Security
 {
     public class Token
     {
