@@ -7,6 +7,8 @@ using TaskTimeManage.Domain.Entity;
 
 using Test.Helpers;
 
+using TestSupport.EfHelpers;
+
 using Xunit;
 
 namespace TaskTimeManage.Core.Servises
@@ -25,6 +27,7 @@ namespace TaskTimeManage.Core.Servises
             using var context = new TTMDbContext(option);
             await context.Database.EnsureDeletedAsync();
             await context.Database.EnsureCreatedAsync();
+
 
             UserServise userServise = new(context);
             await userServise.CreateUserAsync(username, password);
@@ -50,6 +53,7 @@ namespace TaskTimeManage.Core.Servises
             using var context = new TTMDbContext(option);
             await context.Database.EnsureDeletedAsync();
             await context.Database.EnsureCreatedAsync();
+
 
             UserServise userServise = new(context);
             await userServise.CreateUserAsync(username, password);

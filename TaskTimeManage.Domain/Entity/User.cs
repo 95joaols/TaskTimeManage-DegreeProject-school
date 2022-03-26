@@ -1,4 +1,6 @@
-﻿namespace TaskTimeManage.Domain.Entity
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TaskTimeManage.Domain.Entity
 {
     public class User
     {
@@ -9,36 +11,33 @@
             Salt = salt;
         }
 
-        public User(int id, string userName, string password, DateTime creationTime, string salt, IEnumerable<Task> tasks)
+        public User()
         {
-            Id = id;
-            UserName = userName;
-            Password = password;
-            CreationTime = creationTime;
-            Salt = salt;
-            Tasks = tasks;
         }
-
+        [Key]
         public int Id
         {
             get; set;
         }
+        [Required]
         public string UserName
         {
             get; set;
         }
+        [Required]
         public string Password
         {
             get; set;
         }
+        [Required]
         public string Salt
         {
             get; set;
         }
-        public IEnumerable<Task> Tasks
+        public List<Task> Tasks
         {
             get; set;
-        }
+        } = new();
 
         public DateTime CreationTime
         {

@@ -26,7 +26,6 @@ namespace TaskTimeManage.Core
             //SETUP
             var option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
             using var context = new TTMDbContext(option);
-            await context.Database.EnsureDeletedAsync();
             await context.Database.EnsureCreatedAsync();
 
 

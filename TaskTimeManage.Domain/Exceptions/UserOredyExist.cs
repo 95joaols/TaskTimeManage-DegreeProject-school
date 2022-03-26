@@ -1,8 +1,8 @@
 ﻿namespace TaskTimeManage.Domain.Exceptions
 {
-    public class UserAlreadyExists : Exception
+    public class UserAlreadyExistsException : Exception
     {
-        public UserAlreadyExists() : base($"User Already Exists")
+        public UserAlreadyExistsException() : base($"User Already Exists")
         {
         }
     }

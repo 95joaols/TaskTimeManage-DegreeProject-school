@@ -25,7 +25,7 @@ namespace TaskTimeManage.Core.Servises
         {
             User? user = await context.User.FirstOrDefaultAsync(u => u.UserName == username);
             if (user != null)
-                throw new UserAlreadyExists();
+                throw new UserAlreadyExistsException();
             try
             {
 

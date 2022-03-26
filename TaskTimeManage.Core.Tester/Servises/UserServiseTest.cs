@@ -71,7 +71,7 @@ namespace TaskTimeManage.Core.Servises
             //Act
             Func<Task> act = () => sut.CreateUserAsync(username, password);
             //Assert
-            await act.Should().ThrowAsync<UserAlreadyExists>();
+            await act.Should().ThrowAsync<UserAlreadyExistsException>();
         }
 
     }
