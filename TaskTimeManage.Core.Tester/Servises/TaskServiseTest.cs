@@ -36,5 +36,29 @@ namespace TaskTimeManage.Core.Servises
 
         }
 
+        [Fact]
+        public async System.Threading.Tasks.Task I_Can_Get_All_Task_From_User()
+        {
+            //Arrange
+            TTMDbContext Context = new SetUp().SetUpContext();
+            UserServise userServise = new(Context);
+            await userServise.CreateUserAsync(username, password);
+            User? user = await userServise.GetUserByNameAsync(username);
+            Assert.NotNull(user);
+
+            TaskServise sut = new(Context);
+            //Act
+            await sut.CreateTaskAsync("name of task1", user);
+            await sut.CreateTaskAsync("name of task2", user);
+            await sut.CreateTaskAsync("name of task3", user);
+            await sut.CreateTaskAsync("name of task4", user);
+            await sut.CreateTaskAsync("name of task5", user);
+            await sut.CreateTaskAsync("name of task6", user);
+
+
+            //Assert
+            user.Tasks.Should().HaveCount(6);
+        }
+
     }
 }

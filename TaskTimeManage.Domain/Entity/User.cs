@@ -35,7 +35,7 @@
         {
             get; set;
         }
-        IEnumerable<Task> Tasks
+        public IEnumerable<Task> Tasks
         {
             get; set;
         }
