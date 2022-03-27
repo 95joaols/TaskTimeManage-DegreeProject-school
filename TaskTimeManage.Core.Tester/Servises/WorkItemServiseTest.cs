@@ -40,7 +40,7 @@ namespace TaskTimeManage.Core.Servises
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task I_Can_Get_All_Task_From_User()
+        public async System.Threading.Tasks.Task I_Get_All_Task_From_User()
         {
             //Arrange
             var option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
