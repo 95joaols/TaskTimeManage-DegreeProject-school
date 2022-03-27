@@ -1,5 +1,9 @@
 ﻿using FluentAssertions;
 
+using Microsoft.EntityFrameworkCore;
+
+using System.Threading.Tasks;
+
 using TaskTimeManage.Domain.Context;
 using TaskTimeManage.Domain.Entity;
 
@@ -11,18 +15,18 @@ namespace TaskTimeManage.Core.Servises
 {
     public class WorkItemServiseTest
     {
-        const string username = "username";
-        const string password = "pass!03";
+        private const string username = "username";
+        private const string password = "pass!03";
 
 
         [Fact]
-        public async System.Threading.Tasks.Task I_can_create_a_new_task()
+        public async Task I_can_create_a_new_task()
         {
             //Arrange
-            var option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
-            using var context = new TTMDbContext(option);
-            await context.Database.EnsureDeletedAsync();
-            await context.Database.EnsureCreatedAsync();
+            DbContextOptions<TTMDbContext>? option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
+            using TTMDbContext? context = new(option);
+            _ = await context.Database.EnsureDeletedAsync();
+            _ = await context.Database.EnsureCreatedAsync();
 
 
             UserServise userServise = new(context);
@@ -31,22 +35,22 @@ namespace TaskTimeManage.Core.Servises
             WorkItemServise sut = new(context);
 
             //Act
-            Domain.Entity.WorkItem task = await sut.CreateTaskAsync("name of task", user);
+            WorkItem task = await sut.CreateTaskAsync("name of task", user);
 
             //Assert
-            task.Should().NotBeNull();
-            task.Id.Should().NotBe(0);
+            _ = task.Should().NotBeNull();
+            _ = task.Id.Should().NotBe(0);
 
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task I_Get_All_Task_From_User()
+        public async Task I_Get_All_Task_From_User()
         {
             //Arrange
-            var option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
-            using var context = new TTMDbContext(option);
-            await context.Database.EnsureDeletedAsync();
-            await context.Database.EnsureCreatedAsync();
+            DbContextOptions<TTMDbContext>? option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
+            using TTMDbContext? context = new(option);
+            _ = await context.Database.EnsureDeletedAsync();
+            _ = await context.Database.EnsureCreatedAsync();
 
 
             UserServise userServise = new(context);
@@ -55,16 +59,16 @@ namespace TaskTimeManage.Core.Servises
 
             WorkItemServise sut = new(context);
             //Act
-            await sut.CreateTaskAsync("name of task1", user);
-            await sut.CreateTaskAsync("name of task2", user);
-            await sut.CreateTaskAsync("name of task3", user);
-            await sut.CreateTaskAsync("name of task4", user);
-            await sut.CreateTaskAsync("name of task5", user);
-            await sut.CreateTaskAsync("name of task6", user);
+            _ = await sut.CreateTaskAsync("name of task1", user);
+            _ = await sut.CreateTaskAsync("name of task2", user);
+            _ = await sut.CreateTaskAsync("name of task3", user);
+            _ = await sut.CreateTaskAsync("name of task4", user);
+            _ = await sut.CreateTaskAsync("name of task5", user);
+            _ = await sut.CreateTaskAsync("name of task6", user);
 
 
             //Assert
-            user.Tasks.Should().HaveCount(6);
+            _ = user.Tasks.Should().HaveCount(6);
         }
 
     }

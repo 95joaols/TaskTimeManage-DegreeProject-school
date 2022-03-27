@@ -1,7 +1,10 @@
 ﻿
 using FluentAssertions;
 
+using Microsoft.EntityFrameworkCore;
+
 using System;
+using System.Threading.Tasks;
 
 using TaskTimeManage.Domain.Context;
 using TaskTimeManage.Domain.Entity;
@@ -15,65 +18,65 @@ namespace TaskTimeManage.Core.Servises
 {
     public class UserServiseTest
     {
-        const string username = "username";
-        const string password = "pass!03";
+        private const string username = "username";
+        private const string password = "pass!03";
 
 
         [Fact]
-        public async System.Threading.Tasks.Task I_Can_Create_A_New_User()
+        public async Task I_Can_Create_A_New_User()
         {
             //Arrange
-            var option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
-            using var context = new TTMDbContext(option);
-            await context.Database.EnsureDeletedAsync();
-            await context.Database.EnsureCreatedAsync();
+            DbContextOptions<TTMDbContext>? option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
+            using TTMDbContext? context = new(option);
+            _ = await context.Database.EnsureDeletedAsync();
+            _ = await context.Database.EnsureCreatedAsync();
 
             UserServise sut = new(context);
 
             //Act
             User Created = await sut.CreateUserAsync(username, password);
             //Assert
-            Created.Should().NotBeNull();
-            Created.Id.Should().NotBe(0);
-            Created.PublicId.Should().NotBe(Guid.Empty);
+            _ = Created.Should().NotBeNull();
+            _ = Created.Id.Should().NotBe(0);
+            _ = Created.PublicId.Should().NotBe(Guid.Empty);
 
         }
         [Fact]
-        public async System.Threading.Tasks.Task I_Can_Login()
+        public async Task I_Can_Login()
         {
             //Arrange
-            var option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
-            using var context = new TTMDbContext(option);
-            await context.Database.EnsureDeletedAsync();
-            await context.Database.EnsureCreatedAsync();
+            DbContextOptions<TTMDbContext>? option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
+            using TTMDbContext? context = new(option);
+            _ = await context.Database.EnsureDeletedAsync();
+            _ = await context.Database.EnsureCreatedAsync();
 
             UserServise sut = new(context);
-            await sut.CreateUserAsync(username, password);
+            _ = await sut.CreateUserAsync(username, password);
 
             //Act
             string token = await sut.Login(username, password);
             //Assert
-            token.Should().NotBeNullOrWhiteSpace();
+            _ = token.Should().NotBeNullOrWhiteSpace();
 
         }
 
         //I_Get_A_Error_If_I_Try_Create_User_Whit_Same_Name
         [Fact]
-        public async System.Threading.Tasks.Task Error_Create_User_Same_Name()
+        public async Task Error_Create_User_Same_Name()
         {
             //Arrange
-            var option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
-            using var context = new TTMDbContext(option);
-            await context.Database.EnsureDeletedAsync();
-            await context.Database.EnsureCreatedAsync();
+            DbContextOptions<TTMDbContext>? option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
+            using TTMDbContext? context = new(option);
+            _ = await context.Database.EnsureDeletedAsync();
+            _ = await context.Database.EnsureCreatedAsync();
 
             UserServise sut = new(context);
-            await sut.CreateUserAsync(username, password);
+            _ = await sut.CreateUserAsync(username, password);
 
             //Act
-            Func<System.Threading.Tasks.Task> act = () => sut.CreateUserAsync(username, password);
+            Func<Task> act = () => sut.CreateUserAsync(username, password);
             //Assert
-            await act.Should().ThrowAsync<UserAlreadyExistsException>();
+            _ = await act.Should().ThrowAsync<UserAlreadyExistsException>();
         }
 
     }

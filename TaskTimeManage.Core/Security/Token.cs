@@ -13,11 +13,11 @@ namespace TaskTimeManage.Core.Security
 
         public static string GenerateToken(User user, int expireMinutes = 540)
         {
-            var symmetricKey = Convert.FromBase64String(Secret);
-            var tokenHandler = new JwtSecurityTokenHandler();
+            byte[]? symmetricKey = Convert.FromBase64String(Secret);
+            JwtSecurityTokenHandler? tokenHandler = new();
 
-            var now = DateTime.UtcNow;
-            var tokenDescriptor = new SecurityTokenDescriptor
+            DateTime now = DateTime.UtcNow;
+            SecurityTokenDescriptor? tokenDescriptor = new()
             {
                 Subject = new ClaimsIdentity(new[]
                 {
@@ -32,8 +32,8 @@ namespace TaskTimeManage.Core.Security
                     SecurityAlgorithms.HmacSha256Signature)
             };
 
-            var stoken = tokenHandler.CreateToken(tokenDescriptor);
-            var token = tokenHandler.WriteToken(stoken);
+            SecurityToken? stoken = tokenHandler.CreateToken(tokenDescriptor);
+            string? token = tokenHandler.WriteToken(stoken);
 
             return token;
         }

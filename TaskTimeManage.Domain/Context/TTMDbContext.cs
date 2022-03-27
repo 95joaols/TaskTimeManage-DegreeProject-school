@@ -11,7 +11,7 @@ namespace TaskTimeManage.Domain.Context
         {
             get; set;
         }
-        public DbSet<Entity.WorkItem> Task
+        public DbSet<WorkItem> Task
         {
             get; set;
         }
@@ -25,14 +25,14 @@ namespace TaskTimeManage.Domain.Context
         protected override void OnModelCreating(ModelBuilder builder)
         {
             // Addd the Postgres Extension for UUID generation
-            builder.HasPostgresExtension("uuid-ossp");
+            _ = builder.HasPostgresExtension("uuid-ossp");
 
-            builder.Entity<User>()
+            _ = builder.Entity<User>()
                 .HasIndex(u => u.UserName)
                 .IsUnique();
 
-            builder.Entity<Entity.WorkItem>().Property(x => x.PublicId).HasDefaultValueSql("uuid_generate_v4()");
-            builder.Entity<User>().Property(x => x.PublicId).HasDefaultValueSql("uuid_generate_v4()");
+            _ = builder.Entity<WorkItem>().Property(x => x.PublicId).HasDefaultValueSql("uuid_generate_v4()");
+            _ = builder.Entity<User>().Property(x => x.PublicId).HasDefaultValueSql("uuid_generate_v4()");
 
         }
 
