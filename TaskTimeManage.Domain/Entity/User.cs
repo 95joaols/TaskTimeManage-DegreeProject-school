@@ -41,7 +41,7 @@ namespace TaskTimeManage.Domain.Entity
         {
             get; set;
         }
-        public List<Task> Tasks
+        public List<WorkItem> Tasks
         {
             get; set;
         } = new();

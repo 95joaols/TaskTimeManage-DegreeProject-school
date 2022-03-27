@@ -32,8 +32,8 @@ namespace TaskTimeManage.Core.Servises
             User user = await userServise.CreateUserAsync(username, password);
 
 
-            TaskServise taskServise = new(context);
-            Domain.Entity.Task task = await taskServise.CreateTaskAsync("name of task", user);
+            WorkItemServise taskServise = new(context);
+            Domain.Entity.WorkItem task = await taskServise.CreateTaskAsync("name of task", user);
             Assert.NotNull(task);
 
             WorkTimeServise sut = new(context);

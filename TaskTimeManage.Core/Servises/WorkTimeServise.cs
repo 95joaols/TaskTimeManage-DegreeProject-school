@@ -15,7 +15,7 @@ namespace TaskTimeManage.Core.Servises
             this.context = context;
         }
 
-        public async Task<WorkTime> CreateWorkTimeAsync(DateTime time, WorkTimeType type, Domain.Entity.Task task)
+        public async Task<WorkTime> CreateWorkTimeAsync(DateTime time, WorkTimeType type, Domain.Entity.WorkItem task)
         {
             if (task is null)
             {

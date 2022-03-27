@@ -11,7 +11,7 @@ namespace TaskTimeManage.Domain.Context
         {
             get; set;
         }
-        public DbSet<Entity.Task> Task
+        public DbSet<Entity.WorkItem> Task
         {
             get; set;
         }
@@ -31,7 +31,7 @@ namespace TaskTimeManage.Domain.Context
                 .HasIndex(u => u.UserName)
                 .IsUnique();
 
-            builder.Entity<Entity.Task>().Property(x => x.PublicId).HasDefaultValueSql("uuid_generate_v4()");
+            builder.Entity<Entity.WorkItem>().Property(x => x.PublicId).HasDefaultValueSql("uuid_generate_v4()");
             builder.Entity<User>().Property(x => x.PublicId).HasDefaultValueSql("uuid_generate_v4()");
 
         }

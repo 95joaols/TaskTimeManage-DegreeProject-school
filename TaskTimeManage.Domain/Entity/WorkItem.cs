@@ -3,15 +3,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TaskTimeManage.Domain.Entity
 {
-    public class Task
+    public class WorkItem
     {
-        public Task(string name, User user)
+        public WorkItem(string name, User user)
         {
             Name = name;
             User = user;
         }
 
-        public Task()
+        public WorkItem()
         {
 
         }

@@ -4,18 +4,18 @@ using TaskTimeManage.Domain.Entity;
 
 namespace TaskTimeManage.Core.Servises
 {
-    public class TaskServise
+    public class WorkItemServise
     {
         private TTMDbContext context;
 
-        public TaskServise(TTMDbContext context)
+        public WorkItemServise(TTMDbContext context)
         {
             this.context = context;
         }
 
-        public async Task<Domain.Entity.Task> CreateTaskAsync(string name, User user)
+        public async Task<Domain.Entity.WorkItem> CreateTaskAsync(string name, User user)
         {
-            Domain.Entity.Task task = new(name, user);
+            Domain.Entity.WorkItem task = new(name, user);
             await context.Task.AddAsync(task);
             await context.SaveChangesAsync();
 

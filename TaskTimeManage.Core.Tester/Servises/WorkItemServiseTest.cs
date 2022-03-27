@@ -9,7 +9,7 @@ using Xunit;
 
 namespace TaskTimeManage.Core.Servises
 {
-    public class TaskServiseTest
+    public class WorkItemServiseTest
     {
         const string username = "username";
         const string password = "pass!03";
@@ -28,10 +28,10 @@ namespace TaskTimeManage.Core.Servises
             UserServise userServise = new(context);
             User user = await userServise.CreateUserAsync(username, password);
 
-            TaskServise sut = new(context);
+            WorkItemServise sut = new(context);
 
             //Act
-            Domain.Entity.Task task = await sut.CreateTaskAsync("name of task", user);
+            Domain.Entity.WorkItem task = await sut.CreateTaskAsync("name of task", user);
 
             //Assert
             task.Should().NotBeNull();
@@ -53,7 +53,7 @@ namespace TaskTimeManage.Core.Servises
             User user = await userServise.CreateUserAsync(username, password);
             Assert.NotNull(user);
 
-            TaskServise sut = new(context);
+            WorkItemServise sut = new(context);
             //Act
             await sut.CreateTaskAsync("name of task1", user);
             await sut.CreateTaskAsync("name of task2", user);
