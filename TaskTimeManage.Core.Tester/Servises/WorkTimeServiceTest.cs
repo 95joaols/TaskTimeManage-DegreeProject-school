@@ -1,9 +1,10 @@
 ﻿
+using TaskTimeManage.Core.Service;
 using TaskTimeManage.Domain.Enum;
 
 namespace TaskTimeManage.Core.Servises;
 
-public class WorkTimeServiseTest
+public class WorkTimeServiceTest
 {
 	private const string username = "username";
 	private const string password = "pass!03";
@@ -19,15 +20,15 @@ public class WorkTimeServiseTest
 		_ = await context.Database.EnsureCreatedAsync();
 
 
-		UserServise userServise = new(context);
+		UserService userServise = new(context);
 		User user = await userServise.CreateUserAsync(username, password);
 
 
-		WorkItemServise taskServise = new(context);
+		WorkItemService taskServise = new(context);
 		WorkItem task = await taskServise.CreateTaskAsync("name of task", user);
 		Assert.NotNull(task);
 
-		WorkTimeServise sut = new(context);
+		WorkTimeService sut = new(context);
 
 		//Act
 		WorkTime workTime = await sut.CreateWorkTimeAsync(DateTime.Now, WorkTimeType.Start, task);

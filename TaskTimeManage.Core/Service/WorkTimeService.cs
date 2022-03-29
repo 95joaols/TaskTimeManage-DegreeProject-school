@@ -1,16 +1,15 @@
-﻿
-using TaskTimeManage.Domain.Context;
+﻿using TaskTimeManage.Domain.Context;
 using TaskTimeManage.Domain.Entity;
 using TaskTimeManage.Domain.Enum;
 using TaskTimeManage.Domain.Exceptions;
 
-namespace TaskTimeManage.Core.Servises;
+namespace TaskTimeManage.Core.Service;
 
-public class WorkTimeServise
+public class WorkTimeService
 {
 	private readonly TTMDbContext context;
 
-	public WorkTimeServise(TTMDbContext context) => this.context = context;
+	public WorkTimeService(TTMDbContext context) => this.context = context;
 
 	public async Task<WorkTime> CreateWorkTimeAsync(DateTime time, WorkTimeType type, WorkItem task)
 	{

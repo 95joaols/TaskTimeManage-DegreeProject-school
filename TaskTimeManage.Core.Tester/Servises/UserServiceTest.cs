@@ -1,9 +1,10 @@
 ﻿
+using TaskTimeManage.Core.Service;
 using TaskTimeManage.Domain.Exceptions;
 
 namespace TaskTimeManage.Core.Servises;
 
-public class UserServiseTest
+public class UserServiceTest
 {
 	private const string username = "username";
 	private const string password = "pass!03";
@@ -18,7 +19,7 @@ public class UserServiseTest
 		_ = await context.Database.EnsureDeletedAsync();
 		_ = await context.Database.EnsureCreatedAsync();
 
-		UserServise sut = new(context);
+		UserService sut = new(context);
 
 		//Act
 		User Created = await sut.CreateUserAsync(username, password);
@@ -37,7 +38,7 @@ public class UserServiseTest
 		_ = await context.Database.EnsureDeletedAsync();
 		_ = await context.Database.EnsureCreatedAsync();
 
-		UserServise sut = new(context);
+		UserService sut = new(context);
 		_ = await sut.CreateUserAsync(username, password);
 
 		//Act
@@ -57,7 +58,7 @@ public class UserServiseTest
 		_ = await context.Database.EnsureDeletedAsync();
 		_ = await context.Database.EnsureCreatedAsync();
 
-		UserServise sut = new(context);
+		UserService sut = new(context);
 		_ = await sut.CreateUserAsync(username, password);
 
 		//Act

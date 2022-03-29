@@ -5,12 +5,12 @@ using TaskTimeManage.Domain.Context;
 using TaskTimeManage.Domain.Entity;
 using TaskTimeManage.Domain.Exceptions;
 
-namespace TaskTimeManage.Core.Servises;
+namespace TaskTimeManage.Core.Service;
 
-public class UserServise
+public class UserService
 {
 	private readonly TTMDbContext context;
-	public UserServise(TTMDbContext context) => this.context = context;
+	public UserService(TTMDbContext context) => this.context = context;
 	public async Task<User?> GetUserByPublicIdAsync(Guid publicId) => await context.User.FirstOrDefaultAsync(u => u.PublicId == publicId);
 
 

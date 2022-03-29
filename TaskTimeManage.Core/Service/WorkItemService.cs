@@ -1,14 +1,13 @@
-﻿
-using TaskTimeManage.Domain.Context;
+﻿using TaskTimeManage.Domain.Context;
 using TaskTimeManage.Domain.Entity;
 
-namespace TaskTimeManage.Core.Servises;
+namespace TaskTimeManage.Core.Service;
 
-public class WorkItemServise
+public class WorkItemService
 {
 	private readonly TTMDbContext context;
 
-	public WorkItemServise(TTMDbContext context) => this.context = context;
+	public WorkItemService(TTMDbContext context) => this.context = context;
 
 	public async Task<WorkItem> CreateTaskAsync(string name, User user)
 	{

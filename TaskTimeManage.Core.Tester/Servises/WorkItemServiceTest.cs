@@ -1,6 +1,8 @@
-﻿namespace TaskTimeManage.Core.Servises;
+﻿using TaskTimeManage.Core.Service;
 
-public class WorkItemServiseTest
+namespace TaskTimeManage.Core.Servises;
+
+public class WorkItemServiceTest
 {
 	private const string username = "username";
 	private const string password = "pass!03";
@@ -16,10 +18,10 @@ public class WorkItemServiseTest
 		_ = await context.Database.EnsureCreatedAsync();
 
 
-		UserServise userServise = new(context);
+		UserService userServise = new(context);
 		User user = await userServise.CreateUserAsync(username, password);
 
-		WorkItemServise sut = new(context);
+		WorkItemService sut = new(context);
 
 		//Act
 		WorkItem task = await sut.CreateTaskAsync("name of task", user);
@@ -40,11 +42,11 @@ public class WorkItemServiseTest
 		_ = await context.Database.EnsureCreatedAsync();
 
 
-		UserServise userServise = new(context);
+		UserService userServise = new(context);
 		User user = await userServise.CreateUserAsync(username, password);
 		Assert.NotNull(user);
 
-		WorkItemServise sut = new(context);
+		WorkItemService sut = new(context);
 		//Act
 		_ = await sut.CreateTaskAsync("name of task1", user);
 		_ = await sut.CreateTaskAsync("name of task2", user);
