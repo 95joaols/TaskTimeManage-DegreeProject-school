@@ -18,7 +18,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTimeManage.Api", "TaskTimeManage.Api\TaskTimeManage.Api.csproj", "{732510C1-BC63-4A8B-AA1E-FCA2690E31FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskTimeManage.Api", "TaskTimeManage.Api\TaskTimeManage.Api.csproj", "{732510C1-BC63-4A8B-AA1E-FCA2690E31FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTimeManage.Api.Tester", "TaskTimeManage.Api.Tester\TaskTimeManage.Api.Tester.csproj", "{F71ECBBD-ED49-4542-904D-197400EF2E93}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +44,10 @@ Global
 		{732510C1-BC63-4A8B-AA1E-FCA2690E31FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{732510C1-BC63-4A8B-AA1E-FCA2690E31FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{732510C1-BC63-4A8B-AA1E-FCA2690E31FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F71ECBBD-ED49-4542-904D-197400EF2E93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F71ECBBD-ED49-4542-904D-197400EF2E93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F71ECBBD-ED49-4542-904D-197400EF2E93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F71ECBBD-ED49-4542-904D-197400EF2E93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -51,6 +57,7 @@ Global
 		{F5685A90-8949-4FFB-9361-CD7848493878} = {91D3D95E-4261-44A1-9CD7-28CC104D7C96}
 		{318E7D0E-4FEC-40D9-A19E-0EBA42E70A2C} = {C044CD24-AF9E-4A56-919B-6D0AC816875C}
 		{732510C1-BC63-4A8B-AA1E-FCA2690E31FB} = {C044CD24-AF9E-4A56-919B-6D0AC816875C}
+		{F71ECBBD-ED49-4542-904D-197400EF2E93} = {91D3D95E-4261-44A1-9CD7-28CC104D7C96}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D6173A2-8480-4765-84AE-6FC9889350CB}

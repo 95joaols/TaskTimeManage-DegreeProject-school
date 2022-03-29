@@ -1,15 +1,6 @@
 ﻿
-using Microsoft.EntityFrameworkCore;
-
 using Npgsql;
 
-using System.Threading.Tasks;
-
-using TaskTimeManage.Domain.Context;
-
-using Test.Helpers;
-
-using Xunit;
 using Xunit.Extensions.AssertExtensions;
 
 namespace TaskTimeManage.Core;

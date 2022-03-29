@@ -1,16 +1,5 @@
-﻿using FluentAssertions;
-
-using Microsoft.EntityFrameworkCore;
-
-using System;
-
-using TaskTimeManage.Domain.Context;
-using TaskTimeManage.Domain.Entity;
+﻿
 using TaskTimeManage.Domain.Enum;
-
-using Test.Helpers;
-
-using Xunit;
 
 namespace TaskTimeManage.Core.Servises;
 
@@ -21,7 +10,7 @@ public class WorkTimeServiseTest
 
 
 	[Fact]
-	public async System.Threading.Tasks.Task I_can_create_a_new_WorkTime()
+	public async Task I_can_create_a_new_WorkTime()
 	{
 		//Arrange
 		DbContextOptions<TTMDbContext>? option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();

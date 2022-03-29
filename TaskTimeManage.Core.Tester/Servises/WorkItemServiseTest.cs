@@ -1,17 +1,4 @@
-﻿using FluentAssertions;
-
-using Microsoft.EntityFrameworkCore;
-
-using System.Threading.Tasks;
-
-using TaskTimeManage.Domain.Context;
-using TaskTimeManage.Domain.Entity;
-
-using Test.Helpers;
-
-using Xunit;
-
-namespace TaskTimeManage.Core.Servises;
+﻿namespace TaskTimeManage.Core.Servises;
 
 public class WorkItemServiseTest
 {

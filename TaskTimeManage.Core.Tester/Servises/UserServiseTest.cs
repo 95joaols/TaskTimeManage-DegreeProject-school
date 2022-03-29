@@ -1,18 +1,5 @@
 ﻿
-using FluentAssertions;
-
-using Microsoft.EntityFrameworkCore;
-
-using System;
-using System.Threading.Tasks;
-
-using TaskTimeManage.Domain.Context;
-using TaskTimeManage.Domain.Entity;
 using TaskTimeManage.Domain.Exceptions;
-
-using Test.Helpers;
-
-using Xunit;
 
 namespace TaskTimeManage.Core.Servises;
 
