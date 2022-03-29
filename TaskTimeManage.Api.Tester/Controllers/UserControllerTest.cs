@@ -6,7 +6,6 @@ using TaskTimeManage.Api.Controllers.UserC;
 using TaskTimeManage.Core.Service;
 using TaskTimeManage.Domain.Context;
 using TaskTimeManage.Domain.DTO;
-using TaskTimeManage.Domain.Exceptions;
 
 namespace TaskTimeManage.Api.Controllers;
 

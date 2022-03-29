@@ -19,12 +19,12 @@ public class WorkItemServiceTest
 
 
 		UserService userServise = new(context);
-		User user = await userServise.CreateUserAsync(username, password);
+		User user = await userServise.CreateUserAsync(username, password, default);
 
 		WorkItemService sut = new(context);
 
 		//Act
-		WorkItem task = await sut.CreateTaskAsync("name of task", user);
+		WorkItem task = await sut.CreateTaskAsync("name of task", user, default);
 
 		//Assert
 		_ = task.Should().NotBeNull();
@@ -43,17 +43,17 @@ public class WorkItemServiceTest
 
 
 		UserService userServise = new(context);
-		User user = await userServise.CreateUserAsync(username, password);
+		User user = await userServise.CreateUserAsync(username, password, default);
 		Assert.NotNull(user);
 
 		WorkItemService sut = new(context);
 		//Act
-		_ = await sut.CreateTaskAsync("name of task1", user);
-		_ = await sut.CreateTaskAsync("name of task2", user);
-		_ = await sut.CreateTaskAsync("name of task3", user);
-		_ = await sut.CreateTaskAsync("name of task4", user);
-		_ = await sut.CreateTaskAsync("name of task5", user);
-		_ = await sut.CreateTaskAsync("name of task6", user);
+		_ = await sut.CreateTaskAsync("name of task1", user, default);
+		_ = await sut.CreateTaskAsync("name of task2", user, default);
+		_ = await sut.CreateTaskAsync("name of task3", user, default);
+		_ = await sut.CreateTaskAsync("name of task4", user, default);
+		_ = await sut.CreateTaskAsync("name of task5", user, default);
+		_ = await sut.CreateTaskAsync("name of task6", user, default);
 
 
 		//Assert

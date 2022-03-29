@@ -22,7 +22,7 @@ public class UserServiceTest
 		UserService sut = new(context);
 
 		//Act
-		User Created = await sut.CreateUserAsync(username, password);
+		User Created = await sut.CreateUserAsync(username, password, default);
 		//Assert
 		_ = Created.Should().NotBeNull();
 		_ = Created.Id.Should().NotBe(0);
@@ -39,10 +39,10 @@ public class UserServiceTest
 		_ = await context.Database.EnsureCreatedAsync();
 
 		UserService sut = new(context);
-		_ = await sut.CreateUserAsync(username, password);
+		_ = await sut.CreateUserAsync(username, password, default);
 
 		//Act
-		string token = await sut.Login(username, password);
+		string token = await sut.LoginAsync(username, password, default);
 		//Assert
 		_ = token.Should().NotBeNullOrWhiteSpace();
 
@@ -59,10 +59,10 @@ public class UserServiceTest
 		_ = await context.Database.EnsureCreatedAsync();
 
 		UserService sut = new(context);
-		_ = await sut.CreateUserAsync(username, password);
+		_ = await sut.CreateUserAsync(username, password, default);
 
 		//Act
-		Func<Task> act = () => sut.CreateUserAsync(username, password);
+		Func<Task> act = () => sut.CreateUserAsync(username, password, default);
 		//Assert
 		_ = await act.Should().ThrowAsync<UserAlreadyExistsException>();
 	}

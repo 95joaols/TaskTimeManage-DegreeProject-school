@@ -14,9 +14,9 @@ public class UserService
 	public async Task<User?> GetUserByPublicIdAsync(Guid publicId) => await context.User.FirstOrDefaultAsync(u => u.PublicId == publicId);
 
 
-	public async Task<User> CreateUserAsync(string username, string password)
+	public async Task<User> CreateUserAsync(string username, string password, CancellationToken cancellationToken)
 	{
-		User? user = await context.User.FirstOrDefaultAsync(u => u.UserName == username);
+		User? user = await context.User.FirstOrDefaultAsync(u => u.UserName == username, cancellationToken);
 		if (user != null)
 		{
 			throw new UserAlreadyExistsException();
@@ -28,8 +28,8 @@ public class UserService
 			string salt = Cryptography.CreatSalt();
 			string hashedPassword = Cryptography.Encrypt(Cryptography.Hash(Cryptography.Encrypt(password, salt), salt), salt);
 			User createdUser = new(username, hashedPassword, salt);
-			_ = await context.User.AddAsync(createdUser);
-			int count = await context.SaveChangesAsync();
+			_ = await context.User.AddAsync(createdUser, cancellationToken);
+			int count = await context.SaveChangesAsync(cancellationToken);
 			return createdUser;
 		}
 		catch (Exception)
@@ -38,7 +38,7 @@ public class UserService
 		}
 	}
 
-	public async Task<string> Login(string username, string password)
+	public async Task<string> LoginAsync(string username, string password, CancellationToken cancellationToken)
 	{
 		if (string.IsNullOrWhiteSpace(username))
 		{
@@ -50,7 +50,7 @@ public class UserService
 			throw new ArgumentException($"'{nameof(password)}' cannot be null or whitespace.", nameof(password));
 		}
 
-		User? user = await context.User.FirstOrDefaultAsync(u => u.UserName == username);
+		User? user = await context.User.FirstOrDefaultAsync(u => u.UserName == username, cancellationToken);
 		if (user == null)
 		{
 			throw new LogInWrongException();

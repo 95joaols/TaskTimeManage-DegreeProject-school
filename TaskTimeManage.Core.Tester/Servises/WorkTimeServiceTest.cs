@@ -21,17 +21,17 @@ public class WorkTimeServiceTest
 
 
 		UserService userServise = new(context);
-		User user = await userServise.CreateUserAsync(username, password);
+		User user = await userServise.CreateUserAsync(username, password, default);
 
 
 		WorkItemService taskServise = new(context);
-		WorkItem task = await taskServise.CreateTaskAsync("name of task", user);
+		WorkItem task = await taskServise.CreateTaskAsync("name of task", user, default);
 		Assert.NotNull(task);
 
 		WorkTimeService sut = new(context);
 
 		//Act
-		WorkTime workTime = await sut.CreateWorkTimeAsync(DateTime.Now, WorkTimeType.Start, task);
+		WorkTime workTime = await sut.CreateWorkTimeAsync(DateTime.Now, WorkTimeType.Start, task, default);
 
 		//Assert
 		_ = workTime.Should().NotBeNull();

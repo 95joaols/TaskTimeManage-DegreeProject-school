@@ -9,11 +9,11 @@ public class WorkItemService
 
 	public WorkItemService(TTMDbContext context) => this.context = context;
 
-	public async Task<WorkItem> CreateTaskAsync(string name, User user)
+	public async Task<WorkItem> CreateTaskAsync(string name, User user, CancellationToken cancellationToken)
 	{
 		WorkItem task = new(name, user);
-		_ = await context.Task.AddAsync(task);
-		_ = await context.SaveChangesAsync();
+		_ = await context.Task.AddAsync(task, cancellationToken);
+		_ = await context.SaveChangesAsync(cancellationToken);
 
 		return task;
 	}

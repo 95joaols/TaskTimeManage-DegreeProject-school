@@ -11,7 +11,7 @@ public class WorkTimeService
 
 	public WorkTimeService(TTMDbContext context) => this.context = context;
 
-	public async Task<WorkTime> CreateWorkTimeAsync(DateTime time, WorkTimeType type, WorkItem task)
+	public async Task<WorkTime> CreateWorkTimeAsync(DateTime time, WorkTimeType type, WorkItem task, CancellationToken cancellationToken)
 	{
 		if (task is null)
 		{
@@ -25,7 +25,7 @@ public class WorkTimeService
 		WorkTime workTime = new(time, type);
 		task.WorkTimes.Add(workTime);
 		_ = context.Task.Update(task);
-		_ = await context.SaveChangesAsync();
+		_ = await context.SaveChangesAsync(cancellationToken);
 
 		return workTime;
 	}

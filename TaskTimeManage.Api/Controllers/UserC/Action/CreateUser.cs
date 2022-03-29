@@ -14,7 +14,7 @@ public partial class UserController
 		{
 			return BadRequest();
 		}
-		User user = await userService.CreateUserAsync(createUserDTO.Name, createUserDTO.Password);
+		User user = await userService.CreateUserAsync(createUserDTO.Name, createUserDTO.Password, cancellationToken);
 
 		if (user is not null && user.Id != 0)
 		{
