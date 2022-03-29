@@ -6,34 +6,31 @@ using TaskTimeManage.Domain.Exceptions;
 
 namespace TaskTimeManage.Core.Servises
 {
-    public class WorkTimeServise
-    {
-        private readonly TTMDbContext context;
+	public class WorkTimeServise
+	{
+		private readonly TTMDbContext context;
 
-        public WorkTimeServise(TTMDbContext context)
-        {
-            this.context = context;
-        }
+		public WorkTimeServise(TTMDbContext context) => this.context = context;
 
-        public async Task<WorkTime> CreateWorkTimeAsync(DateTime time, WorkTimeType type, WorkItem task)
-        {
-            if (task is null)
-            {
-                throw new ArgumentNullException(nameof(task));
-            }
-            if (task.WorkTimes.Where(t => t.Type == WorkTimeType.Start).Count() > task.WorkTimes.Where(t => t.Type == WorkTimeType.End).Count())
-            {
-                throw new TaskAredyStartedException();
-            }
+		public async Task<WorkTime> CreateWorkTimeAsync(DateTime time, WorkTimeType type, WorkItem task)
+		{
+			if (task is null)
+			{
+				throw new ArgumentNullException(nameof(task));
+			}
+			if (task.WorkTimes.Where(t => t.Type == WorkTimeType.Start).Count() > task.WorkTimes.Where(t => t.Type == WorkTimeType.End).Count())
+			{
+				throw new TaskAredyStartedException();
+			}
 
-            WorkTime workTime = new(time, type);
-            task.WorkTimes.Add(workTime);
-            _ = context.Task.Update(task);
-            _ = await context.SaveChangesAsync();
+			WorkTime workTime = new(time, type);
+			task.WorkTimes.Add(workTime);
+			_ = context.Task.Update(task);
+			_ = await context.SaveChangesAsync();
 
-            return workTime;
-        }
-    }
+			return workTime;
+		}
+	}
 
 
 }
