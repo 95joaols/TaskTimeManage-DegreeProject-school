@@ -8,7 +8,7 @@ namespace TaskTimeManage.Api.Controllers.UserC;
 public partial class UserController
 {
 	[HttpPost]
-	public async Task<ActionResult> CreateUserAsync([FromBody] CreateUserDTO createUserDTO, CancellationToken cancellationToken = default)
+	public async Task<ActionResult> CreateUserAsync([FromBody] UserDTO createUserDTO, CancellationToken cancellationToken = default)
 	{
 		if (createUserDTO is null || string.IsNullOrWhiteSpace(createUserDTO.Name) || string.IsNullOrWhiteSpace(createUserDTO.Password))
 		{

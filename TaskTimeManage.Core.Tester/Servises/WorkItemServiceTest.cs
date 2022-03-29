@@ -1,4 +1,6 @@
-﻿using TaskTimeManage.Core.Service;
+﻿using System.Transactions;
+
+using TaskTimeManage.Core.Service;
 
 namespace TaskTimeManage.Core.Servises;
 
@@ -11,6 +13,8 @@ public class WorkItemServiceTest
 	[Fact]
 	public async Task I_can_create_a_new_task()
 	{
+		using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+
 		//Arrange
 		DbContextOptions<TTMDbContext>? option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
 		using TTMDbContext? context = new(option);
@@ -35,6 +39,8 @@ public class WorkItemServiceTest
 	[Fact]
 	public async Task I_Get_All_Task_From_User()
 	{
+		using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+
 		//Arrange
 		DbContextOptions<TTMDbContext>? option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
 		using TTMDbContext? context = new(option);

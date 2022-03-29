@@ -1,6 +1,8 @@
 ﻿
 using Npgsql;
 
+using System.Transactions;
+
 using Xunit.Extensions.AssertExtensions;
 
 namespace TaskTimeManage.Core;
@@ -12,6 +14,8 @@ public class DbTest
 	[Fact]
 	public async Task Test_PostgreSq_Unique_Method_Ok()
 	{
+		using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+
 
 		//SETUP
 		DbContextOptions<TTMDbContext>? option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();

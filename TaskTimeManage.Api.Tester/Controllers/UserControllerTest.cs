@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 using System.Net;
+using System.Transactions;
 
 using TaskTimeManage.Api.Controllers.UserC;
 using TaskTimeManage.Core.Service;
@@ -18,6 +19,8 @@ public class UserControllerTest
 	[Fact]
 	public async Task I_Can_Create_A_New_User()
 	{
+		using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+
 		//Arrange
 		DbContextOptions<TTMDbContext>? option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
 		using TTMDbContext? context = new(option);
@@ -26,7 +29,7 @@ public class UserControllerTest
 
 		UserController sut = new(new UserService(context));
 
-		CreateUserDTO createUserDTO = new(username, password);
+		UserDTO createUserDTO = new(username, password);
 
 		//Act
 		ActionResult actionResult = await sut.CreateUserAsync(createUserDTO);

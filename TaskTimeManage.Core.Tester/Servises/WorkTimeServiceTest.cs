@@ -1,4 +1,6 @@
 ﻿
+using System.Transactions;
+
 using TaskTimeManage.Core.Service;
 using TaskTimeManage.Domain.Enum;
 
@@ -13,6 +15,8 @@ public class WorkTimeServiceTest
 	[Fact]
 	public async Task I_can_create_a_new_WorkTime()
 	{
+		using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+
 		//Arrange
 		DbContextOptions<TTMDbContext>? option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
 		using TTMDbContext? context = new(option);

@@ -1,4 +1,6 @@
 ﻿
+using System.Transactions;
+
 using TaskTimeManage.Core.Service;
 using TaskTimeManage.Domain.Exceptions;
 
@@ -13,6 +15,8 @@ public class UserServiceTest
 	[Fact]
 	public async Task I_Can_Create_A_New_User()
 	{
+		using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+
 		//Arrange
 		DbContextOptions<TTMDbContext>? option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
 		using TTMDbContext? context = new(option);
@@ -32,6 +36,8 @@ public class UserServiceTest
 	[Fact]
 	public async Task I_Can_Login()
 	{
+		using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+
 		//Arrange
 		DbContextOptions<TTMDbContext>? option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
 		using TTMDbContext? context = new(option);
@@ -52,6 +58,8 @@ public class UserServiceTest
 	[Fact]
 	public async Task Error_Create_User_Same_Name()
 	{
+		using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+
 		//Arrange
 		DbContextOptions<TTMDbContext>? option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
 		using TTMDbContext? context = new(option);

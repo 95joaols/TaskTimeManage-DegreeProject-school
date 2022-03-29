@@ -1,7 +1,7 @@
 ﻿namespace TaskTimeManage.Domain.DTO;
-public class CreateUserDTO
+public class UserDTO
 {
-	public CreateUserDTO(string name, string password)
+	public UserDTO(string name, string password)
 	{
 		Name = name;
 		Password = password;
