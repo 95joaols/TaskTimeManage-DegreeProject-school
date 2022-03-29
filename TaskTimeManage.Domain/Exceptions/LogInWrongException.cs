@@ -1,9 +1,8 @@
-﻿namespace TaskTimeManage.Domain.Exceptions
+﻿namespace TaskTimeManage.Domain.Exceptions;
+
+public class LogInWrongException : Exception
 {
-	public class LogInWrongException : Exception
+	public LogInWrongException() : base($"Username or Password is wrong")
 	{
-		public LogInWrongException() : base($"Username or Password is wrong")
-		{
-		}
 	}
 }

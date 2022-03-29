@@ -1,8 +1,7 @@
-﻿namespace TaskTimeManage.Domain.Enum
+﻿namespace TaskTimeManage.Domain.Enum;
+
+public enum WorkTimeType
 {
-	public enum WorkTimeType
-	{
-		Start,
-		End
-	}
+	Start,
+	End
 }
