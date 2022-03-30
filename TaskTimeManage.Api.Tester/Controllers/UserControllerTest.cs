@@ -19,7 +19,7 @@ public class UserControllerTest
 	[Fact]
 	public async Task I_Can_Create_A_New_User()
 	{
-		using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+		using TransactionScope? scope = new(TransactionScopeAsyncFlowOption.Enabled);
 
 		//Arrange
 		DbContextOptions<TTMDbContext>? option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
@@ -34,9 +34,9 @@ public class UserControllerTest
 		//Act
 		ActionResult actionResult = await sut.CreateUserAsync(createUserDTO);
 		//Assert
-		var result = actionResult as CreatedResult;
-		result.Should().NotBeNull();
-		result.StatusCode.Should().Be((int)HttpStatusCode.Created);
+		CreatedResult? result = actionResult as CreatedResult;
+		_ = result.Should().NotBeNull();
+		_ = result.StatusCode.Should().Be((int)HttpStatusCode.Created);
 
 	}
 }

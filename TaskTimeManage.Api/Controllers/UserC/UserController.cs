@@ -8,10 +8,7 @@ namespace TaskTimeManage.Api.Controllers.UserC;
 [ApiController]
 public partial class UserController : ControllerBase
 {
-	readonly UserService userService;
+	private readonly UserService userService;
 
-	public UserController(UserService userService)
-	{
-		this.userService = userService;
-	}
+	public UserController(UserService userService) => this.userService = userService;
 }

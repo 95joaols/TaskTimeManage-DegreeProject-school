@@ -14,7 +14,7 @@ public class DbTest
 	[Fact]
 	public async Task Test_PostgreSq_Unique_Method_Ok()
 	{
-		using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+		using TransactionScope? scope = new(TransactionScopeAsyncFlowOption.Enabled);
 
 
 		//SETUP

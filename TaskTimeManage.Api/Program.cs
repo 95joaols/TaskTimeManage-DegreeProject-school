@@ -1,7 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 
-using System.Configuration;
-
 using TaskTimeManage.Api.Middleware;
 using TaskTimeManage.Domain.Context;
 

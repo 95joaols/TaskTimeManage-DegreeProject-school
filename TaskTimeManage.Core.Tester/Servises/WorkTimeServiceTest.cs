@@ -15,7 +15,7 @@ public class WorkTimeServiceTest
 	[Fact]
 	public async Task I_can_create_a_new_WorkTime()
 	{
-		using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+		using TransactionScope? scope = new(TransactionScopeAsyncFlowOption.Enabled);
 
 		//Arrange
 		DbContextOptions<TTMDbContext>? option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();

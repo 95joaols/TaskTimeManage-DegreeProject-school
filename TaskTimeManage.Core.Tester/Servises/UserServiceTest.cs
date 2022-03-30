@@ -15,7 +15,7 @@ public class UserServiceTest
 	[Fact]
 	public async Task I_Can_Create_A_New_User()
 	{
-		using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+		using TransactionScope? scope = new(TransactionScopeAsyncFlowOption.Enabled);
 
 		//Arrange
 		DbContextOptions<TTMDbContext>? option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
@@ -36,7 +36,7 @@ public class UserServiceTest
 	[Fact]
 	public async Task I_Can_Login()
 	{
-		using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+		using TransactionScope? scope = new(TransactionScopeAsyncFlowOption.Enabled);
 
 		//Arrange
 		DbContextOptions<TTMDbContext>? option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
@@ -58,7 +58,7 @@ public class UserServiceTest
 	[Fact]
 	public async Task Error_Create_User_Same_Name()
 	{
-		using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+		using TransactionScope? scope = new(TransactionScopeAsyncFlowOption.Enabled);
 
 		//Arrange
 		DbContextOptions<TTMDbContext>? option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
