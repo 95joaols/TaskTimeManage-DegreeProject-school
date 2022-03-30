@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  tasktimemanage.api:
+    image: ${DOCKER_REGISTRY-}tasktimemanageapi
+    container_name: Tasktimemanage.api
+    build:
+      context: .
+      dockerfile: TaskTimeManage.Api/Dockerfile
+    ports:
+      - '5001:443'
+
+  tasktimemanage.postgres-service:
+    image: postgres:latest
+    container_name: Tasktimemanage.postgres-service
+    restart: always
+    environment:
+      - POSTGRES_DB=Tasktimemanage
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=fdGKhtr6dGJKG6byd5rFKuKJHGyvtfuhb6dFJKcr6utvygbhh76fu
+    ports:
+      - '5000:5432'
+    volumes: 
+      - db:/var/lib/postgresql/data
+volumes:
+  db:
+    driver: local

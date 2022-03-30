@@ -20,7 +20,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskTimeManage.Api", "TaskTimeManage.Api\TaskTimeManage.Api.csproj", "{732510C1-BC63-4A8B-AA1E-FCA2690E31FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTimeManage.Api.UnitTester", "TaskTimeManage.Api.Tester\TaskTimeManage.Api.UnitTester.csproj", "{F71ECBBD-ED49-4542-904D-197400EF2E93}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskTimeManage.Api.UnitTester", "TaskTimeManage.Api.Tester\TaskTimeManage.Api.UnitTester.csproj", "{F71ECBBD-ED49-4542-904D-197400EF2E93}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{284638DC-2E71-4816-ACF4-2F67AB85B675}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +50,10 @@ Global
 		{F71ECBBD-ED49-4542-904D-197400EF2E93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F71ECBBD-ED49-4542-904D-197400EF2E93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F71ECBBD-ED49-4542-904D-197400EF2E93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{284638DC-2E71-4816-ACF4-2F67AB85B675}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{284638DC-2E71-4816-ACF4-2F67AB85B675}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{284638DC-2E71-4816-ACF4-2F67AB85B675}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{284638DC-2E71-4816-ACF4-2F67AB85B675}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
