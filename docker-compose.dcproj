@@ -2,11 +2,11 @@
 <Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
-    <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>284638dc-2e71-4816-acf4-2f67ab85b675</ProjectGuid>
+    <DockerTargetOS>linux</DockerTargetOS>
+    <ProjectGuid>173cd943-105d-4797-a3ab-0b7302bd6e8b</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
-    <DockerServiceName>tasktimemanage.api</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">
