@@ -2,7 +2,7 @@
 
 using TaskTimeManage.Core.Service;
 
-namespace TaskTimeManage.Api.Controllers.UserC;
+namespace TaskTimeManage.Api.Controllers.UserController;
 
 [Route("api/[controller]")]
 [ApiController]

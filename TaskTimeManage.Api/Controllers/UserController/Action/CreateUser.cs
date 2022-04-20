@@ -3,7 +3,7 @@
 using TaskTimeManage.Domain.DTO;
 using TaskTimeManage.Domain.Entity;
 
-namespace TaskTimeManage.Api.Controllers.UserC;
+namespace TaskTimeManage.Api.Controllers.UserController;
 
 public partial class UserController
 {
