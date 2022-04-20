@@ -8,6 +8,8 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["TaskTimeManage.Api/TaskTimeManage.Api.csproj", "TaskTimeManage.Api/"]
+COPY ["TaskTimeManage.Core/TaskTimeManage.Core.csproj", "TaskTimeManage.Core/"]
+COPY ["TaskTimeManage.Domain/TaskTimeManage.Domain.csproj", "TaskTimeManage.Domain/"]
 RUN dotnet restore "TaskTimeManage.Api/TaskTimeManage.Api.csproj"
 COPY . .
 WORKDIR "/src/TaskTimeManage.Api"
