@@ -16,7 +16,7 @@ services:
       - tasktimemanage.db
 
   app:
-    image: app
+    image: tasktimemanageapp
     container_name: tasktimemanage.app
     restart: on-failure
     build:
