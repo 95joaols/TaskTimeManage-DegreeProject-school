@@ -7,6 +7,8 @@
   </PropertyGroup>
   <PropertyGroup>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
+    <DockerServiceName>api</DockerServiceName>
+    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">
