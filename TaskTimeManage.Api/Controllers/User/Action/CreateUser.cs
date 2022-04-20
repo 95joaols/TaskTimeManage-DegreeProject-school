@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 using TaskTimeManage.Domain.DTO;
-using TaskTimeManage.Domain.Entity;
 
-namespace TaskTimeManage.Api.Controllers.UserController;
+namespace TaskTimeManage.Api.Controllers.User;
 
 public partial class UserController
 {
@@ -14,7 +13,7 @@ public partial class UserController
 		{
 			return BadRequest();
 		}
-		User user = await userService.CreateUserAsync(createUserDTO.Name, createUserDTO.Password, cancellationToken);
+		Domain.Entity.User user = await userService.CreateUserAsync(createUserDTO.Name, createUserDTO.Password, cancellationToken);
 
 		if (user is not null && user.Id != 0)
 		{

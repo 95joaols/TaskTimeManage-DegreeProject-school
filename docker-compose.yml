@@ -1,6 +1,18 @@
 version: '3.8'
 
 services:
+  proxy:
+    image: tasktimemanageproxy
+    container_name: tasktimemanage.proxy
+    build:
+      context: ./TaskTimeManage.Proxy
+      dockerfile: Dockerfile
+    ports:
+      - 8080:80
+    networks:
+      - front-tier
+      - back-tier
+
   api:
     image: tasktimemanageapi
     container_name: Tasktimemanage.api
@@ -8,7 +20,7 @@ services:
       context: .
       dockerfile: TaskTimeManage.Api/Dockerfile
     ports:
-      - '5001:443'
+      - 433:433
     networks:
       - back-tier
       - db-tier
@@ -35,7 +47,7 @@ services:
       
   db:
     image: postgres:latest
-    container_name: db
+    container_name: tasktimemanage.db
     restart: always
     environment:
       - POSTGRES_DB=Tasktimemanage
