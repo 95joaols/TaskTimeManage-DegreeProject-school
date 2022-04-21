@@ -9,6 +9,11 @@ namespace TaskTimeManage.Api.Controllers.User;
 public partial class UserController : ControllerBase
 {
 	private readonly UserService userService;
+	private readonly IConfiguration configuration;
 
-	public UserController(UserService userService) => this.userService = userService;
+	public UserController(UserService userService, IConfiguration configuration)
+	{
+		this.userService = userService;
+		this.configuration = configuration;
+	}
 }

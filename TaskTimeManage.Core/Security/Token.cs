@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -9,26 +10,23 @@ namespace TaskTimeManage.Core.Security;
 
 public class Token
 {
-	private const string Secret = "GCuwl/Jf8ob5vNDTSsrorORpr81X5FV818rnsvhRfK1KqJ/xobg6M9VCxjVyGGbxnO0LwsI5IjLrbogshFVXTg==";
-
-	public static string GenerateToken(User user, int expireMinutes = 540)
+	public static string GenerateToken(User user, string tokenkey)
 	{
-		byte[]? symmetricKey = Convert.FromBase64String(Secret);
+		var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
+								tokenkey));
 		JwtSecurityTokenHandler? tokenHandler = new();
 
 		DateTime now = DateTime.UtcNow;
 		SecurityTokenDescriptor? tokenDescriptor = new() {
 			Subject = new ClaimsIdentity(new[]
 				{
-									new Claim("PublicId",user.PublicId.ToString()),
+									new Claim(ClaimTypes.NameIdentifier ,user.PublicId.ToString()),
 									new Claim(ClaimTypes.Name, user.UserName)
 							}),
 
-			Expires = now.AddMinutes(Convert.ToInt32(expireMinutes)),
+			Expires = DateTime.Now.AddDays(1),
 
-			SigningCredentials = new SigningCredentials(
-						new SymmetricSecurityKey(symmetricKey),
-						SecurityAlgorithms.HmacSha256Signature)
+			SigningCredentials = new SigningCredentials(key,SecurityAlgorithms.HmacSha256Signature)
 		};
 
 		SecurityToken? stoken = tokenHandler.CreateToken(tokenDescriptor);

@@ -38,7 +38,7 @@ public class UserService
 		}
 	}
 
-	public async Task<string> LoginAsync(string username, string password, CancellationToken cancellationToken)
+	public async Task<string> LoginAsync(string username, string password,string tokenKey, CancellationToken cancellationToken)
 	{
 		if (string.IsNullOrWhiteSpace(username))
 		{
@@ -62,6 +62,6 @@ public class UserService
 			throw new LogInWrongException();
 		}
 
-		return Token.GenerateToken(user);
+		return Token.GenerateToken(user,tokenKey);
 	}
 }

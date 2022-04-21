@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 using TaskTimeManage.Domain.DTO;
 
@@ -6,7 +7,8 @@ namespace TaskTimeManage.Api.Controllers.User;
 
 public partial class UserController
 {
-	[HttpPost]
+	[HttpPost("CreateUser")]
+	[AllowAnonymous]
 	public async Task<ActionResult> CreateUserAsync([FromBody] UserDTO createUserDTO, CancellationToken cancellationToken = default)
 	{
 		if (createUserDTO is null || string.IsNullOrWhiteSpace(createUserDTO.Name) || string.IsNullOrWhiteSpace(createUserDTO.Password))
