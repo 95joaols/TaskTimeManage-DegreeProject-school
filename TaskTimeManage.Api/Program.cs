@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TaskTimeManage.Api.Middleware;
 using TaskTimeManage.Domain.Context;
 
-WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
@@ -15,15 +15,15 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCoreService();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<TTMDbContext>(option => option.UseNpgsql(connectionString));
+builder.Services.AddDbContext<TTMDbContext>(option => option.UseNpgsql(connectionString,x => x.MigrationsAssembly("TaskTimeManage.Migrations")));
 
-WebApplication? app = builder.Build();
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-	_ = app.UseSwagger();
-	_ = app.UseSwaggerUI();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

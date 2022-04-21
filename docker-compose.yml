@@ -1,18 +1,7 @@
 version: '3.8'
 
 services:
-  proxy:
-    image: tasktimemanageproxy
-    container_name: tasktimemanage.proxy
-    build:
-      context: ./TaskTimeManage.Proxy
-      dockerfile: Dockerfile
-    ports:
-      - 8080:80
-    networks:
-      - front-tier
-      - back-tier
-
+  
   api:
     image: tasktimemanageapi
     container_name: Tasktimemanage.api
@@ -20,12 +9,12 @@ services:
       context: .
       dockerfile: TaskTimeManage.Api/Dockerfile
     ports:
-      - 433:433
+      - 51337:433
     networks:
       - back-tier
       - db-tier
     depends_on:
-      - tasktimemanage.db
+      - db
 
   app:
     image: tasktimemanageapp
@@ -43,7 +32,7 @@ services:
       - ./TaskTimeManage.app:/app
     command: npm start
     depends_on:
-      - tasktimemanage.api
+      - api
       
   db:
     image: postgres:latest
