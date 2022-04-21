@@ -17,7 +17,15 @@ builder.Services.AddCoreService();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<TTMDbContext>(option => option.UseNpgsql(connectionString,x => x.MigrationsAssembly("TaskTimeManage.Migrations")));
 
+
 var app = builder.Build();
+
+// migrate any database changes on startup (includes initial db creation)
+using (var scope = app.Services.CreateScope())
+{
+	var dataContext = scope.ServiceProvider.GetRequiredService<TTMDbContext>();
+	dataContext.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

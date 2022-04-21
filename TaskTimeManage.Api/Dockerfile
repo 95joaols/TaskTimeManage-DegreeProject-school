@@ -10,6 +10,7 @@ WORKDIR /src
 COPY ["TaskTimeManage.Api/TaskTimeManage.Api.csproj", "TaskTimeManage.Api/"]
 COPY ["TaskTimeManage.Core/TaskTimeManage.Core.csproj", "TaskTimeManage.Core/"]
 COPY ["TaskTimeManage.Domain/TaskTimeManage.Domain.csproj", "TaskTimeManage.Domain/"]
+COPY ["TaskTimeManage.Migrations/TaskTimeManage.Migrations.csproj", "TaskTimeManage.Migrations/"]
 RUN dotnet restore "TaskTimeManage.Api/TaskTimeManage.Api.csproj"
 COPY . .
 WORKDIR "/src/TaskTimeManage.Api"

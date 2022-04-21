@@ -14,7 +14,7 @@ services:
       - back-tier
       - db-tier
     depends_on:
-      - db
+      - postgres-db
 
   app:
     image: tasktimemanageapp
@@ -34,7 +34,7 @@ services:
     depends_on:
       - api
       
-  db:
+  postgres-db:
     image: postgres:latest
     container_name: tasktimemanage.db
     restart: always
