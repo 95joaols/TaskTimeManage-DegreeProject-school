@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.Extensions.Configuration;
 using System.Net;
 using System.Transactions;
 
@@ -22,12 +22,20 @@ public class UserControllerTest
 		using TransactionScope? scope = new(TransactionScopeAsyncFlowOption.Enabled);
 
 		//Arrange
+		var inMemorySettings = new Dictionary<string, string> {
+		{"AppSettings:Token", "GCuwl/Jf8ob5vNDTSsrorORpr81X5FV818rnsvhRfK1KqJ/xobg6M9VCxjVyGGbxnO0LwsI5IjLrbogshFVXTg=="}
+		};
+
+		IConfiguration configuration = new ConfigurationBuilder()
+				.AddInMemoryCollection(initialData: inMemorySettings)
+				.Build();
+
 		DbContextOptions<TTMDbContext>? option = this.CreatePostgreSqlUniqueMethodOptions<TTMDbContext>();
 		using TTMDbContext? context = new(option);
 		_ = await context.Database.EnsureDeletedAsync();
 		_ = await context.Database.EnsureCreatedAsync();
 
-		UserController sut = new(new UserService(context));
+		UserController sut = new(new UserService(context), configuration);
 
 		UserDTO createUserDTO = new(username, password);
 

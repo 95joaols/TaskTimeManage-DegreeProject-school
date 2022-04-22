@@ -48,7 +48,7 @@ public class UserServiceTest
 		_ = await sut.CreateUserAsync(username, password, default);
 
 		//Act
-		string token = await sut.LoginAsync(username, password, default);
+		string token = await sut.LoginAsync(username, password,"hgfhghgfghgf", default);
 		//Assert
 		_ = token.Should().NotBeNullOrWhiteSpace();
 
