@@ -1,26 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+import Error404 from "./pages/Error404/Error404";
+import Home from "./pages/Home/Home";
+import Login from "./pages/Signin/Login";
+import Signup from "./pages/Signup/Signup";
+const App = () => {
+  const token = localStorage.getItem("token");
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={token ? <Home /> : <Navigate to="/signin" />}
+        />
+
+        <Route
+          path="/Login"
+          element={!token ? <Login /> : <Navigate to="/" />}
+        />
+
+        <Route
+          path="/CreateUser"
+          element={!token ? <Signup /> : <Navigate to="/" />}
+        />
+        <Route path="*" element={<Error404 />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
