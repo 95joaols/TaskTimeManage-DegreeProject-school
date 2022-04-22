@@ -8,17 +8,10 @@ function Routing() {
     return (
         <Router>
         <Routes>
-            <Route exact path="/">
-              <Home />
-            </Route>
-            <Route path="/about">
-            </Route>
-            <Route path="/:user">
-              <User />
-            </Route>
-            <Route>
-              <NoMatch />
-            </Route>
+            <Route exact path="/login" component={Login} />
+            <PrivateRoute path="/">
+              <Hooray />
+            </PrivateRoute>
           </Routes>
         </Router>
   
