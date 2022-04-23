@@ -2,14 +2,16 @@ import { Flex, Grid, Heading, Stack, Text } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { InputControl, SubmitButton } from "formik-chakra-ui";
+import jwt from "jwt-decode";
+import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import * as Yup from 'yup';
 import { useLoginMutation } from "../../store/api/authApi";
 import { useAppDispatch } from "../../store/hook";
 import { setUser } from "../../store/state/authSlice";
-import jwt from "jwt-decode";
 import { UserToken } from "../../Types/UserToken";
-import { useEffect } from "react";
+
 
 const Login = () => {
   const dispatch = useAppDispatch();
@@ -20,9 +22,13 @@ const Login = () => {
   useEffect(() => {
   
     console.log(token);
-    if (isError) {
+    if (isError && error) {
+      console.log(error);
+      console.log((error as any).data);
+      console.log(JSON.parse((error as any).data));
+
       toast({
-        title: (error as any).data.message,
+        title: JSON.parse((error as any).data).title,
         status: "error",
         duration: 5000,
       });
@@ -37,11 +43,12 @@ const Login = () => {
       localStorage.setItem("token", token);
       navigate("/");
       }
-  }, [error, token])
+  }, [error, token, dispatch])
 
   return (
     <Formik
       initialValues={{ name: "", password: "" }}
+      validationSchema={LoginSchema}
       onSubmit={(values) => {
         Login({ ...values });
       }}
@@ -55,7 +62,7 @@ const Login = () => {
               fontSize="lg"
               fontWeight="semibold"
             >
-              Signin
+              Login
             </Heading>
             <InputControl
               name="name"
@@ -85,5 +92,12 @@ const Login = () => {
     </Formik>
   );
 };
+
+const LoginSchema = Yup.object().shape({
+  name: Yup.string()
+    .required('Required'),
+    password: Yup.string()
+    .required('Required'),
+});
 
 export default Login;

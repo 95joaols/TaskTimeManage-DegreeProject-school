@@ -24,6 +24,11 @@ export const authApi = createApi({
           url: "/CreateUser",
           method: "post",
           body,
+          responseHandler: (response) => {
+            console.log("response", response);
+
+            return response.json();
+          },
         };
       },
     }),

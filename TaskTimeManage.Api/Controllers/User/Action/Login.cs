@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 using TaskTimeManage.Domain.DTO;
+using TaskTimeManage.Domain.Exceptions;
 
 namespace TaskTimeManage.Api.Controllers.User;
 
@@ -15,7 +16,21 @@ public partial class UserController
 		{
 			return BadRequest();
 		}
-		string token = await userService.LoginAsync(LoginUserDTO.Name, LoginUserDTO.Password, configuration.GetSection("AppSettings:Token").Value, cancellationToken);
+		string token = "";
+		try
+		{
+			token = await userService.LoginAsync(LoginUserDTO.Name, LoginUserDTO.Password, configuration.GetSection("AppSettings:Token").Value, cancellationToken);
+
+		}
+		catch (LogInWrongException e)
+		{
+			return Problem(title: e.Message, detail: e.Message, statusCode: 400);;
+		}
+		catch (Exception e)
+		{
+
+			return Problem(detail: e.Message, statusCode: 500);
+		}
 
 		if (!string.IsNullOrWhiteSpace(token))
 		{
