@@ -10,8 +10,8 @@ const Home = () => {
   const dispatch = useDispatch();
   const signout = () => {
     localStorage.removeItem("token");
-    navigate("/signin");
     dispatch(defaultState());
+    navigate("/login");
   };
 
   return (

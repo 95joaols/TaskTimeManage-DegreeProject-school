@@ -1,21 +1,25 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { userDto } from "../../Types/UserDto";
 
 // Define a service using a base URL and expected endpoints
 export const authApi = createApi({
   reducerPath: "authApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "https://TTMapi:1337/api/user" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "https://localhost:1337/api/user" }),
   endpoints: (builder) => ({
-    login: builder.mutation({
-      query: (body: { name: string; password: string }) => {
+    login: builder.mutation<string, userDto>({
+      query: (body) => {
         return {
           url: "/Login",
           method: "post",
           body,
+          responseHandler: (response) => {
+            return response.text();
+          },
         };
       },
     }),
-    createUser: builder.mutation({
-      query: (body: { name: string; password: string }) => {
+    createUser: builder.mutation<boolean, userDto>({
+      query: (body) => {
         return {
           url: "/CreateUser",
           method: "post",

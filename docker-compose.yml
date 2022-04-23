@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   
-  TTMapi:
+  backend:
     image: tasktimemanageapi
     container_name: Tasktimemanage.api
     build:
@@ -10,29 +10,25 @@ services:
       dockerfile: TaskTimeManage.Api/Dockerfile
     ports:
       - 1337:1337
-    networks:
-      - back-tier
-      - db-tier
     depends_on:
       - postgres-db
+    networks:
+      - TTM  
 
-  TTMapp:
+  frontend:
     image: tasktimemanageapp
     container_name: tasktimemanage.app
     restart: on-failure
     build:
       context: ./TaskTimeManage.app
     ports:
-      - 3000:3000
-    networks:
-      - front-tier
-      - back-tier
+      - 666:3000
     stdin_open: true
     volumes:
       - ./TaskTimeManage.app:/app
     command: npm start
-    depends_on:
-      - TTMapi
+    networks:
+      - TTM  
       
   postgres-db:
     image: postgres:latest
@@ -45,13 +41,11 @@ services:
     volumes: 
       - db:/var/lib/postgresql/data
     networks:
-      - db-tier
+      - TTM  
+
+networks:
+  TTM:
+    driver: bridge
 volumes:
   db:
     driver: local 
- 
-networks:
-  # The presence of these objects is sufficient to define them
-  front-tier: {}
-  back-tier: {}
-  db-tier: {}

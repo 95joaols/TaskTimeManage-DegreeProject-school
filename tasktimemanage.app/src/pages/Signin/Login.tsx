@@ -7,28 +7,37 @@ import { Link } from "react-router-dom";
 import { useLoginMutation } from "../../store/api/authApi";
 import { useAppDispatch } from "../../store/hook";
 import { setUser } from "../../store/state/authSlice";
+import jwt from "jwt-decode";
+import { UserToken } from "../../Types/UserToken";
+import { useEffect } from "react";
 
 const Login = () => {
   const dispatch = useAppDispatch();
   const toast = useToast();
   const navigate = useNavigate();
-  const [Login, { data, isLoading, error, isError, isSuccess }] =
-    useLoginMutation();
-  console.log(data);
-  if (isError) {
-    toast({
-      title: (error as any).data.message,
-      status: "error",
-      duration: 5000,
-    });
-  }
-  if (isSuccess) {
-    dispatch(setUser({ token: data.token, name: data.name }));
-    navigate("/");
-    localStorage.setItem("token", data.token);
-  }
+  const [Login, { data: token, isLoading, error, isError, isSuccess }] = useLoginMutation();
 
-  console.log(error);
+  useEffect(() => {
+  
+    console.log(token);
+    if (isError) {
+      toast({
+        title: (error as any).data.message,
+        status: "error",
+        duration: 5000,
+      });
+    }
+    if (isSuccess && token) {
+      const user: UserToken = jwt(token);
+
+      dispatch(setUser({ token: token, name: user.unique_name, id: user.nameid }));
+
+      console.log("test");
+      
+      localStorage.setItem("token", token);
+      navigate("/");
+      }
+  }, [error, token])
 
   return (
     <Formik
@@ -50,10 +59,10 @@ const Login = () => {
             </Heading>
             <InputControl
               name="name"
-              label="name"
+              label="User name"
               inputProps={{
                 type: "text",
-                placeholder: "Enter Name...",
+                placeholder: "Enter Username...",
               }}
             />
             <InputControl
@@ -65,8 +74,8 @@ const Login = () => {
               }}
             />
             <Flex justify="flex-end">
-              <Text as={Link} to="/forgot-password" color="teal">
-                Forgot Password
+              <Text as={Link} to="/Signup" color="teal">
+              Signup
               </Text>
             </Flex>
             <SubmitButton isLoading={isLoading}>Signin</SubmitButton>
