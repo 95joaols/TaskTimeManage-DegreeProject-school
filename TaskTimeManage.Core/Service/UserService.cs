@@ -50,7 +50,7 @@ public class UserService
 			throw new ArgumentException($"'{nameof(password)}' cannot be null or whitespace.", nameof(password));
 		}
 
-		User? user = await context.User.FirstOrDefaultAsync(u => u.UserName == username, cancellationToken);
+		User? user = await context.User.FirstOrDefaultAsync(u => u.UserName.ToLower() == username.ToLower(), cancellationToken);
 		if (user == null)
 		{
 			throw new LogInWrongException();
