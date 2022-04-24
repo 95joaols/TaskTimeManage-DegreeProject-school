@@ -11,7 +11,7 @@ public class UserService
 {
 	private readonly TTMDbContext context;
 	public UserService(TTMDbContext context) => this.context = context;
-	public async Task<User?> GetUserByPublicIdAsync(Guid publicId) => await context.User.FirstOrDefaultAsync(u => u.PublicId == publicId);
+	public async Task<User?> GetUserByPublicIdAsync(Guid publicId) => await context.User.Include(u => u.Tasks).FirstOrDefaultAsync(u => u.PublicId == publicId);
 
 
 	public async Task<User> CreateUserAsync(string username, string password, CancellationToken cancellationToken)
@@ -38,7 +38,7 @@ public class UserService
 		}
 	}
 
-	public async Task<string> LoginAsync(string username, string password,string tokenKey, CancellationToken cancellationToken)
+	public async Task<string> LoginAsync(string username, string password, string tokenKey, CancellationToken cancellationToken)
 	{
 		if (string.IsNullOrWhiteSpace(username))
 		{
@@ -62,6 +62,6 @@ public class UserService
 			throw new LogInWrongException();
 		}
 
-		return Token.GenerateToken(user,tokenKey);
+		return Token.GenerateToken(user, tokenKey);
 	}
 }

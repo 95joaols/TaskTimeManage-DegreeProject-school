@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 using TaskTimeManage.Core.Service;
 
@@ -14,7 +13,7 @@ public partial class WorkItemController : ControllerBase
 	private readonly WorkItemService workItemService;
 	private readonly IConfiguration configuration;
 
-	public WorkItemController(WorkItemService workItemService,UserService userService, IConfiguration configuration)
+	public WorkItemController(WorkItemService workItemService, UserService userService, IConfiguration configuration)
 	{
 		this.workItemService = workItemService;
 		this.configuration = configuration;

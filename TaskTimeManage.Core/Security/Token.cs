@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -12,11 +11,11 @@ public class Token
 {
 	public static string GenerateToken(User user, string tokenkey)
 	{
-		var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
+		SymmetricSecurityKey? key = new(System.Text.Encoding.UTF8.GetBytes(
 								tokenkey));
 		JwtSecurityTokenHandler? tokenHandler = new();
 
-		DateTime now = DateTime.UtcNow;
+		_ = DateTime.UtcNow;
 		SecurityTokenDescriptor? tokenDescriptor = new() {
 			Subject = new ClaimsIdentity(new[]
 				{
@@ -26,7 +25,7 @@ public class Token
 
 			Expires = DateTime.Now.AddDays(1),
 
-			SigningCredentials = new SigningCredentials(key,SecurityAlgorithms.HmacSha256Signature)
+			SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature)
 		};
 
 		SecurityToken? stoken = tokenHandler.CreateToken(tokenDescriptor);

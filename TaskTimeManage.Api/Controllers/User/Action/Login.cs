@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using TaskTimeManage.Domain.DTO;
+using TaskTimeManage.Domain.Dto;
 using TaskTimeManage.Domain.Exceptions;
 
 namespace TaskTimeManage.Api.Controllers.User;
@@ -10,13 +10,13 @@ public partial class UserController
 {
 	[HttpPost("Login")]
 	[AllowAnonymous]
-	public async Task<ActionResult<string>> Login([FromBody] UserDTO LoginUserDTO, CancellationToken cancellationToken = default)
+	public async Task<ActionResult<string>> Login([FromBody] UserDto LoginUserDTO, CancellationToken cancellationToken = default)
 	{
 		if (LoginUserDTO is null || string.IsNullOrWhiteSpace(LoginUserDTO.Name) || string.IsNullOrWhiteSpace(LoginUserDTO.Password))
 		{
 			return BadRequest();
 		}
-		string token = "";
+		string token;
 		try
 		{
 			token = await userService.LoginAsync(LoginUserDTO.Name, LoginUserDTO.Password, configuration.GetSection("AppSettings:Token").Value, cancellationToken);
@@ -24,7 +24,8 @@ public partial class UserController
 		}
 		catch (LogInWrongException e)
 		{
-			return Problem(title: e.Message, detail: e.Message, statusCode: 400);;
+			return Problem(title: e.Message, detail: e.Message, statusCode: 400);
+			;
 		}
 		catch (Exception e)
 		{

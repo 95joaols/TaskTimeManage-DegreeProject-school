@@ -1,6 +1,5 @@
 export interface WorkItem {
-    id: number;
-    publicId: string;
+    publicId?: string;
     name: string;
-    userId: number;
+    userId: string;
 }

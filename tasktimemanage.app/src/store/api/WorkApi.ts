@@ -19,16 +19,24 @@ export const workApi = createApi({
     endpoints: (builder) => ({
         getWorkItemForUser: builder.query<WorkItem[], string>({
             query: (body) => ({
-                url: "/WorkItem/getWorkItemForUser/" + body,
+                url: "WorkItem/getWorkItemForUser/" + body,
                 method: "GET",
 
             })
         }),
+        CreateWorkItem: builder.mutation<WorkItem, WorkItem>({
+            query: (body) => ({
+                url: "WorkItem",
+                method: "POST",
+                body: body,
+            })
+        })
     }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
 export const {
-    useGetWorkItemForUserQuery
+    useGetWorkItemForUserQuery,
+    useCreateWorkItemMutation
 } = workApi;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using TaskTimeManage.Domain.DTO;
+using TaskTimeManage.Domain.Dto;
 using TaskTimeManage.Domain.Exceptions;
 
 namespace TaskTimeManage.Api.Controllers.User;
@@ -10,7 +10,7 @@ public partial class UserController
 {
 	[HttpPost("CreateUser")]
 	[AllowAnonymous]
-	public async Task<ActionResult> CreateUserAsync([FromBody] UserDTO createUserDTO, CancellationToken cancellationToken = default)
+	public async Task<ActionResult> CreateUserAsync([FromBody] UserDto createUserDTO, CancellationToken cancellationToken = default)
 	{
 		if (createUserDTO is null || string.IsNullOrWhiteSpace(createUserDTO.Name) || string.IsNullOrWhiteSpace(createUserDTO.Password))
 		{
@@ -25,7 +25,7 @@ public partial class UserController
 		catch (UserAlreadyExistsException e)
 		{
 			return Problem(title: e.Message, detail: e.Message, statusCode: 400);
-			
+
 		}
 		catch (Exception e)
 		{
