@@ -39,7 +39,6 @@
       "react-app/jest"
     ]
   },
-  "proxy": "https://TTMapi:1337",
   "browserslist": {
     "production": [
       ">0.2%",

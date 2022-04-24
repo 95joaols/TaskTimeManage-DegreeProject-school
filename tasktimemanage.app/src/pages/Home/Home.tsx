@@ -1,13 +1,18 @@
-import { Flex } from "@chakra-ui/react";
-import { Box, Center } from "@chakra-ui/layout";
-
+import { Box, Button, Flex } from "@chakra-ui/react";
 import UserInfo from "../../components/UserInfo";
+import WorkItemMenu from "../../components/WorkItemMenu";
+
+
+const OpenAddWorkItemModel = () => { };
 
 const Home = () => {
   return (
-    <Flex>
-      <UserInfo />
-    </Flex>
+      <Flex>
+        <Flex direction={"column"}>
+          <UserInfo />
+          <WorkItemMenu AddWorkItemPress={OpenAddWorkItemModel}/>
+        </Flex>
+      </Flex>
   );
 };
 

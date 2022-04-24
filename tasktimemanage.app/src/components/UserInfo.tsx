@@ -18,9 +18,9 @@ function UserInfo() {
     return (
         <Box>
             <Stack p="4" boxShadow="xl" borderRadius="md">
-            <Heading as='h1' size='md'>Task Time Manage</Heading>
-            <Text fontSize='md'>User: {user.name}</Text>
-            <Box as="button" borderRadius='md' bg='tomato' color='white'  onClick={signout}>Signout</Box>
+                <Heading as='h1' size='md'>Task Time Manage</Heading>
+                <Text fontSize='md'>User: {user.name}</Text>
+                <Box as="button" borderRadius='md' bg='tomato' color='white'  onClick={signout}>Signout</Box>
             </Stack>
         </Box>
     )
