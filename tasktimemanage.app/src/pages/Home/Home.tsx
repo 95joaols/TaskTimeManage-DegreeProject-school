@@ -1,24 +1,13 @@
-import { Button } from "@chakra-ui/button";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
-import { useAppSelector } from "../../store/hook";
-import { defaultState } from "../../store/state/authSlice";
+import { Flex } from "@chakra-ui/react";
+import { Box, Center } from "@chakra-ui/layout";
+
+import UserInfo from "../../components/UserInfo";
 
 const Home = () => {
-  const { name } = useAppSelector((state) => state.auth);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const signout = () => {
-    localStorage.removeItem("token");
-    dispatch(defaultState());
-    navigate("/login");
-  };
-
   return (
-    <div>
-      User Name - {name}
-      <Button onClick={signout}>Signout</Button>
-    </div>
+    <Flex>
+      <UserInfo />
+    </Flex>
   );
 };
 
