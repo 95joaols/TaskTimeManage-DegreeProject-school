@@ -7,6 +7,7 @@ export const workApi = createApi({
     reducerPath: "workApi",
     baseQuery: fetchBaseQuery({
         baseUrl: "https://localhost:1337/api/",
+
         prepareHeaders: (headers, { getState }) => {
             // By default, if we have a token in the store, let's use that for authenticated requests
             const token = (getState() as RootState).auth.token;
