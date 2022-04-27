@@ -1,13 +1,16 @@
 import { useGetWorkItemForUserQuery } from "../store/api/WorkApi";
 import { useAppSelector } from "../store/hook";
 import { selectLoginUser } from "../store/state/authSlice";
-import { Text, Box, Stack, Stack } from '@chakra-ui/react'
+import { Text, Box, Stack, Button } from '@chakra-ui/react'
+import WorkItemBox from "./WorkItemBox";
 
 type Props = {
+    activeWorkItem: string | undefined
     AddWorkItemPress: () => void;
+    onWorkItemPress: (id:string) => void;
 };
 
-function WorkItemMenu({ AddWorkItemPress}:Props) {
+function WorkItemMenu({ AddWorkItemPress,onWorkItemPress,activeWorkItem}:Props) {
     const user = useAppSelector(selectLoginUser);
     const {
         data: WorkItemList,
@@ -17,12 +20,12 @@ function WorkItemMenu({ AddWorkItemPress}:Props) {
     return (
         <Box>
             <Stack p="4" boxShadow="xl" borderRadius="md">
-            <Box as="button" borderRadius='md' mt={2} bg='purple' color='white'  onClick={AddWorkItemPress}>Add New</Box>
+            <Button size='xs'  borderRadius='md' mt={2} colorScheme='purple' color='white'  onClick={AddWorkItemPress}>Add New</Button>
 
                 {WorkItemList && WorkItemList.length > 0 &&
                     WorkItemList.map(wi => {
                         return (
-                            <Box p={5}/>
+                            <WorkItemBox key={wi.publicId} workItem={wi} onPress={onWorkItemPress} activeWorkItem={ activeWorkItem }/>
                         )
                     })
                 }

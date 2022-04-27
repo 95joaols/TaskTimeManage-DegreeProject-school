@@ -93,7 +93,7 @@ const Signup = () => {
               Alredy user
               </Text>
             </Flex>
-            <SubmitButton isLoading={isLoading}>Signup</SubmitButton>
+            <SubmitButton isLoading={isLoading} colorScheme="purple">Signup</SubmitButton>
           </Stack>
         </Grid>
       </Form>

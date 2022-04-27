@@ -5,6 +5,7 @@ import { RootState } from "..";
 // Define a service using a base URL and expected endpoints
 export const workApi = createApi({
     reducerPath: "workApi",
+    tagTypes: ["WorkItem"],
     baseQuery: fetchBaseQuery({
         baseUrl: "https://localhost:1337/api/",
 
@@ -23,15 +24,26 @@ export const workApi = createApi({
                 url: "WorkItem/getWorkItemForUser/" + body,
                 method: "GET",
 
-            })
+            }),
+            providesTags: (result) =>
+                result
+                    ? [
+                        ...result.map(({ publicId }) => ({
+                            type: "WorkItem" as const,
+                            publicId,
+                        })),
+                        "WorkItem",
+                    ]
+                    : ["WorkItem"]
         }),
         CreateWorkItem: builder.mutation<WorkItem, WorkItem>({
             query: (body) => ({
                 url: "WorkItem",
                 method: "POST",
                 body: body,
-            })
-        })
+            }),
+            invalidatesTags: () => [{ type: "WorkItem" }],
+        }),
     }),
 });
 

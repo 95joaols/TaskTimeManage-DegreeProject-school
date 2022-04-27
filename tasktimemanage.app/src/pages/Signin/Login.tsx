@@ -85,7 +85,7 @@ const Login = () => {
               Signup
               </Text>
             </Flex>
-            <SubmitButton isLoading={isLoading}>Signin</SubmitButton>
+            <SubmitButton isLoading={isLoading} colorScheme="purple">Signin</SubmitButton>
           </Stack>
         </Grid>
       </Form>

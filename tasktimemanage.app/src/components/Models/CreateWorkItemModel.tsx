@@ -56,7 +56,13 @@ function CreateWorkItemModel({ onClose, isOpen }: Props) {
     
     const CreateWorkItem = () =>
     {
+      if (name && user.id)
+      {
         createWorkItemApi({name ,userId: user.id!})
+      }
+      else {
+        setIsError(true);
+      }
     }
 
     return (

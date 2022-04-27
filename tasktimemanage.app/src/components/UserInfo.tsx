@@ -1,5 +1,5 @@
 import { Box, Stack } from "@chakra-ui/layout";
-import { Text, Heading} from '@chakra-ui/react';
+import { Text, Heading, Button} from '@chakra-ui/react';
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../store/hook";
@@ -20,7 +20,7 @@ function UserInfo() {
             <Stack p="4" boxShadow="xl" borderRadius="md">
                 <Heading as='h1' size='md'>Task Time Manage</Heading>
                 <Text fontSize='md'>User: {user.name}</Text>
-                <Box as="button" borderRadius='md' bg='tomato' color='white'  onClick={signout}>Signout</Box>
+                <Button size='xs' borderRadius='md' colorScheme='red' color='white'  onClick={signout}>Signout</Button>
             </Stack>
         </Box>
     )
