@@ -1,43 +1,53 @@
+import { Box, Button, Stack, Text } from "@chakra-ui/react";
+import React from "react";
 import { useGetWorkItemForUserQuery } from "../store/api/WorkApi";
 import { useAppSelector } from "../store/hook";
 import { selectLoginUser } from "../store/state/authSlice";
-import { Text, Box, Stack, Button } from '@chakra-ui/react'
 import WorkItemBox from "./WorkItemBox";
 
 type Props = {
-    activeWorkItem: string | undefined
+    activeWorkItem: string | undefined;
     AddWorkItemPress: () => void;
-    onWorkItemPress: (id:string) => void;
+    onWorkItemPress: (id: string) => void;
 };
 
-function WorkItemMenu({ AddWorkItemPress,onWorkItemPress,activeWorkItem}:Props) {
+function WorkItemMenu({ AddWorkItemPress, onWorkItemPress, activeWorkItem }: Props) {
     const user = useAppSelector(selectLoginUser);
-    const {
-        data: WorkItemList,
-        isLoading,
-    } = useGetWorkItemForUserQuery(user.id!);
+    const { data: WorkItemList, isLoading } = useGetWorkItemForUserQuery(user.id!);
 
     return (
         <Box>
             <Stack p="4" boxShadow="xl" borderRadius="md">
-            <Button size='xs'  borderRadius='md' mt={2} colorScheme='purple' color='white'  onClick={AddWorkItemPress}>Add New</Button>
+                <Button
+                    size="xs"
+                    borderRadius="md"
+                    mt={2}
+                    colorScheme="purple"
+                    color="white"
+                    onClick={AddWorkItemPress}
+                >
+                    Add New
+                </Button>
 
-                {WorkItemList && WorkItemList.length > 0 &&
-                    WorkItemList.map(wi => {
+                {WorkItemList &&
+                    WorkItemList.length > 0 &&
+                    WorkItemList.map((wi) => {
                         return (
-                            <WorkItemBox key={wi.publicId} workItem={wi} onPress={onWorkItemPress} activeWorkItem={ activeWorkItem }/>
-                        )
-                    })
-                }
-                {(isLoading && !WorkItemList) &&
-                <Text>Loading...</Text>
-                }
-                {(!isLoading && ((WorkItemList && WorkItemList.length === 0) || !WorkItemList )) &&
-                <Text>No Data...</Text>
-                }
+                            <WorkItemBox
+                                key={wi.publicId}
+                                workItem={wi}
+                                onPress={onWorkItemPress}
+                                activeWorkItem={activeWorkItem}
+                            />
+                        );
+                    })}
+                {isLoading && !WorkItemList && <Text>Loading...</Text>}
+                {!isLoading && ((WorkItemList && WorkItemList.length === 0) || !WorkItemList) && (
+                    <Text>No Data...</Text>
+                )}
             </Stack>
         </Box>
-    )
+    );
 }
 
 export default WorkItemMenu;

@@ -1,4 +1,5 @@
-﻿using TaskTimeManage.Domain.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using TaskTimeManage.Domain.Context;
 using TaskTimeManage.Domain.Entity;
 
 namespace TaskTimeManage.Core.Service;
@@ -16,5 +17,10 @@ public class WorkItemService
 		_ = await context.SaveChangesAsync(cancellationToken);
 
 		return task;
+	}
+
+	public async Task<WorkItem?> GetWorkItemAsync(Guid publicId, CancellationToken cancellationToken)
+	{
+		return await context.Task.Include(T => T.User).FirstOrDefaultAsync(t => t.PublicId == publicId, cancellationToken: cancellationToken);
 	}
 }

@@ -16,25 +16,40 @@ export const workApi = createApi({
                 headers.set("Authorization", `Bearer ${token}`);
             }
             return headers;
-        }
+        },
     }),
     endpoints: (builder) => ({
         getWorkItemForUser: builder.query<WorkItem[], string>({
             query: (body) => ({
                 url: "WorkItem/getWorkItemForUser/" + body,
                 method: "GET",
-
             }),
             providesTags: (result) =>
                 result
                     ? [
-                        ...result.map(({ publicId }) => ({
-                            type: "WorkItem" as const,
-                            publicId,
-                        })),
-                        "WorkItem",
-                    ]
-                    : ["WorkItem"]
+                          ...result.map(({ publicId }) => ({
+                              type: "WorkItem" as const,
+                              publicId,
+                          })),
+                          "WorkItem",
+                      ]
+                    : ["WorkItem"],
+        }),
+        getWorkItem: builder.query<WorkItem, string>({
+            query: (body) => ({
+                url: "WorkItem/GetWorkItemById/" + body,
+                method: "GET",
+            }),
+            providesTags: (result) =>
+                result
+                    ? [
+                          {
+                              type: "WorkItem" as const,
+                              id: result.publicId,
+                          },
+                          "WorkItem",
+                      ]
+                    : ["WorkItem"],
         }),
         CreateWorkItem: builder.mutation<WorkItem, WorkItem>({
             query: (body) => ({
@@ -49,7 +64,4 @@ export const workApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const {
-    useGetWorkItemForUserQuery,
-    useCreateWorkItemMutation
-} = workApi;
+export const { useGetWorkItemForUserQuery, useLazyGetWorkItemQuery, useCreateWorkItemMutation } = workApi;
