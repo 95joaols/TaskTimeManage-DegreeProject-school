@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 using TaskTimeManage.Domain.Dto;
-using TaskTimeManage.Domain.Exceptions.Mapping;
+using TaskTimeManage.Domain.Dto.Mapping;
 
 namespace TaskTimeManage.Api.Controllers.WorkItem;
 

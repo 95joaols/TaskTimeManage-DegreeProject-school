@@ -2,7 +2,7 @@
 using TaskTimeManage.Domain.Dto;
 using TaskTimeManage.Domain.Entity;
 
-namespace TaskTimeManage.Domain.Exceptions.Mapping;
+namespace TaskTimeManage.Domain.Dto.Mapping;
 
 public static class DtoMapping
 {
@@ -24,6 +24,7 @@ public static class DtoMapping
 		return new WorkItemDto {
 				Name = transformFrom.Name,
 				PublicId = transformFrom.PublicId,
+				WorkTimes = transformFrom.WorkTimes,
 				UserId = UserId
 			};
 	}

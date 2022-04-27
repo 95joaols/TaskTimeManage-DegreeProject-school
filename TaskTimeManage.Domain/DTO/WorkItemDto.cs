@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using TaskTimeManage.Domain.Entity;
 
 namespace TaskTimeManage.Domain.Dto;
 public class WorkItemDto
@@ -12,6 +14,10 @@ public class WorkItemDto
 		get; set;
 	}
 	public Guid UserId
+	{
+		get; set;
+	}
+	public List<WorkTime> WorkTimes
 	{
 		get; set;
 	}

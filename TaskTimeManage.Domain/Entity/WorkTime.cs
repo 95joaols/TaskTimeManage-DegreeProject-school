@@ -6,10 +6,9 @@ namespace TaskTimeManage.Domain.Entity;
 
 public class WorkTime
 {
-	public WorkTime(DateTime time, WorkTimeType type)
+	public WorkTime(DateTime time)
 	{
 		Time = time;
-		Type = type;
 	}
 
 	public WorkTime()
@@ -22,11 +21,6 @@ public class WorkTime
 	}
 	[Required]
 	public DateTime Time
-	{
-		get; set;
-	}
-	[Required]
-	public WorkTimeType Type
 	{
 		get; set;
 	}

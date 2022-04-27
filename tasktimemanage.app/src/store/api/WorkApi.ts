@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { WorkItem } from "../../Types/WorkItem";
 import { RootState } from "..";
+import { WorkTime } from "../../Types/WorkTime";
 
 // Define a service using a base URL and expected endpoints
 export const workApi = createApi({
@@ -54,6 +55,15 @@ export const workApi = createApi({
         CreateWorkItem: builder.mutation<WorkItem, WorkItem>({
             query: (body) => ({
                 url: "WorkItem",
+                method: "POST",
+                body: body,
+            }),
+            invalidatesTags: () => [{ type: "WorkItem" }],
+        }),
+        // eslint-disable-next-line prettier/prettier
+        CreateWorkTime: builder.mutation<{ workTime: WorkTime; publicId: string }, WorkTime>({
+            query: (body) => ({
+                url: "WorkItem/CreateWorkTime",
                 method: "POST",
                 body: body,
             }),

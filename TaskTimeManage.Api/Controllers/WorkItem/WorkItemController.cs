@@ -11,11 +11,13 @@ public partial class WorkItemController : ControllerBase
 	private readonly UserService userService;
 
 	private readonly WorkItemService workItemService;
+	private readonly WorkTimeService workTimeService;
 	private readonly IConfiguration configuration;
 
-	public WorkItemController(WorkItemService workItemService, UserService userService, IConfiguration configuration)
+	public WorkItemController(WorkItemService workItemService,WorkTimeService workTimeService, UserService userService, IConfiguration configuration)
 	{
 		this.workItemService = workItemService;
+		this.workTimeService = workTimeService;
 		this.configuration = configuration;
 		this.userService = userService;
 	}

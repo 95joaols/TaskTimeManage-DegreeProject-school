@@ -35,7 +35,7 @@ public class WorkTimeServiceTest
 		WorkTimeService sut = new(context);
 
 		//Act
-		WorkTime workTime = await sut.CreateWorkTimeAsync(DateTime.Now, WorkTimeType.Start, task, default);
+		WorkTime workTime = await sut.CreateWorkTimeAsync(DateTime.Now, task, default);
 
 		//Assert
 		_ = workTime.Should().NotBeNull();
