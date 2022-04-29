@@ -41,6 +41,7 @@ export const workApi = createApi({
                 url: "WorkItem/GetWorkItemById/" + body,
                 method: "GET",
             }),
+
             providesTags: (result) =>
                 result
                     ? [
@@ -61,17 +62,22 @@ export const workApi = createApi({
             invalidatesTags: () => [{ type: "WorkItem" }],
         }),
         // eslint-disable-next-line prettier/prettier
-        CreateWorkTime: builder.mutation<{ workTime: WorkTime; publicId: string }, WorkTime>({
+        CreateWorkTime: builder.mutation<WorkTime, { workTime: WorkTime; publicId: string }>({
             query: (body) => ({
                 url: "WorkItem/CreateWorkTime",
                 method: "POST",
                 body: body,
             }),
-            invalidatesTags: () => [{ type: "WorkItem" }],
+            invalidatesTags: (result, error, arg) => [{ type: "WorkItem", id: arg.publicId }],
         }),
     }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetWorkItemForUserQuery, useLazyGetWorkItemQuery, useCreateWorkItemMutation } = workApi;
+export const {
+    useGetWorkItemForUserQuery,
+    useLazyGetWorkItemQuery,
+    useCreateWorkItemMutation,
+    useCreateWorkTimeMutation,
+} = workApi;

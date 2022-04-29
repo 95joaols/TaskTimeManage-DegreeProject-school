@@ -14,11 +14,6 @@ public class WorkTime
 	public WorkTime()
 	{
 	}
-	[Key]
-	public int Id
-	{
-		get; set;
-	}
 	[Required]
 	public DateTime Time
 	{

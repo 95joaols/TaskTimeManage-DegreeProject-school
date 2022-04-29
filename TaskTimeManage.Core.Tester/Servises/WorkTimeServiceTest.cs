@@ -37,9 +37,12 @@ public class WorkTimeServiceTest
 		//Act
 		WorkTime workTime = await sut.CreateWorkTimeAsync(DateTime.Now, task, default);
 
+		bool t = false;
+
 		//Assert
 		_ = workTime.Should().NotBeNull();
 		_ = task.WorkTimes.Should().HaveCount(1);
+		t.Should().BeTrue();
 
 	}
 }

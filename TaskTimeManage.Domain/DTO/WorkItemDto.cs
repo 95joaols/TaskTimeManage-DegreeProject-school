@@ -17,7 +17,7 @@ public class WorkItemDto
 	{
 		get; set;
 	}
-	public List<WorkTime> WorkTimes
+	public List<WorkTime>? WorkTimes
 	{
 		get; set;
 	}

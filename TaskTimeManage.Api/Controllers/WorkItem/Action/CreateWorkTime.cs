@@ -4,6 +4,7 @@ using TaskTimeManage.Domain.Entity;
 
 using TaskTimeManage.Domain.Dto;
 using TaskTimeManage.Domain.Dto.Mapping;
+using TaskTimeManage.Domain.DTO;
 
 namespace TaskTimeManage.Api.Controllers.WorkItem;
 
@@ -11,17 +12,17 @@ public partial class WorkItemController
 {
 	[HttpPost("CreateWorkTime")]
 	[Authorize]
-	public async Task<ActionResult<IEnumerable<Domain.Entity.WorkItem>>> CreateWorkTime(WorkTime workTime, Guid publicId, CancellationToken cancellationToken = default)
+	public async Task<ActionResult<IEnumerable<Domain.Entity.WorkItem>>> CreateWorkTime([FromBody]CreateWorkTimeDto createWorkTimeDto, CancellationToken cancellationToken = default)
 	{
-		Domain.Entity.WorkItem? workItem = await workItemService.GetWorkItemAsync(publicId, cancellationToken);
+		Domain.Entity.WorkItem? workItem = await workItemService.GetWorkItemAsync(createWorkTimeDto.PublicId, cancellationToken);
 		if (workItem == null)
 		{
 			return BadRequest();
 		}
 		try
 		{
-			await workTimeService.CreateWorkTimeAsync(workTime, publicId, cancellationToken);
-			return Ok();
+			WorkTime workTime = await workTimeService.CreateWorkTimeAsync(createWorkTimeDto.WorkTime, createWorkTimeDto.PublicId, cancellationToken);
+			return Created("", workTime);
 		}
 		catch (Exception ex)
 		{

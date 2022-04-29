@@ -26,7 +26,6 @@ function WorkItemBox({ workItem, onPress, activeWorkItem }: Props) {
             bg={"blue"}
             p={5}
             onClick={() => {
-                console.log("Click", workItem.publicId!);
                 onPress(workItem.publicId!);
             }}
             border="5px solid"

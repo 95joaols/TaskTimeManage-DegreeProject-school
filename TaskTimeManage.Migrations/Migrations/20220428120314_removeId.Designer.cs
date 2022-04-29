@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TaskTimeManage.Domain.Context;
@@ -13,9 +14,11 @@ using TaskTimeManage.Domain.Entity;
 namespace TaskTimeManage.Migrations.Migrations
 {
     [DbContext(typeof(TTMDbContext))]
-    partial class TTMDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220428120314_removeId")]
+    partial class removeId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

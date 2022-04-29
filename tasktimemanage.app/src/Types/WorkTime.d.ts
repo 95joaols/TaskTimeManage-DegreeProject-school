@@ -1,4 +1,3 @@
-export interface WorkTime {
-    id: number;
-    time: string;
+export declare interface WorkTime {
+    time: Date | string;
 }
