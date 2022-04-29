@@ -1,9 +1,10 @@
 import { Box, Center, Flex, Grid, GridItem, Heading } from "@chakra-ui/layout";
-import { Button, Text } from "@chakra-ui/react";
+import { Button, ButtonGroup, IconButton, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useCreateWorkTimeMutation, useLazyGetWorkItemQuery } from "../store/api/WorkApi";
 import { WorkTime } from "../Types/WorkTime";
 import CalculateTime from "./CalculateTime";
+import WorkTimeList from "./WorkTimeList";
 
 type Props = {
     activeWorkItem: string | undefined;
@@ -23,6 +24,11 @@ function WorkItemControl({ activeWorkItem }: Props) {
     useEffect(() => {
         if (activeWorkItem) {
             if (!LastActive || activeWorkItem !== LastActive) {
+                if (workTimesCount % 2 === 1) {
+                    if (LastActive) {
+                        createWorkTimeApi({ workTime: { time: new Date() }, publicId: LastActive });
+                    }
+                }
                 setLastActive(activeWorkItem);
                 trigger(activeWorkItem);
             }
@@ -31,9 +37,7 @@ function WorkItemControl({ activeWorkItem }: Props) {
 
     const onPress = () => {
         if (activeWorkItem) {
-            const dateTime = new Date();
-
-            createWorkTimeApi({ workTime: { time: dateTime }, publicId: activeWorkItem });
+            createWorkTimeApi({ workTime: { time: new Date() }, publicId: activeWorkItem });
         }
         console.log("Press");
     };
@@ -47,32 +51,14 @@ function WorkItemControl({ activeWorkItem }: Props) {
             </Center>
             <CalculateTime WorkTimes={result.data?.workTimes} />
             <Flex gap={5}>
-                {workTimesCount > 0 && (
-                    <Grid templateColumns="repeat(2, 1fr)" gap={2}>
-                        <GridItem w="100%" h="10" bg="blue.500">
-                            <Text>Start</Text>
-                        </GridItem>
-                        <GridItem w="100%" h="10" bg="blue.500">
-                            <Text>Stop</Text>
-                        </GridItem>
-                        {result.data?.workTimes?.map((wt: WorkTime, index) => (
-                            <GridItem key={index} w="100%" h="10" bg="blue.500">
-                                <Text>
-                                    {new Intl.DateTimeFormat("se-se", {
-                                        year: "numeric",
-                                        month: "2-digit",
-                                        day: "2-digit",
-                                        hour: "2-digit",
-                                        minute: "2-digit",
-                                        second: "2-digit",
-                                    }).format(new Date(wt.time))}
-                                </Text>
-                            </GridItem>
-                        ))}
-                    </Grid>
-                )}
+                <WorkTimeList workTimes={result.data?.workTimes} activeWorkItem={activeWorkItem} />
+
                 {activeWorkItem && (
-                    <Button colorScheme={"purple"} onClick={onPress} isLoading={isLoading}>
+                    <Button
+                        colorScheme={workTimesCount % 2 === 1 ? "red" : "purple"}
+                        onClick={onPress}
+                        isLoading={isLoading}
+                    >
                         {workTimesCount % 2 === 1 ? "Stop" : "Start"}
                     </Button>
                 )}

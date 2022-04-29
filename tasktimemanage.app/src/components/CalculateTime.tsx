@@ -8,7 +8,15 @@ type Props = {
 };
 function CalculateTime({ WorkTimes }: Props) {
     const [time, setTime] = useState(0);
+    const [timeText, setTimeText] = useState("0:00");
     const [domby, setDomby] = useState(false);
+    const pad = (n: number) => {
+        return n < 10 ? "0" + n : n;
+    };
+
+    useEffect(() => {
+        setTimeText(`${Math.floor(time / (1000 * 60 * 60))}:${pad(Math.floor(((time / (1000 * 60)) % 60) * 1.66))}`);
+    }, [time]);
 
     useEffect(() => {
         let totalTime = 0;
@@ -26,7 +34,7 @@ function CalculateTime({ WorkTimes }: Props) {
         }
 
         setTime(totalTime);
-    }, [domby]);
+    }, [domby, WorkTimes]);
 
     useEffect(() => {
         if (WorkTimes && WorkTimes.length % 2 === 1) {
@@ -37,13 +45,7 @@ function CalculateTime({ WorkTimes }: Props) {
         }
     }, [WorkTimes]);
 
-    return (
-        <Box>
-            <Text>
-                {Math.floor(time / (1000 * 60 * 60))}:{Math.floor(((time / (1000 * 60)) % 60) * 1.66)}
-            </Text>
-        </Box>
-    );
+    return <Box>{WorkTimes && <Text>{timeText}</Text>}</Box>;
 }
 
 export default CalculateTime;

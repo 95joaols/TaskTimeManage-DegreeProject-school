@@ -25,8 +25,6 @@ export const authApi = createApi({
                     method: "post",
                     body,
                     responseHandler: (response) => {
-                        console.log("response", response);
-
                         return response.json();
                     },
                 };

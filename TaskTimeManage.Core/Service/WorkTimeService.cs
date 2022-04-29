@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using TaskTimeManage.Domain.Context;
 using TaskTimeManage.Domain.Entity;
 using TaskTimeManage.Domain.Enum;
@@ -19,13 +20,31 @@ public class WorkTimeService
 			throw new ArgumentNullException(nameof(task));
 		}
 
-		WorkTime workTime = new(time);
+		WorkTime workTime = new(time, Guid.NewGuid());
 		task.WorkTimes.Add(workTime);
 		_ = context.Task.Update(task);
 		_ = await context.SaveChangesAsync(cancellationToken);
 
 		return workTime;
 	}
+
+	public async Task<bool> DeleteWorkTimeAsync(Guid publicId, Guid WorkItemId, CancellationToken cancellationToken)
+	{
+
+		WorkItem? workItem = await context.Task.FirstOrDefaultAsync(T => T.PublicId == WorkItemId, cancellationToken: cancellationToken);
+		if (workItem == null)
+		{
+			return false;
+		}
+		workItem.WorkTimes.RemoveAll(wt => wt.PublicId == publicId);
+		context.Entry(workItem).State = EntityState.Modified;
+
+		await context.SaveChangesAsync(cancellationToken);
+
+		return true;
+
+	}
+
 	public async Task<WorkTime> CreateWorkTimeAsync(WorkTime workTime, Guid WorkPublicId, CancellationToken cancellationToken)
 	{
 		WorkItem? task = await context.Task.FirstOrDefaultAsync(T => T.PublicId == WorkPublicId, cancellationToken: cancellationToken);
@@ -34,6 +53,8 @@ public class WorkTimeService
 		{
 			throw new ArgumentNullException(nameof(task));
 		}
+		workTime.PublicId = Guid.NewGuid();
+
 		task.WorkTimes.Add(workTime);
 		_ = context.Task.Update(task);
 		_ = await context.SaveChangesAsync(cancellationToken);

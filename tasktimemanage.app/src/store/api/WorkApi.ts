@@ -8,7 +8,7 @@ export const workApi = createApi({
     reducerPath: "workApi",
     tagTypes: ["WorkItem"],
     baseQuery: fetchBaseQuery({
-        baseUrl: "https://localhost:1337/api/",
+        baseUrl: "https://localhost:1337/api/WorkItem",
 
         prepareHeaders: (headers, { getState }) => {
             // By default, if we have a token in the store, let's use that for authenticated requests
@@ -22,7 +22,7 @@ export const workApi = createApi({
     endpoints: (builder) => ({
         getWorkItemForUser: builder.query<WorkItem[], string>({
             query: (body) => ({
-                url: "WorkItem/getWorkItemForUser/" + body,
+                url: "/getWorkItemForUser/" + body,
                 method: "GET",
             }),
             providesTags: (result) =>
@@ -38,7 +38,7 @@ export const workApi = createApi({
         }),
         getWorkItem: builder.query<WorkItem, string>({
             query: (body) => ({
-                url: "WorkItem/GetWorkItemById/" + body,
+                url: "/GetWorkItemById/" + body,
                 method: "GET",
             }),
 
@@ -55,7 +55,7 @@ export const workApi = createApi({
         }),
         CreateWorkItem: builder.mutation<WorkItem, WorkItem>({
             query: (body) => ({
-                url: "WorkItem",
+                url: "/",
                 method: "POST",
                 body: body,
             }),
@@ -64,11 +64,24 @@ export const workApi = createApi({
         // eslint-disable-next-line prettier/prettier
         CreateWorkTime: builder.mutation<WorkTime, { workTime: WorkTime; publicId: string }>({
             query: (body) => ({
-                url: "WorkItem/CreateWorkTime",
+                url: "/CreateWorkTime",
                 method: "POST",
                 body: body,
             }),
             invalidatesTags: (result, error, arg) => [{ type: "WorkItem", id: arg.publicId }],
+        }),
+        DeleteWorkTime: builder.mutation<boolean, { workTime: WorkTime; TimeItemPublicId: string }>({
+            query: (body) => ({
+                url: "/DeleteWorkTime/" + body.TimeItemPublicId,
+                method: "DELETE",
+                body: body.workTime,
+                responseHandler: (response) => {
+                    console.log("response", response);
+
+                    return response.json();
+                },
+            }),
+            invalidatesTags: () => [{ type: "WorkItem" }],
         }),
     }),
 });
@@ -80,4 +93,5 @@ export const {
     useLazyGetWorkItemQuery,
     useCreateWorkItemMutation,
     useCreateWorkTimeMutation,
+    useDeleteWorkTimeMutation,
 } = workApi;
