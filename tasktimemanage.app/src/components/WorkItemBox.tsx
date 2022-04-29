@@ -9,14 +9,14 @@ type Props = {
 };
 
 function WorkItemBox({ workItem, onPress, activeWorkItem }: Props) {
-    const [borderColor, setborderColor] = useState("green");
+    const [borderColor, setBorderColor] = useState("green");
 
     useEffect(() => {
-        const isactive = workItem.publicId === activeWorkItem;
-        if (isactive) {
-            setborderColor("red");
+        const isActive = workItem.publicId === activeWorkItem;
+        if (isActive) {
+            setBorderColor("red");
         } else {
-            setborderColor("green");
+            setBorderColor("green");
         }
     }, [activeWorkItem]);
 
