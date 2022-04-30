@@ -28,7 +28,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskTimeManage.Api", "TaskT
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Migrations", "Migrations", "{7D40268A-C5AD-4C4A-83FA-1998384CE487}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTimeManage.Migrations", "TaskTimeManage.Migrations\TaskTimeManage.Migrations.csproj", "{C4828300-B0DC-405F-BB70-AD14B92DD879}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskTimeManage.Migrations", "TaskTimeManage.Migrations\TaskTimeManage.Migrations.csproj", "{C4828300-B0DC-405F-BB70-AD14B92DD879}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Porxy", "Porxy", "{AFDC1C73-7791-41E4-B09D-492E7F49ABEA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
