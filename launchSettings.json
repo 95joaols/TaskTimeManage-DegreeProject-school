@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "api": "StartDebugging",
+        "postgres": "StartWithoutDebugging",
+        "proxy": "StartWithoutDebugging",
+        "react": "StartWithoutDebugging"
+      }
+    }
+  }
+}

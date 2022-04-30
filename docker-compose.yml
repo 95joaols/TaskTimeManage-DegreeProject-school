@@ -2,31 +2,48 @@ version: '3.8'
 name: taskTimeManage
 
 services:
-  frontend:
-    image: tasktimemanageapp 
+  proxy:
+    image: tasktimemanageproxy:dev
+    container_name: tasktimemanage.proxy
+    build:
+      context: ./TaskTimeManage.Proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - react
+      - api
+    networks:
+      - TTM  
+
+  react:
+    image: tasktimemanageapp:dev
     container_name: tasktimemanage.app
     restart: on-failure
     build:
       context: ./TaskTimeManage.app
-    ports:
-      - 666:3000
+    expose:
+      - "3000"
     stdin_open: true
     command: npm start
+    networks:
+      - TTM  
   
-  backend:
-    image: tasktimemanageapi
+  api:
+    image: tasktimemanageapi:dev
     container_name: Tasktimemanage.api
     build:
       context: .
       dockerfile: TaskTimeManage.Api/Dockerfile
-    ports:
-      - 1337:1337
+    expose:
+      - "80"
     depends_on:
-      - postgres-db
+      - postgres
     networks:
       - TTM  
+      - db 
       
-  postgres-db:
+  postgres:
     image: postgres:latest
     container_name: tasktimemanage.db
     restart: always
@@ -37,10 +54,12 @@ services:
     volumes: 
       - db:/var/lib/postgresql/data
     networks:
-      - TTM  
+      - db  
 
 networks:
   TTM:
+    driver: bridge
+  db:
     driver: bridge
 volumes:
   db:
