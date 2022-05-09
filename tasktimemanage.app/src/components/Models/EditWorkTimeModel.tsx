@@ -19,7 +19,7 @@ type Props = {
     activeWorkItem: string;
 };
 
-function RemoveWorkTimeModel({ onClose, isOpen, workTime, activeWorkItem }: Props) {
+function EditWorkTimeModel({ onClose, isOpen, workTime, activeWorkItem }: Props) {
     const [Delete, { data, isLoading, error, isError: createUserError }] = useDeleteWorkTimeMutation();
     const toast = useToast();
 
@@ -67,4 +67,4 @@ function RemoveWorkTimeModel({ onClose, isOpen, workTime, activeWorkItem }: Prop
     );
 }
 
-export default RemoveWorkTimeModel;
+export default EditWorkTimeModel;

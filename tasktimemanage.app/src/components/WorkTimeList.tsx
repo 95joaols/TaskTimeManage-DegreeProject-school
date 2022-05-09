@@ -1,43 +1,68 @@
-import { Flex, Grid, GridItem, Text } from "@chakra-ui/react";
-import React from "react";
+import { EditIcon } from "@chakra-ui/icons";
+import { Flex, Grid, GridItem, IconButton, Stack, Text, useDisclosure } from "@chakra-ui/react";
+import React, { useState } from "react";
 import { WorkTime } from "../Types/WorkTime";
-import WorkTimeListButtonOption from "./WorkTimeListButtonOption";
+import EditWorkTimeModel from "./Models/EditWorkTimeModel";
 
 type Props = {
     workTimes: WorkTime[] | undefined;
-    activeWorkItem: string | undefined;
+    activeWorkItem: string;
 };
 
 function WorkTimeList({ workTimes, activeWorkItem }: Props) {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [selectedWorkTime, setSelectedWorkTime] = useState<WorkTime>();
+
+    const OpenModel = (workTime: WorkTime) => {
+        setSelectedWorkTime(workTime);
+        onOpen();
+    };
+
     return (
         <>
             {workTimes && workTimes.length > 0 && (
-                <Grid templateColumns="repeat(2, 1fr)" gap={2}>
-                    <GridItem w="100%" h="10" bg="blue.500">
-                        <Text>Start</Text>
-                    </GridItem>
-                    <GridItem w="100%" h="10" bg="blue.500">
-                        <Text>Stop</Text>
-                    </GridItem>
-                    {workTimes?.map((wt: WorkTime) => (
-                        <GridItem key={wt.publicId} w="100%" bg="gray">
-                            <Flex>
-                                <Text>
-                                    {new Intl.DateTimeFormat("se-se", {
-                                        year: "numeric",
-                                        month: "2-digit",
-                                        day: "2-digit",
-                                        hour: "2-digit",
-                                        minute: "2-digit",
-                                    }).format(new Date(wt.time))}
-                                </Text>
-                                {activeWorkItem && (
-                                    <WorkTimeListButtonOption workTime={wt} activeWorkItem={activeWorkItem} />
-                                )}
-                            </Flex>
+                <Stack p="4" bg={"white"} boxShadow="xl" borderRadius="md">
+                    <Grid templateColumns="repeat(2, 1fr)" gap={2}>
+                        <GridItem w="100%" h="10" bg="blue.500">
+                            <Text>Start</Text>
                         </GridItem>
-                    ))}
-                </Grid>
+                        <GridItem w="100%" h="10" bg="blue.500">
+                            <Text>Stop</Text>
+                        </GridItem>
+                        {workTimes?.map((wt: WorkTime) => (
+                            <GridItem key={wt.publicId} w="100%" bg="gray">
+                                <Flex>
+                                    <Text>
+                                        {new Intl.DateTimeFormat("se-se", {
+                                            month: "2-digit",
+                                            day: "2-digit",
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                        }).format(new Date(wt.time))}
+                                    </Text>
+                                    <IconButton
+                                        aria-label="Edit Or Delete"
+                                        icon={<EditIcon />}
+                                        w={"full"}
+                                        h={"full"}
+                                        colorScheme={"gray"}
+                                        onClick={() => {
+                                            OpenModel(wt);
+                                        }}
+                                    />
+                                </Flex>
+                            </GridItem>
+                        ))}
+                    </Grid>
+                    {selectedWorkTime && (
+                        <EditWorkTimeModel
+                            isOpen={isOpen}
+                            onClose={onClose}
+                            workTime={selectedWorkTime}
+                            activeWorkItem={activeWorkItem}
+                        />
+                    )}
+                </Stack>
             )}
         </>
     );

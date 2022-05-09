@@ -1,13 +1,12 @@
-import { Box, Center, Flex, Grid, GridItem, Heading } from "@chakra-ui/layout";
-import { Button, ButtonGroup, IconButton, Text } from "@chakra-ui/react";
+import { Box, Center, Flex, Heading } from "@chakra-ui/layout";
+import { Button, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useCreateWorkTimeMutation, useLazyGetWorkItemQuery } from "../store/api/WorkApi";
-import { WorkTime } from "../Types/WorkTime";
 import CalculateTime from "./CalculateTime";
 import WorkTimeList from "./WorkTimeList";
 
 type Props = {
-    activeWorkItem: string | undefined;
+    activeWorkItem: string;
 };
 
 function WorkItemControl({ activeWorkItem }: Props) {
@@ -36,10 +35,7 @@ function WorkItemControl({ activeWorkItem }: Props) {
     }, [activeWorkItem]);
 
     const onPress = () => {
-        if (activeWorkItem) {
-            createWorkTimeApi({ workTime: { time: new Date() }, publicId: activeWorkItem });
-        }
-        console.log("Press");
+        createWorkTimeApi({ workTime: { time: new Date() }, publicId: activeWorkItem });
     };
     return (
         <Box>
@@ -49,19 +45,18 @@ function WorkItemControl({ activeWorkItem }: Props) {
                     {result.data && result.data.name}
                 </Heading>
             </Center>
-            <CalculateTime WorkTimes={result.data?.workTimes} />
+            <Flex>
+                <Button
+                    colorScheme={workTimesCount % 2 === 1 ? "red" : "purple"}
+                    onClick={onPress}
+                    isLoading={isLoading}
+                >
+                    {workTimesCount % 2 === 1 ? "Stop" : "Start"}
+                </Button>
+                <CalculateTime WorkTimes={result.data?.workTimes} />
+            </Flex>
             <Flex gap={5}>
                 <WorkTimeList workTimes={result.data?.workTimes} activeWorkItem={activeWorkItem} />
-
-                {activeWorkItem && (
-                    <Button
-                        colorScheme={workTimesCount % 2 === 1 ? "red" : "purple"}
-                        onClick={onPress}
-                        isLoading={isLoading}
-                    >
-                        {workTimesCount % 2 === 1 ? "Stop" : "Start"}
-                    </Button>
-                )}
             </Flex>
         </Box>
     );
