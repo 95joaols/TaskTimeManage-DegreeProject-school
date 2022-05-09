@@ -1,16 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TaskTimeManage.Domain.Entity;
 
-using TaskTimeManage.Domain.Dto;
-using TaskTimeManage.Domain.Dto.Mapping;
-using TaskTimeManage.Domain.DTO;
+using TaskTimeManage.Domain.Entity;
 
 namespace TaskTimeManage.Api.Controllers.WorkItem;
 
 public partial class WorkItemController
 {
-	[HttpDelete("DeleteWorkTime/{publicId:Guid}")]
+	[HttpDelete("WorkTime/{publicId:Guid}")]
 	[Authorize]
 	public async Task<ActionResult<bool>> DeleteWorkTime(Guid publicId, [FromBody] WorkTime workTime, CancellationToken cancellationToken = default)
 	{

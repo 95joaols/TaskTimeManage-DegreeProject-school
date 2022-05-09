@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TaskTimeManage.Domain.Entity;
 
 using TaskTimeManage.Domain.Dto;
 using TaskTimeManage.Domain.Dto.Mapping;

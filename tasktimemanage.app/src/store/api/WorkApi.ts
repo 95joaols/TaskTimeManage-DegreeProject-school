@@ -22,7 +22,7 @@ export const workApi = createApi({
     endpoints: (builder) => ({
         getWorkItemForUser: builder.query<WorkItem[], string>({
             query: (body) => ({
-                url: "/getWorkItemForUser/" + body,
+                url: "/WorkItemForUser/" + body,
                 method: "GET",
             }),
             providesTags: (result) =>
@@ -38,7 +38,7 @@ export const workApi = createApi({
         }),
         getWorkItem: builder.query<WorkItem, string>({
             query: (body) => ({
-                url: "/GetWorkItemById/" + body,
+                url: "/WorkItemById/" + body,
                 method: "GET",
             }),
 
@@ -61,10 +61,18 @@ export const workApi = createApi({
             }),
             invalidatesTags: () => [{ type: "WorkItem" }],
         }),
+        EditWorkTime: builder.mutation<WorkTime, { workTime: WorkTime; TimeItemPublicId: string }>({
+            query: (body) => ({
+                url: "/WorkTime",
+                method: "PUT",
+                body: body,
+            }),
+            invalidatesTags: () => [{ type: "WorkItem" }],
+        }),
         // eslint-disable-next-line prettier/prettier
         CreateWorkTime: builder.mutation<WorkTime, { workTime: WorkTime; publicId: string }>({
             query: (body) => ({
-                url: "/CreateWorkTime",
+                url: "/WorkTime",
                 method: "POST",
                 body: body,
             }),
@@ -72,7 +80,7 @@ export const workApi = createApi({
         }),
         DeleteWorkTime: builder.mutation<boolean, { workTime: WorkTime; TimeItemPublicId: string }>({
             query: (body) => ({
-                url: "/DeleteWorkTime/" + body.TimeItemPublicId,
+                url: "/WorkTime/" + body.TimeItemPublicId,
                 method: "DELETE",
                 body: body.workTime,
                 responseHandler: (response) => {
@@ -94,4 +102,5 @@ export const {
     useCreateWorkItemMutation,
     useCreateWorkTimeMutation,
     useDeleteWorkTimeMutation,
+    useEditWorkTimeMutation,
 } = workApi;

@@ -1,18 +1,17 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using TaskTimeManage.Domain.DTO;
 using TaskTimeManage.Domain.Entity;
 
 namespace TaskTimeManage.Api.Controllers.WorkItem;
 
 public partial class WorkItemController
 {
-	[HttpPost("WorkTime")]
+	[HttpPut("WorkTime/{publicId:Guid}")]
 	[Authorize]
-	public async Task<ActionResult<IEnumerable<Domain.Entity.WorkItem>>> CreateWorkTime([FromBody] CreateWorkTimeDto createWorkTimeDto, CancellationToken cancellationToken = default)
+	public async Task<ActionResult<IEnumerable<Domain.Entity.WorkItem>>> EditWorkTime(Guid publicId, [FromBody] WorkTime workTime, CancellationToken cancellationToken = default)
 	{
-		Domain.Entity.WorkItem? workItem = await workItemService.GetWorkItemAsync(createWorkTimeDto.PublicId, cancellationToken);
+		Domain.Entity.WorkItem? workItem = await workItemService.GetWorkItemAsync(publicId, cancellationToken);
 		if (workItem == null)
 		{
 			return BadRequest();

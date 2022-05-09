@@ -1,6 +1,4 @@
-﻿
-using TaskTimeManage.Domain.Dto;
-using TaskTimeManage.Domain.Entity;
+﻿using TaskTimeManage.Domain.Entity;
 
 namespace TaskTimeManage.Domain.Dto.Mapping;
 
@@ -22,10 +20,10 @@ public static class DtoMapping
 	public static WorkItemDto WorkItemDtoMap(WorkItem transformFrom, Guid UserId)
 	{
 		return new WorkItemDto {
-				Name = transformFrom.Name,
-				PublicId = transformFrom.PublicId,
-				WorkTimes = transformFrom.WorkTimes,
-				UserId = UserId
-			};
+			Name = transformFrom.Name,
+			PublicId = transformFrom.PublicId,
+			WorkTimes = transformFrom.WorkTimes,
+			UserId = UserId
+		};
 	}
 }

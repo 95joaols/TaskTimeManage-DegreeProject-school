@@ -1,7 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-using TaskTimeManage.Domain.Enum;
-
 namespace TaskTimeManage.Domain.Entity;
 
 public class WorkTime

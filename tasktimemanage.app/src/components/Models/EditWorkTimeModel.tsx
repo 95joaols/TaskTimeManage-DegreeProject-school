@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/modal";
 import { Button, Flex, FormControl, FormErrorMessage, FormLabel, IconButton, Input, useToast } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { useDeleteWorkTimeMutation } from "../../store/api/WorkApi";
+import { useDeleteWorkTimeMutation, useEditWorkTimeMutation } from "../../store/api/WorkApi";
 import { WorkTime } from "../../Types/WorkTime";
 
 type Props = {
@@ -21,14 +21,17 @@ type Props = {
 };
 
 function EditWorkTimeModel({ onClose, isOpen, workTime, activeWorkItem }: Props) {
-    const [Delete, { data, isLoading, error, isError: createUserError }] = useDeleteWorkTimeMutation();
+    const [Delete, { data: dataDelete, isLoading: isLoadingDelete, error: errorDelete, isError: DeleteWorkTimeError }] =
+        useDeleteWorkTimeMutation();
+    const [Edit, { data: dataEdit, isLoading: isLoadingEdit, error: errorEdit, isError: DeleteWorkTimeEdit }] =
+        useEditWorkTimeMutation();
     const [date, setDate] = useState(workTime.time);
     const handleInputChange = (e: any) => {
         console.log("target", e.target.value);
         console.log("target date", new Date(e.target.value).toISOString());
         console.log("toDateString", toDateString(new Date(e.target.value)));
 
-        setDate(e.target.value);
+        setDate(new Date(e.target.value));
     };
     const [isError, setIsError] = useState(false);
     const toast = useToast();
@@ -38,20 +41,20 @@ function EditWorkTimeModel({ onClose, isOpen, workTime, activeWorkItem }: Props)
     }, [workTime]);
 
     useEffect(() => {
-        if (createUserError) {
+        if (DeleteWorkTimeError) {
             toast({
-                title: (error as any).data.title,
+                title: (errorDelete as any).data.title,
                 status: "error",
                 duration: 5000,
             });
         }
-    }, [createUserError, error]);
+    }, [DeleteWorkTimeError, errorDelete]);
 
     useEffect(() => {
-        if (data) {
+        if (dataDelete) {
             onClose();
         }
-    }, [data]);
+    }, [dataDelete]);
 
     const DeleteWorkTime = () => {
         Delete({ workTime, TimeItemPublicId: activeWorkItem });
@@ -67,6 +70,10 @@ function EditWorkTimeModel({ onClose, isOpen, workTime, activeWorkItem }: Props)
             "T" +
             date.toTimeString().slice(0, 5)
         );
+    };
+
+    const onEditWorkTime = () => {
+        workTime.time = date;
     };
 
     return (
@@ -89,12 +96,11 @@ function EditWorkTimeModel({ onClose, isOpen, workTime, activeWorkItem }: Props)
                                 {isError && <FormErrorMessage>Name is required.</FormErrorMessage>}
 
                                 <IconButton
+                                    isLoading={isLoadingEdit}
                                     aria-label="Edit"
                                     icon={<EditIcon />}
                                     colorScheme={"purple"}
-                                    onClick={() => {
-                                        console.log();
-                                    }}
+                                    onClick={onEditWorkTime}
                                 />
                             </Flex>
                         </FormControl>
@@ -107,7 +113,7 @@ function EditWorkTimeModel({ onClose, isOpen, workTime, activeWorkItem }: Props)
                             aria-label="Edit"
                             icon={<DeleteIcon />}
                             colorScheme={"red"}
-                            isLoading={isLoading}
+                            isLoading={isLoadingDelete}
                             onClick={DeleteWorkTime}
                         />
                     </ModalFooter>
