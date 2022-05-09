@@ -21,7 +21,7 @@ const Home = () => {
                 <CreateWorkItemModel isOpen={isOpen} onClose={onClose} />
             </Flex>
             {ActiveWorkItem && (
-                <Box bg="tomato">
+                <Box ml="4" p="2" bg="tomato">
                     <WorkItemControl activeWorkItem={ActiveWorkItem} />
                 </Box>
             )}

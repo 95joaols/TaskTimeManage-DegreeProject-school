@@ -1,5 +1,5 @@
 import { EditIcon } from "@chakra-ui/icons";
-import { Flex, Grid, GridItem, IconButton, Stack, Text, useDisclosure } from "@chakra-ui/react";
+import { Center, Flex, Grid, GridItem, IconButton, Stack, Text, useDisclosure } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { WorkTime } from "../Types/WorkTime";
 import EditWorkTimeModel from "./Models/EditWorkTimeModel";
@@ -40,16 +40,18 @@ function WorkTimeList({ workTimes, activeWorkItem }: Props) {
                                             minute: "2-digit",
                                         }).format(new Date(wt.time))}
                                     </Text>
-                                    <IconButton
-                                        aria-label="Edit Or Delete"
-                                        icon={<EditIcon />}
-                                        w={"full"}
-                                        h={"full"}
-                                        colorScheme={"gray"}
-                                        onClick={() => {
-                                            OpenModel(wt);
-                                        }}
-                                    />
+                                    <Center>
+                                        <IconButton
+                                            aria-label="Edit Or Delete"
+                                            icon={<EditIcon />}
+                                            w={"min"}
+                                            h={"min"}
+                                            colorScheme={"gray"}
+                                            onClick={() => {
+                                                OpenModel(wt);
+                                            }}
+                                        />
+                                    </Center>
                                 </Flex>
                             </GridItem>
                         ))}
