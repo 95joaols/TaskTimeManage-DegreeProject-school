@@ -1,3 +1,4 @@
+import { AddIcon } from "@chakra-ui/icons";
 import { Box, Button, Stack, Text } from "@chakra-ui/react";
 import React from "react";
 import { useGetWorkItemForUserQuery } from "../store/api/WorkApi";
@@ -18,15 +19,9 @@ function WorkItemMenu({ AddWorkItemPress, onWorkItemPress, activeWorkItem }: Pro
     return (
         <Box>
             <Stack p="4" boxShadow="xl" borderRadius="md">
-                <Button
-                    size="xs"
-                    borderRadius="md"
-                    mt={2}
-                    colorScheme="purple"
-                    color="white"
-                    onClick={AddWorkItemPress}
-                >
+                <Button size="xs" borderRadius="md" mt={2} colorScheme="purple" onClick={AddWorkItemPress}>
                     Add New
+                    <AddIcon ml="2" />
                 </Button>
 
                 {WorkItemList &&

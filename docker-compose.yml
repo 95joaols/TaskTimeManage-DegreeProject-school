@@ -16,9 +16,9 @@ services:
     networks:
       - TTM  
 
-  react:
+  react1:
     image: tasktimemanageapp:dev
-    container_name: tasktimemanage.app
+    container_name: tasktimemanage.app1
     restart: on-failure
     build:
       context: ./TaskTimeManage.app
@@ -32,10 +32,69 @@ services:
     command: npm start
     networks:
       - TTM  
-  
-  api:
+  react2:
+    image: tasktimemanageapp:dev
+    container_name: tasktimemanage.app2
+    restart: on-failure
+    build:
+      context: ./TaskTimeManage.app
+    expose:
+      - "3000"
+    stdin_open: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./TaskTimeManage.app:/app
+    command: npm start
+    networks:
+      - TTM  
+
+  react3:
+    image: tasktimemanageapp:dev
+    container_name: tasktimemanage.app3
+    restart: on-failure
+    build:
+      context: ./TaskTimeManage.app
+    expose:
+      - "3000"
+    stdin_open: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./TaskTimeManage.app:/app
+    command: npm start
+    networks:
+      - TTM  
+
+  api1:
     image: tasktimemanageapi:dev
-    container_name: Tasktimemanage.api
+    container_name: Tasktimemanage.api1
+    build:
+      context: .
+      dockerfile: TaskTimeManage.Api/Dockerfile
+    expose:
+      - "80"
+    depends_on:
+      - postgres
+    networks:
+      - TTM  
+      - db 
+  api2:
+    image: tasktimemanageapi:dev
+    container_name: Tasktimemanage.api2
+    build:
+      context: .
+      dockerfile: TaskTimeManage.Api/Dockerfile
+    expose:
+      - "80"
+    depends_on:
+      - postgres
+    networks:
+      - TTM  
+      - db 
+  api3:
+    image: tasktimemanageapi:dev
+    container_name: Tasktimemanage.api3
     build:
       context: .
       dockerfile: TaskTimeManage.Api/Dockerfile

@@ -89,6 +89,16 @@ export const workApi = createApi({
             }),
             invalidatesTags: () => [{ type: "WorkItem" }],
         }),
+        DeleteWorkItem: builder.mutation<boolean, string>({
+            query: (body) => ({
+                url: "/" + body,
+                method: "DELETE",
+                responseHandler: (response) => {
+                    return response.json();
+                },
+            }),
+            invalidatesTags: () => [{ type: "WorkItem" }],
+        }),
     }),
 });
 
@@ -101,4 +111,5 @@ export const {
     useCreateWorkTimeMutation,
     useDeleteWorkTimeMutation,
     useEditWorkTimeMutation,
+    useDeleteWorkItemMutation,
 } = workApi;

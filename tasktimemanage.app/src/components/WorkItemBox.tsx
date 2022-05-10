@@ -9,27 +9,25 @@ type Props = {
 };
 
 function WorkItemBox({ workItem, onPress, activeWorkItem }: Props) {
-    const [borderColor, setBorderColor] = useState("green");
+    const [Color, setColor] = useState("green");
 
     useEffect(() => {
         const isActive = workItem.publicId === activeWorkItem;
         if (isActive) {
-            setBorderColor("red");
+            setColor("purple");
         } else {
-            setBorderColor("green");
+            setColor("blueviolet");
         }
     }, [activeWorkItem]);
 
     return (
         <Box
             key={workItem.publicId}
-            bg={"blue"}
+            bg={Color}
             p={5}
             onClick={() => {
                 onPress(workItem.publicId!);
             }}
-            border="5px solid"
-            borderColor={borderColor}
         >
             <Text>{workItem.name}</Text>
         </Box>

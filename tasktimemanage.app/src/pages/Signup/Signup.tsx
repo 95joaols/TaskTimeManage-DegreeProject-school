@@ -17,11 +17,13 @@ const Signup = () => {
         if (isError && error) {
             console.log(error);
             console.log((error as any).data);
-            toast({
-                title: (error as any).data.title,
-                status: "error",
-                duration: 5000,
-            });
+            if ((error as any)?.data) {
+                toast({
+                    title: (error as any).data.title,
+                    status: "error",
+                    duration: 5000,
+                });
+            }
         }
         if (data) {
             navigate("/Login");

@@ -22,7 +22,12 @@ const Home = () => {
             </Flex>
             {ActiveWorkItem && (
                 <Box ml="4" p="2" bg="gray" mt="3" boxShadow="xl" borderRadius="md">
-                    <WorkItemControl activeWorkItem={ActiveWorkItem} />
+                    <WorkItemControl
+                        activeWorkItem={ActiveWorkItem}
+                        onReset={() => {
+                            setActiveWorkItem(undefined);
+                        }}
+                    />
                 </Box>
             )}
         </Flex>

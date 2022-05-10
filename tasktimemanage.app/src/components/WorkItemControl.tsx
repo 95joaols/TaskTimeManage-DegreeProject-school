@@ -1,15 +1,19 @@
-import { Box, Center, Flex, Heading } from "@chakra-ui/layout";
-import { Button, Text } from "@chakra-ui/react";
+import { DeleteIcon } from "@chakra-ui/icons";
+import { Box, Button, Center, Flex, Heading, IconButton, Text, useDisclosure } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useCreateWorkTimeMutation, useLazyGetWorkItemQuery } from "../store/api/WorkApi";
 import CalculateTime from "./CalculateTime";
+import RemoveWorkItemMode from "./Models/RemoveWorkItemMode";
 import WorkTimeList from "./WorkTimeList";
 
 type Props = {
     activeWorkItem: string;
+    onReset: () => void;
 };
 
-function WorkItemControl({ activeWorkItem }: Props) {
+function WorkItemControl({ activeWorkItem, onReset }: Props) {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
     const [LastActive, setLastActive] = useState<string>();
     const [workTimesCount, setworkTimesCount] = useState(0);
 
@@ -43,6 +47,14 @@ function WorkItemControl({ activeWorkItem }: Props) {
                 <Heading as="h1" size="lg">
                     {result.isUninitialized && !activeWorkItem && <Text>No Selected</Text>}
                     {result.data && result.data.name}
+                    <IconButton
+                        aria-label="Delete"
+                        icon={<DeleteIcon />}
+                        w={"min"}
+                        h={"min"}
+                        onClick={onOpen}
+                        colorScheme={"red"}
+                    />
                 </Heading>
             </Center>
             <Flex bg={"white"} w={"min"} borderRadius="md" p={2} my={2}>
@@ -60,6 +72,14 @@ function WorkItemControl({ activeWorkItem }: Props) {
             <Flex gap={5}>
                 <WorkTimeList workTimes={result.data?.workTimes} activeWorkItem={activeWorkItem} />
             </Flex>
+            {activeWorkItem && (
+                <RemoveWorkItemMode
+                    onDeleted={onReset}
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    activeWorkItem={activeWorkItem}
+                />
+            )}
         </Box>
     );
 }

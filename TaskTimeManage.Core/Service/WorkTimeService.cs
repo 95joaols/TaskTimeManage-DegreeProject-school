@@ -25,6 +25,7 @@ public class WorkTimeService
 
 		return workTime;
 	}
+
 	public async Task<WorkTime> CreateWorkTimeAsync(WorkTime workTime, Guid WorkPublicId, CancellationToken cancellationToken)
 	{
 		WorkItem? task = await context.Task.FirstOrDefaultAsync(T => T.PublicId == WorkPublicId, cancellationToken: cancellationToken);

@@ -29,12 +29,12 @@ function WorkTimeList({ workTimes, activeWorkItem }: Props) {
             {workTimes && workTimes.length > 0 && (
                 <Stack p="4" bg={"white"} boxShadow="xl" borderRadius="md">
                     <Grid templateColumns="repeat(2, 1fr)" gap={2}>
-                        <GridItem w="100%" h="10" bg="blue">
+                        <GridItem w="100%" h="10" bg="blueviolet">
                             <Flex h="10" pl="2" alignItems={"center"}>
                                 <Text>Start</Text>
                             </Flex>
                         </GridItem>
-                        <GridItem w="100%" h="10" bg="blue" alignItems={"center"}>
+                        <GridItem w="100%" h="10" bg="blueviolet" alignItems={"center"}>
                             <Flex h="10" pl="2" alignItems={"center"}>
                                 <Text>Stop</Text>
                             </Flex>
@@ -63,7 +63,7 @@ function WorkTimeList({ workTimes, activeWorkItem }: Props) {
                                                 }}
                                             />
                                             <IconButton
-                                                aria-label="Edit Or Delete"
+                                                aria-label="Delete"
                                                 icon={<DeleteIcon />}
                                                 w={"min"}
                                                 h={"min"}
