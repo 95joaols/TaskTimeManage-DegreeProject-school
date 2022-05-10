@@ -1,4 +1,4 @@
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { EditIcon } from "@chakra-ui/icons";
 import {
     Modal,
     ModalBody,
@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/modal";
 import { Button, Flex, FormControl, FormErrorMessage, FormLabel, IconButton, Input, useToast } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { useDeleteWorkTimeMutation, useEditWorkTimeMutation } from "../../store/api/WorkApi";
+import { useEditWorkTimeMutation } from "../../store/api/WorkApi";
 import { WorkTime } from "../../Types/WorkTime";
 
 type Props = {
@@ -21,10 +21,7 @@ type Props = {
 };
 
 function EditWorkTimeModel({ onClose, isOpen, workTime, activeWorkItem }: Props) {
-    const [Delete, { data: dataDelete, isLoading: isLoadingDelete, error: errorDelete, isError: DeleteWorkTimeError }] =
-        useDeleteWorkTimeMutation();
-    const [Edit, { data: dataEdit, isLoading: isLoadingEdit, error: errorEdit, isError: DeleteWorkTimeEdit }] =
-        useEditWorkTimeMutation();
+    const [Edit, { data: dataEdit, isLoading: isLoadingEdit, error, isError }] = useEditWorkTimeMutation();
     const [date, setDate] = useState(workTime.time);
     const handleInputChange = (e: any) => {
         console.log("target", e.target.value);
@@ -33,7 +30,6 @@ function EditWorkTimeModel({ onClose, isOpen, workTime, activeWorkItem }: Props)
 
         setDate(new Date(e.target.value));
     };
-    const [isError, setIsError] = useState(false);
     const toast = useToast();
 
     useEffect(() => {
@@ -41,24 +37,20 @@ function EditWorkTimeModel({ onClose, isOpen, workTime, activeWorkItem }: Props)
     }, [workTime]);
 
     useEffect(() => {
-        if (DeleteWorkTimeError) {
+        if (isError) {
             toast({
-                title: (errorDelete as any).data.title,
+                title: (error as any).data.title,
                 status: "error",
                 duration: 5000,
             });
         }
-    }, [DeleteWorkTimeError, errorDelete]);
+    }, [isError, error]);
 
     useEffect(() => {
-        if (dataDelete) {
+        if (dataEdit) {
             onClose();
         }
-    }, [dataDelete]);
-
-    const DeleteWorkTime = () => {
-        Delete({ workTime, TimeItemPublicId: activeWorkItem });
-    };
+    }, [dataEdit]);
 
     const toDateString = (date: Date) => {
         return (
@@ -73,7 +65,8 @@ function EditWorkTimeModel({ onClose, isOpen, workTime, activeWorkItem }: Props)
     };
 
     const onEditWorkTime = () => {
-        workTime.time = date;
+        const editWorkTime: WorkTime = { publicId: workTime.publicId, time: date };
+        Edit({ workTime: editWorkTime, TimeItemPublicId: activeWorkItem });
     };
 
     return (
@@ -109,13 +102,6 @@ function EditWorkTimeModel({ onClose, isOpen, workTime, activeWorkItem }: Props)
                         <Button colorScheme="gray" mr={3} onClick={onClose}>
                             Close
                         </Button>
-                        <IconButton
-                            aria-label="Edit"
-                            icon={<DeleteIcon />}
-                            colorScheme={"red"}
-                            isLoading={isLoadingDelete}
-                            onClick={DeleteWorkTime}
-                        />
                     </ModalFooter>
                 </ModalContent>
             </Modal>

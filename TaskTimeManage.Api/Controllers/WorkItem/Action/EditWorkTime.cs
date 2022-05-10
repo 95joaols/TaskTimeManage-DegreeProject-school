@@ -18,8 +18,7 @@ public partial class WorkItemController
 		}
 		try
 		{
-			WorkTime workTime = await workTimeService.CreateWorkTimeAsync(createWorkTimeDto.WorkTime, createWorkTimeDto.PublicId, cancellationToken);
-			return Created("", workTime);
+			return Ok(await workTimeService.EditWorkTime(workTime, publicId, cancellationToken));
 		}
 		catch (Exception ex)
 		{

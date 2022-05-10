@@ -45,7 +45,7 @@ function WorkItemControl({ activeWorkItem }: Props) {
                     {result.data && result.data.name}
                 </Heading>
             </Center>
-            <Flex>
+            <Flex bg={"white"} w={"min"} borderRadius="md" p={2} my={2}>
                 <Button
                     colorScheme={workTimesCount % 2 === 1 ? "red" : "purple"}
                     onClick={onPress}
@@ -53,7 +53,9 @@ function WorkItemControl({ activeWorkItem }: Props) {
                 >
                     {workTimesCount % 2 === 1 ? "Stop" : "Start"}
                 </Button>
-                <CalculateTime WorkTimes={result.data?.workTimes} />
+                <Center ml="3">
+                    <CalculateTime WorkTimes={result.data?.workTimes} />
+                </Center>
             </Flex>
             <Flex gap={5}>
                 <WorkTimeList workTimes={result.data?.workTimes} activeWorkItem={activeWorkItem} />

@@ -63,9 +63,9 @@ export const workApi = createApi({
         }),
         EditWorkTime: builder.mutation<WorkTime, { workTime: WorkTime; TimeItemPublicId: string }>({
             query: (body) => ({
-                url: "/WorkTime",
+                url: "/WorkTime/" + body.TimeItemPublicId,
                 method: "PUT",
-                body: body,
+                body: body.workTime,
             }),
             invalidatesTags: () => [{ type: "WorkItem" }],
         }),
@@ -84,8 +84,6 @@ export const workApi = createApi({
                 method: "DELETE",
                 body: body.workTime,
                 responseHandler: (response) => {
-                    console.log("response", response);
-
                     return response.json();
                 },
             }),

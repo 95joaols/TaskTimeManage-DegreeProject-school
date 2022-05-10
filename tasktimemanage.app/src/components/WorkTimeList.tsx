@@ -1,8 +1,9 @@
-import { EditIcon } from "@chakra-ui/icons";
-import { Center, Flex, Grid, GridItem, IconButton, Stack, Text, useDisclosure } from "@chakra-ui/react";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { ButtonGroup, Center, Flex, Grid, GridItem, IconButton, Stack, Text, useDisclosure } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { WorkTime } from "../Types/WorkTime";
 import EditWorkTimeModel from "./Models/EditWorkTimeModel";
+import RemoveWorkTimeModel from "./Models/RemoveWorkTimeModel";
 
 type Props = {
     workTimes: WorkTime[] | undefined;
@@ -11,9 +12,14 @@ type Props = {
 
 function WorkTimeList({ workTimes, activeWorkItem }: Props) {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
     const [selectedWorkTime, setSelectedWorkTime] = useState<WorkTime>();
 
-    const OpenModel = (workTime: WorkTime) => {
+    const OpenDeleteModel = (workTime: WorkTime) => {
+        setSelectedWorkTime(workTime);
+        onOpenDelete();
+    };
+    const OpenEditModel = (workTime: WorkTime) => {
         setSelectedWorkTime(workTime);
         onOpen();
     };
@@ -23,15 +29,19 @@ function WorkTimeList({ workTimes, activeWorkItem }: Props) {
             {workTimes && workTimes.length > 0 && (
                 <Stack p="4" bg={"white"} boxShadow="xl" borderRadius="md">
                     <Grid templateColumns="repeat(2, 1fr)" gap={2}>
-                        <GridItem w="100%" h="10" bg="blue.500">
-                            <Text>Start</Text>
+                        <GridItem w="100%" h="10" bg="blue">
+                            <Flex h="10" pl="2" alignItems={"center"}>
+                                <Text>Start</Text>
+                            </Flex>
                         </GridItem>
-                        <GridItem w="100%" h="10" bg="blue.500">
-                            <Text>Stop</Text>
+                        <GridItem w="100%" h="10" bg="blue" alignItems={"center"}>
+                            <Flex h="10" pl="2" alignItems={"center"}>
+                                <Text>Stop</Text>
+                            </Flex>
                         </GridItem>
                         {workTimes?.map((wt: WorkTime) => (
                             <GridItem key={wt.publicId} w="100%" bg="gray">
-                                <Flex>
+                                <Flex px="2" py="1">
                                     <Text>
                                         {new Intl.DateTimeFormat("se-se", {
                                             month: "2-digit",
@@ -41,28 +51,48 @@ function WorkTimeList({ workTimes, activeWorkItem }: Props) {
                                         }).format(new Date(wt.time))}
                                     </Text>
                                     <Center>
-                                        <IconButton
-                                            aria-label="Edit Or Delete"
-                                            icon={<EditIcon />}
-                                            w={"min"}
-                                            h={"min"}
-                                            colorScheme={"gray"}
-                                            onClick={() => {
-                                                OpenModel(wt);
-                                            }}
-                                        />
+                                        <ButtonGroup size="sm" ml={2} isAttached variant="solid">
+                                            <IconButton
+                                                aria-label="Edit"
+                                                icon={<EditIcon />}
+                                                w={"min"}
+                                                h={"min"}
+                                                colorScheme={"blue"}
+                                                onClick={() => {
+                                                    OpenEditModel(wt);
+                                                }}
+                                            />
+                                            <IconButton
+                                                aria-label="Edit Or Delete"
+                                                icon={<DeleteIcon />}
+                                                w={"min"}
+                                                h={"min"}
+                                                colorScheme={"red"}
+                                                onClick={() => {
+                                                    OpenDeleteModel(wt);
+                                                }}
+                                            />
+                                        </ButtonGroup>
                                     </Center>
                                 </Flex>
                             </GridItem>
                         ))}
                     </Grid>
                     {selectedWorkTime && (
-                        <EditWorkTimeModel
-                            isOpen={isOpen}
-                            onClose={onClose}
-                            workTime={selectedWorkTime}
-                            activeWorkItem={activeWorkItem}
-                        />
+                        <>
+                            <EditWorkTimeModel
+                                isOpen={isOpen}
+                                onClose={onClose}
+                                workTime={selectedWorkTime}
+                                activeWorkItem={activeWorkItem}
+                            />
+                            <RemoveWorkTimeModel
+                                isOpen={isOpenDelete}
+                                onClose={onCloseDelete}
+                                workTime={selectedWorkTime}
+                                activeWorkItem={activeWorkItem}
+                            />
+                        </>
                     )}
                 </Stack>
             )}
