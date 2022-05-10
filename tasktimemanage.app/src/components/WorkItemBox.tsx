@@ -29,7 +29,7 @@ function WorkItemBox({ workItem, onPress, activeWorkItem }: Props) {
                 onPress(workItem.publicId!);
             }}
         >
-            <Text>{workItem.name}</Text>
+            <Text color={"white"}>{workItem.name}</Text>
         </Box>
     );
 }

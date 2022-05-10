@@ -31,12 +31,12 @@ function WorkTimeList({ workTimes, activeWorkItem }: Props) {
                     <Grid templateColumns="repeat(2, 1fr)" gap={2}>
                         <GridItem w="100%" h="10" bg="blueviolet">
                             <Flex h="10" pl="2" alignItems={"center"}>
-                                <Text>Start</Text>
+                                <Text color={"white"}>Start</Text>
                             </Flex>
                         </GridItem>
                         <GridItem w="100%" h="10" bg="blueviolet" alignItems={"center"}>
                             <Flex h="10" pl="2" alignItems={"center"}>
-                                <Text>Stop</Text>
+                                <Text color={"white"}>Stop</Text>
                             </Flex>
                         </GridItem>
                         {workTimes?.map((wt: WorkTime) => (

@@ -6,15 +6,17 @@ services:
     image: tasktimemanageproxy:dev
     container_name: tasktimemanage.proxy
     build:
+      network: host
       context: ./TaskTimeManage.Proxy
     ports:
-      - "80:80"
-      - "443:443"
+      - "0.0.0.0:80:80"
+      - "0.0.0.0:443:443"
     depends_on:
       - react
       - api
     networks:
-      - TTM  
+      - TTM 
+      
 
   react1:
     image: tasktimemanageapp:dev
@@ -123,7 +125,7 @@ networks:
   TTM:
     driver: bridge
   db:
-    driver: bridge
+    driver: bridge   
 volumes:
   db:
     driver: local 
