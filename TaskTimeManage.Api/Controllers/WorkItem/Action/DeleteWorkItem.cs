@@ -7,13 +7,21 @@ namespace TaskTimeManage.Api.Controllers.WorkItem;
 
 public partial class WorkItemController
 {
-	[HttpDelete("WorkTime/{publicId:Guid}")]
+	[HttpDelete("{publicId:Guid}")]
 	[Authorize]
-	public async Task<ActionResult<bool>> DeleteWorkTime(Guid publicId, [FromBody] WorkTime workTime, CancellationToken cancellationToken = default)
+	public async Task<ActionResult<bool>> DeleteWorkItem(Guid publicId, CancellationToken cancellationToken = default)
 	{
 		try
 		{
-			return Ok(await workTimeService.DeleteWorkTimeAsync(workTime.PublicId, publicId, cancellationToken));
+			if (await workItemService.DeleteWorkItemAsync(publicId, cancellationToken))
+			{
+
+				return Ok(true);
+			}
+			else
+			{
+				return Problem(title: "");
+			}
 		}
 		catch (Exception ex)
 		{

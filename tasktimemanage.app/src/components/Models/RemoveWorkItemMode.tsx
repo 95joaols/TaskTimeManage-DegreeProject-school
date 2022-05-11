@@ -9,22 +9,24 @@ import {
 } from "@chakra-ui/modal";
 import { Button, Text, useToast } from "@chakra-ui/react";
 import React, { useEffect } from "react";
-import { useDeleteWorkTimeMutation } from "../../store/api/WorkApi";
-import { WorkTime } from "../../Types/WorkTime";
+import { useDeleteWorkItemMutation } from "../../store/api/WorkApi";
 
 type Props = {
     onClose: () => void;
+    onDeleted: () => void;
+
     isOpen: boolean;
-    workTime: WorkTime;
     activeWorkItem: string;
 };
 
-function RemoveWorkTimeModel({ onClose, isOpen, workTime, activeWorkItem }: Props) {
-    const [Delete, { data, isLoading, error, isError: createUserError }] = useDeleteWorkTimeMutation();
+function RemoveWorkItemMode({ onClose, onDeleted, isOpen, activeWorkItem }: Props) {
+    const [Delete, { data, isLoading, error, isError: createUserError }] = useDeleteWorkItemMutation();
     const toast = useToast();
 
     useEffect(() => {
         if (createUserError) {
+            console.log("error", error);
+
             toast({
                 title: (error as any).data.title,
                 status: "error",
@@ -34,13 +36,16 @@ function RemoveWorkTimeModel({ onClose, isOpen, workTime, activeWorkItem }: Prop
     }, [createUserError, error]);
 
     useEffect(() => {
+        console.log("data", data);
+
         if (data) {
             onClose();
+            onDeleted();
         }
     }, [data]);
 
     const DeleteWorkTime = () => {
-        Delete({ workTime, TimeItemPublicId: activeWorkItem });
+        Delete(activeWorkItem);
     };
 
     return (
@@ -51,7 +56,7 @@ function RemoveWorkTimeModel({ onClose, isOpen, workTime, activeWorkItem }: Prop
                     <ModalHeader>confirm</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <Text>confirm delete Work Time</Text>
+                        <Text>confirm delete Work Item</Text>
                     </ModalBody>
                     <ModalFooter>
                         <Button colorScheme="red" mr={3} isLoading={isLoading} onClick={DeleteWorkTime}>
@@ -67,4 +72,4 @@ function RemoveWorkTimeModel({ onClose, isOpen, workTime, activeWorkItem }: Prop
     );
 }
 
-export default RemoveWorkTimeModel;
+export default RemoveWorkItemMode;

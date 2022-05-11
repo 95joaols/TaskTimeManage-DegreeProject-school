@@ -1,37 +1,102 @@
 version: '3.8'
-name: taskTimeManage
 
 services:
   proxy:
     image: tasktimemanageproxy:dev
     container_name: tasktimemanage.proxy
     build:
+      network: host
       context: ./TaskTimeManage.Proxy
     ports:
-      - "80:80"
-      - "443:443"
+      - "0.0.0.0:80:80"
+      - "0.0.0.0:443:443"
     depends_on:
-      - react
-      - api
+      - react1
+      - react2
+      - react3
+      - api1
+      - api2
+      - api3
     networks:
-      - TTM  
+      - TTM 
+      
 
-  react:
+  react1:
     image: tasktimemanageapp:dev
-    container_name: tasktimemanage.app
+    container_name: tasktimemanage.app1
     restart: on-failure
     build:
       context: ./TaskTimeManage.app
     expose:
-      - "3000"
+      - "80"
     stdin_open: true
-    command: npm start
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./TaskTimeManage.app:/app
     networks:
       - TTM  
-  
-  api:
+  react2:
+    image: tasktimemanageapp:dev
+    container_name: tasktimemanage.app2
+    restart: on-failure
+    build:
+      context: ./TaskTimeManage.app
+    expose:
+      - "80"
+    stdin_open: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./TaskTimeManage.app:/app
+    networks:
+      - TTM  
+
+  react3:
+    image: tasktimemanageapp:dev
+    container_name: tasktimemanage.app3
+    restart: on-failure
+    build:
+      context: ./TaskTimeManage.app
+    expose:
+      - "80"
+    stdin_open: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./TaskTimeManage.app:/app
+    networks:
+      - TTM  
+
+  api1:
     image: tasktimemanageapi:dev
-    container_name: Tasktimemanage.api
+    container_name: Tasktimemanage.api1
+    build:
+      context: .
+      dockerfile: TaskTimeManage.Api/Dockerfile
+    expose:
+      - "80"
+    depends_on:
+      - postgres
+    networks:
+      - TTM  
+      - db 
+  api2:
+    image: tasktimemanageapi:dev
+    container_name: Tasktimemanage.api2
+    build:
+      context: .
+      dockerfile: TaskTimeManage.Api/Dockerfile
+    expose:
+      - "80"
+    depends_on:
+      - postgres
+    networks:
+      - TTM  
+      - db 
+  api3:
+    image: tasktimemanageapi:dev
+    container_name: Tasktimemanage.api3
     build:
       context: .
       dockerfile: TaskTimeManage.Api/Dockerfile
@@ -60,7 +125,7 @@ networks:
   TTM:
     driver: bridge
   db:
-    driver: bridge
+    driver: bridge   
 volumes:
   db:
     driver: local 

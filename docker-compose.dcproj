@@ -6,9 +6,11 @@
     <ProjectGuid>173cd943-105d-4797-a3ab-0b7302bd6e8b</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup>
-    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceName>api</DockerServiceName>
-    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
+    <DockerLaunchAction>None</DockerLaunchAction>
+    <DockerServiceName>
+    </DockerServiceName>
+    <DockerServiceUrl>
+    </DockerServiceUrl>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.yml" />

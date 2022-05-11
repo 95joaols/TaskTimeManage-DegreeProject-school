@@ -1,25 +1,29 @@
-import { Box, Center, Flex, Grid, GridItem, Heading } from "@chakra-ui/layout";
-import { Button, ButtonGroup, IconButton, Text } from "@chakra-ui/react";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { Box, Button, Center, Flex, Heading, IconButton, Text, useDisclosure } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useCreateWorkTimeMutation, useLazyGetWorkItemQuery } from "../store/api/WorkApi";
-import { WorkTime } from "../Types/WorkTime";
 import CalculateTime from "./CalculateTime";
+import EditWorkItemModel from "./Models/EditWorkItemModel";
+import RemoveWorkItemMode from "./Models/RemoveWorkItemMode";
 import WorkTimeList from "./WorkTimeList";
 
 type Props = {
-    activeWorkItem: string | undefined;
+    activeWorkItem: string;
+    onReset: () => void;
 };
 
-function WorkItemControl({ activeWorkItem }: Props) {
-    const [LastActive, setLastActive] = useState<string>();
-    const [workTimesCount, setworkTimesCount] = useState(0);
+function WorkItemControl({ activeWorkItem, onReset }: Props) {
+    const { isOpen: isOpenEditModel, onOpen: onOpenEditModel, onClose: onCloseEditModel } = useDisclosure();
 
-    const [trigger, result] = useLazyGetWorkItemQuery();
+    const [LastActive, setLastActive] = useState<string>();
+    const [workTimesCount, setWorkTimesCount] = useState(0);
+
+    const [trigger, WorkItemResult] = useLazyGetWorkItemQuery();
     const [createWorkTimeApi, { isLoading, error }] = useCreateWorkTimeMutation();
 
     useEffect(() => {
-        setworkTimesCount(result.data?.workTimes?.length ?? 0);
-    }, [result]);
+        setWorkTimesCount(WorkItemResult.data?.workTimes?.length ?? 0);
+    }, [WorkItemResult]);
 
     useEffect(() => {
         if (activeWorkItem) {
@@ -36,32 +40,39 @@ function WorkItemControl({ activeWorkItem }: Props) {
     }, [activeWorkItem]);
 
     const onPress = () => {
-        if (activeWorkItem) {
-            createWorkTimeApi({ workTime: { time: new Date() }, publicId: activeWorkItem });
-        }
-        console.log("Press");
+        createWorkTimeApi({ workTime: { time: new Date() }, publicId: activeWorkItem });
     };
     return (
         <Box>
             <Center>
                 <Heading as="h1" size="lg">
-                    {result.isUninitialized && !activeWorkItem && <Text>No Selected</Text>}
-                    {result.data && result.data.name}
+                    {!activeWorkItem && <Text>No Selected</Text>}
+                    {WorkItemResult.data && WorkItemResult.data.name}
                 </Heading>
             </Center>
-            <CalculateTime WorkTimes={result.data?.workTimes} />
-            <Flex gap={5}>
-                <WorkTimeList workTimes={result.data?.workTimes} activeWorkItem={activeWorkItem} />
-
-                {activeWorkItem && (
-                    <Button
-                        colorScheme={workTimesCount % 2 === 1 ? "red" : "purple"}
-                        onClick={onPress}
-                        isLoading={isLoading}
-                    >
-                        {workTimesCount % 2 === 1 ? "Stop" : "Start"}
-                    </Button>
+            <Flex bg={"white"} justifyContent="space-between" alignItems="center" borderRadius="md" p={2} my={2}>
+                <Button
+                    colorScheme={workTimesCount % 2 === 1 ? "red" : "purple"}
+                    onClick={onPress}
+                    isLoading={isLoading}
+                >
+                    {workTimesCount % 2 === 1 ? "Stop" : "Start"}
+                </Button>
+                <Center m="3">
+                    <CalculateTime WorkTimes={WorkItemResult.data?.workTimes} />
+                </Center>
+                <IconButton aria-label="Edit" icon={<EditIcon />} colorScheme={"blue"} onClick={onOpenEditModel} />
+                {WorkItemResult.data && (
+                    <EditWorkItemModel
+                        isOpen={isOpenEditModel}
+                        onClose={onCloseEditModel}
+                        workItem={WorkItemResult.data}
+                        onReset={onReset}
+                    />
                 )}
+            </Flex>
+            <Flex gap={5}>
+                <WorkTimeList workTimes={WorkItemResult.data?.workTimes} />
             </Flex>
         </Box>
     );

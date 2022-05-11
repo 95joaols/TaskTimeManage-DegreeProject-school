@@ -19,6 +19,13 @@ const App = () => {
         const token = localStorage.getItem("token");
         if (token) {
             const user: UserToken = jwt(token);
+            if (user.exp > new Date().getTime()) {
+                dispatch(defaultState());
+                setToken(undefined);
+                localStorage.removeItem("token");
+                return;
+            }
+
             dispatch(setUser({ token: token, name: user.unique_name, id: user.nameid }));
             setToken(user);
         } else {

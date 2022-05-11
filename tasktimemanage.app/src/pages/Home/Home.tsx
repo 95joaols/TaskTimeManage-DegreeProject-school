@@ -20,9 +20,16 @@ const Home = () => {
                 />
                 <CreateWorkItemModel isOpen={isOpen} onClose={onClose} />
             </Flex>
-            <Box flex="1" bg="tomato">
-                <WorkItemControl activeWorkItem={ActiveWorkItem} />
-            </Box>
+            {ActiveWorkItem && (
+                <Box ml="4" p="2" bg="gray" mt="3" boxShadow="xl" borderRadius="md">
+                    <WorkItemControl
+                        activeWorkItem={ActiveWorkItem}
+                        onReset={() => {
+                            setActiveWorkItem(undefined);
+                        }}
+                    />
+                </Box>
+            )}
         </Flex>
     );
 };

@@ -8,7 +8,7 @@ namespace TaskTimeManage.Api.Controllers.WorkItem;
 
 public partial class WorkItemController
 {
-	[HttpGet("GetWorkItemById/{publicId}")]
+	[HttpGet("WorkItemById/{publicId}")]
 	[Authorize]
 	public async Task<ActionResult<IEnumerable<WorkItemDto>>> GetWorkItemById(Guid publicId, CancellationToken cancellationToken = default)
 	{
