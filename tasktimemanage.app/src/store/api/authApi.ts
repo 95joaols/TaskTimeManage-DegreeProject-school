@@ -4,7 +4,7 @@ import { userDto } from "../../Types/UserDto";
 // Define a service using a base URL and expected endpoints
 export const authApi = createApi({
     reducerPath: "authApi",
-    baseQuery: fetchBaseQuery({ baseUrl: "/api/user" }),
+    baseQuery: fetchBaseQuery({ baseUrl: "https://localhost/api/user" }),
     endpoints: (builder) => ({
         login: builder.mutation<string, userDto>({
             query: (body) => {

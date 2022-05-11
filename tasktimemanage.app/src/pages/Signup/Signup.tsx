@@ -13,10 +13,7 @@ const Signup = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log("data", data, "error", error, "isError", isError);
         if (isError && error) {
-            console.log(error);
-            console.log((error as any).data);
             if ((error as any)?.data) {
                 toast({
                     title: (error as any).data.title,

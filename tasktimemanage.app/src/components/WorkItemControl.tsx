@@ -1,8 +1,9 @@
-import { DeleteIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { Box, Button, Center, Flex, Heading, IconButton, Text, useDisclosure } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useCreateWorkTimeMutation, useLazyGetWorkItemQuery } from "../store/api/WorkApi";
 import CalculateTime from "./CalculateTime";
+import EditWorkItemModel from "./Models/EditWorkItemModel";
 import RemoveWorkItemMode from "./Models/RemoveWorkItemMode";
 import WorkTimeList from "./WorkTimeList";
 
@@ -13,16 +14,17 @@ type Props = {
 
 function WorkItemControl({ activeWorkItem, onReset }: Props) {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen: isOpenEditModel, onOpen: onOpenEditModel, onClose: onCloseEditModel } = useDisclosure();
 
     const [LastActive, setLastActive] = useState<string>();
-    const [workTimesCount, setworkTimesCount] = useState(0);
+    const [workTimesCount, setWorkTimesCount] = useState(0);
 
-    const [trigger, result] = useLazyGetWorkItemQuery();
+    const [trigger, WorkItemResult] = useLazyGetWorkItemQuery();
     const [createWorkTimeApi, { isLoading, error }] = useCreateWorkTimeMutation();
 
     useEffect(() => {
-        setworkTimesCount(result.data?.workTimes?.length ?? 0);
-    }, [result]);
+        setWorkTimesCount(WorkItemResult.data?.workTimes?.length ?? 0);
+    }, [WorkItemResult]);
 
     useEffect(() => {
         if (activeWorkItem) {
@@ -45,19 +47,12 @@ function WorkItemControl({ activeWorkItem, onReset }: Props) {
         <Box>
             <Center>
                 <Heading as="h1" size="lg">
-                    {result.isUninitialized && !activeWorkItem && <Text>No Selected</Text>}
-                    {result.data && result.data.name}
-                    <IconButton
-                        aria-label="Delete"
-                        icon={<DeleteIcon />}
-                        w={"min"}
-                        h={"min"}
-                        onClick={onOpen}
-                        colorScheme={"red"}
-                    />
+                    {!activeWorkItem && <Text>No Selected</Text>}
+                    {WorkItemResult.data && WorkItemResult.data.name}
+                    <IconButton aria-label="Delete" icon={<DeleteIcon />} onClick={onOpen} colorScheme={"red"} ml="2" />
                 </Heading>
             </Center>
-            <Flex bg={"white"} w={"min"} borderRadius="md" p={2} my={2}>
+            <Flex bg={"white"} justifyContent="space-between" alignItems="center" borderRadius="md" p={2} my={2}>
                 <Button
                     colorScheme={workTimesCount % 2 === 1 ? "red" : "purple"}
                     onClick={onPress}
@@ -65,12 +60,20 @@ function WorkItemControl({ activeWorkItem, onReset }: Props) {
                 >
                     {workTimesCount % 2 === 1 ? "Stop" : "Start"}
                 </Button>
-                <Center ml="3">
-                    <CalculateTime WorkTimes={result.data?.workTimes} />
+                <Center m="3">
+                    <CalculateTime WorkTimes={WorkItemResult.data?.workTimes} />
                 </Center>
+                <IconButton aria-label="Edit" icon={<EditIcon />} colorScheme={"blue"} onClick={onOpenEditModel} />
+                {WorkItemResult.data && (
+                    <EditWorkItemModel
+                        isOpen={isOpenEditModel}
+                        onClose={onCloseEditModel}
+                        workItem={WorkItemResult.data}
+                    />
+                )}
             </Flex>
             <Flex gap={5}>
-                <WorkTimeList workTimes={result.data?.workTimes} activeWorkItem={activeWorkItem} />
+                <WorkTimeList workTimes={WorkItemResult.data?.workTimes} />
             </Flex>
             {activeWorkItem && (
                 <RemoveWorkItemMode

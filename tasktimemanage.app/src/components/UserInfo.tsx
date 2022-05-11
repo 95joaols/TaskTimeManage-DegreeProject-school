@@ -22,9 +22,8 @@ function UserInfo() {
                 <Heading as="h1" size="md">
                     Task Time Manage
                 </Heading>
-                <Text fontSize="md">User: {user.name}</Text>
                 <Button size="xs" borderRadius="md" colorScheme="red" color="white" onClick={signout}>
-                    Signout
+                    Logout: {user.name}
                 </Button>
             </Stack>
         </Box>

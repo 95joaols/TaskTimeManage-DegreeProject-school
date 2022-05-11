@@ -8,7 +8,7 @@ export const workApi = createApi({
     reducerPath: "workApi",
     tagTypes: ["WorkItem"],
     baseQuery: fetchBaseQuery({
-        baseUrl: "/api/WorkItem",
+        baseUrl: "https://localhost/api/WorkItem",
 
         prepareHeaders: (headers, { getState }) => {
             // By default, if we have a token in the store, let's use that for authenticated requests
@@ -61,6 +61,14 @@ export const workApi = createApi({
             }),
             invalidatesTags: () => [{ type: "WorkItem" }],
         }),
+        EditWorkItem: builder.mutation<WorkItem, WorkItem>({
+            query: (body) => ({
+                url: "/",
+                method: "PUT",
+                body: body,
+            }),
+            invalidatesTags: () => [{ type: "WorkItem" }],
+        }),
         EditWorkTime: builder.mutation<WorkTime, { workTime: WorkTime; TimeItemPublicId: string }>({
             query: (body) => ({
                 url: "/WorkTime/" + body.TimeItemPublicId,
@@ -69,7 +77,6 @@ export const workApi = createApi({
             }),
             invalidatesTags: () => [{ type: "WorkItem" }],
         }),
-        // eslint-disable-next-line prettier/prettier
         CreateWorkTime: builder.mutation<WorkTime, { workTime: WorkTime; publicId: string }>({
             query: (body) => ({
                 url: "/WorkTime",
@@ -108,6 +115,7 @@ export const {
     useGetWorkItemForUserQuery,
     useLazyGetWorkItemQuery,
     useCreateWorkItemMutation,
+    useEditWorkItemMutation,
     useCreateWorkTimeMutation,
     useDeleteWorkTimeMutation,
     useEditWorkTimeMutation,

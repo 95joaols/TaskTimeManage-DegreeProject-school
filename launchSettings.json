@@ -2,12 +2,18 @@
   "profiles": {
     "Docker Compose": {
       "commandName": "DockerCompose",
+      "composeLaunchAction": "None",
+      "composeLaunchServiceName": "api1",
       "commandVersion": "1.0",
       "serviceActions": {
-        "api": "StartDebugging",
         "postgres": "StartWithoutDebugging",
         "proxy": "StartWithoutDebugging",
-        "react": "StartWithoutDebugging"
+        "api1": "StartDebugging",
+        "react1": "StartWithoutDebugging",
+        "react2": "StartWithoutDebugging",
+        "react3": "StartWithoutDebugging",
+        "api2": "StartDebugging",
+        "api3": "StartDebugging"
       }
     }
   }

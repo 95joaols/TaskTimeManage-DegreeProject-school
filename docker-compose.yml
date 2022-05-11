@@ -1,5 +1,4 @@
 version: '3.8'
-name: taskTimeManage
 
 services:
   proxy:
@@ -12,8 +11,12 @@ services:
       - "0.0.0.0:80:80"
       - "0.0.0.0:443:443"
     depends_on:
-      - react
-      - api
+      - react1
+      - react2
+      - react3
+      - api1
+      - api2
+      - api3
     networks:
       - TTM 
       
@@ -25,13 +28,12 @@ services:
     build:
       context: ./TaskTimeManage.app
     expose:
-      - "3000"
+      - "80"
     stdin_open: true
     environment:
       - CHOKIDAR_USEPOLLING=true
     volumes:
       - ./TaskTimeManage.app:/app
-    command: npm start
     networks:
       - TTM  
   react2:
@@ -41,13 +43,12 @@ services:
     build:
       context: ./TaskTimeManage.app
     expose:
-      - "3000"
+      - "80"
     stdin_open: true
     environment:
       - CHOKIDAR_USEPOLLING=true
     volumes:
       - ./TaskTimeManage.app:/app
-    command: npm start
     networks:
       - TTM  
 
@@ -58,13 +59,12 @@ services:
     build:
       context: ./TaskTimeManage.app
     expose:
-      - "3000"
+      - "80"
     stdin_open: true
     environment:
       - CHOKIDAR_USEPOLLING=true
     volumes:
       - ./TaskTimeManage.app:/app
-    command: npm start
     networks:
       - TTM  
 

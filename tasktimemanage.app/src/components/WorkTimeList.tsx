@@ -1,29 +1,12 @@
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
-import { ButtonGroup, Center, Flex, Grid, GridItem, IconButton, Stack, Text, useDisclosure } from "@chakra-ui/react";
-import React, { useState } from "react";
+import { Flex, Grid, GridItem, Stack, Text } from "@chakra-ui/react";
+import React from "react";
 import { WorkTime } from "../Types/WorkTime";
-import EditWorkTimeModel from "./Models/EditWorkTimeModel";
-import RemoveWorkTimeModel from "./Models/RemoveWorkTimeModel";
 
 type Props = {
     workTimes: WorkTime[] | undefined;
-    activeWorkItem: string;
 };
 
-function WorkTimeList({ workTimes, activeWorkItem }: Props) {
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
-    const [selectedWorkTime, setSelectedWorkTime] = useState<WorkTime>();
-
-    const OpenDeleteModel = (workTime: WorkTime) => {
-        setSelectedWorkTime(workTime);
-        onOpenDelete();
-    };
-    const OpenEditModel = (workTime: WorkTime) => {
-        setSelectedWorkTime(workTime);
-        onOpen();
-    };
-
+function WorkTimeList({ workTimes }: Props) {
     return (
         <>
             {workTimes && workTimes.length > 0 && (
@@ -39,7 +22,7 @@ function WorkTimeList({ workTimes, activeWorkItem }: Props) {
                                 <Text color={"white"}>Stop</Text>
                             </Flex>
                         </GridItem>
-                        {workTimes?.map((wt: WorkTime) => (
+                        {workTimes.map((wt: WorkTime) => (
                             <GridItem key={wt.publicId} w="100%" bg="gray">
                                 <Flex px="2" py="1">
                                     <Text>
@@ -50,50 +33,10 @@ function WorkTimeList({ workTimes, activeWorkItem }: Props) {
                                             minute: "2-digit",
                                         }).format(new Date(wt.time))}
                                     </Text>
-                                    <Center>
-                                        <ButtonGroup size="sm" ml={2} isAttached variant="solid">
-                                            <IconButton
-                                                aria-label="Edit"
-                                                icon={<EditIcon />}
-                                                w={"min"}
-                                                h={"min"}
-                                                colorScheme={"blue"}
-                                                onClick={() => {
-                                                    OpenEditModel(wt);
-                                                }}
-                                            />
-                                            <IconButton
-                                                aria-label="Delete"
-                                                icon={<DeleteIcon />}
-                                                w={"min"}
-                                                h={"min"}
-                                                colorScheme={"red"}
-                                                onClick={() => {
-                                                    OpenDeleteModel(wt);
-                                                }}
-                                            />
-                                        </ButtonGroup>
-                                    </Center>
                                 </Flex>
                             </GridItem>
                         ))}
                     </Grid>
-                    {selectedWorkTime && (
-                        <>
-                            <EditWorkTimeModel
-                                isOpen={isOpen}
-                                onClose={onClose}
-                                workTime={selectedWorkTime}
-                                activeWorkItem={activeWorkItem}
-                            />
-                            <RemoveWorkTimeModel
-                                isOpen={isOpenDelete}
-                                onClose={onCloseDelete}
-                                workTime={selectedWorkTime}
-                                activeWorkItem={activeWorkItem}
-                            />
-                        </>
-                    )}
                 </Stack>
             )}
         </>
