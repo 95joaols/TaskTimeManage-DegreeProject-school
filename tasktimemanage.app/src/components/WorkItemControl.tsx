@@ -13,7 +13,6 @@ type Props = {
 };
 
 function WorkItemControl({ activeWorkItem, onReset }: Props) {
-    const { isOpen, onOpen, onClose } = useDisclosure();
     const { isOpen: isOpenEditModel, onOpen: onOpenEditModel, onClose: onCloseEditModel } = useDisclosure();
 
     const [LastActive, setLastActive] = useState<string>();
@@ -49,7 +48,6 @@ function WorkItemControl({ activeWorkItem, onReset }: Props) {
                 <Heading as="h1" size="lg">
                     {!activeWorkItem && <Text>No Selected</Text>}
                     {WorkItemResult.data && WorkItemResult.data.name}
-                    <IconButton aria-label="Delete" icon={<DeleteIcon />} onClick={onOpen} colorScheme={"red"} ml="2" />
                 </Heading>
             </Center>
             <Flex bg={"white"} justifyContent="space-between" alignItems="center" borderRadius="md" p={2} my={2}>
@@ -69,20 +67,13 @@ function WorkItemControl({ activeWorkItem, onReset }: Props) {
                         isOpen={isOpenEditModel}
                         onClose={onCloseEditModel}
                         workItem={WorkItemResult.data}
+                        onReset={onReset}
                     />
                 )}
             </Flex>
             <Flex gap={5}>
                 <WorkTimeList workTimes={WorkItemResult.data?.workTimes} />
             </Flex>
-            {activeWorkItem && (
-                <RemoveWorkItemMode
-                    onDeleted={onReset}
-                    isOpen={isOpen}
-                    onClose={onClose}
-                    activeWorkItem={activeWorkItem}
-                />
-            )}
         </Box>
     );
 }

@@ -51,7 +51,7 @@ function RemoveWorkTimeModel({ onClose, isOpen, workTime, activeWorkItem }: Prop
                     <ModalHeader>confirm</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <Text>confirm delete</Text>
+                        <Text>confirm delete Work Time</Text>
                     </ModalBody>
                     <ModalFooter>
                         <Button colorScheme="red" mr={3} isLoading={isLoading} onClick={DeleteWorkTime}>

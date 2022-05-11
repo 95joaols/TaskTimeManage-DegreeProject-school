@@ -56,7 +56,7 @@ function RemoveWorkItemMode({ onClose, onDeleted, isOpen, activeWorkItem }: Prop
                     <ModalHeader>confirm</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <Text>confirm delete</Text>
+                        <Text>confirm delete Work Item</Text>
                     </ModalBody>
                     <ModalFooter>
                         <Button colorScheme="red" mr={3} isLoading={isLoading} onClick={DeleteWorkTime}>

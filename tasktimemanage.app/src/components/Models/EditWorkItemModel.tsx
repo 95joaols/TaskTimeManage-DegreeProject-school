@@ -1,4 +1,4 @@
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { DeleteIcon } from "@chakra-ui/icons";
 import {
     Modal,
     ModalBody,
@@ -13,34 +13,37 @@ import {
     Button,
     Flex,
     FormControl,
-    FormErrorMessage,
     FormLabel,
     IconButton,
     Input,
+    Spacer,
     useDisclosure,
     useToast,
 } from "@chakra-ui/react";
-import { error } from "console";
 import React, { useEffect, useState } from "react";
-import { isError } from "util";
-import { date } from "yup";
-import { useDeleteWorkItemMutation, useEditWorkItemMutation, useEditWorkTimeMutation } from "../../store/api/WorkApi";
+import { useEditWorkItemMutation } from "../../store/api/WorkApi";
 import { WorkItem } from "../../Types/WorkItem";
 import { WorkTime } from "../../Types/WorkTime";
-import EditWorkTimeModel from "./EditWorkTimeModel";
 import RemoveWorkItemMode from "./RemoveWorkItemMode";
 import RemoveWorkTimeModel from "./RemoveWorkTimeModel";
 
 type Props = {
     onClose: () => void;
+    onReset: () => void;
     isOpen: boolean;
     workItem: WorkItem;
 };
 
-function EditWorkItemModel({ onClose, isOpen, workItem }: Props) {
+function EditWorkItemModel({ onClose, isOpen, workItem, onReset }: Props) {
     const [Edit, { data: dataEdit, isLoading: isLoadingEdit, error, isError }] = useEditWorkItemMutation();
 
     const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
+    const {
+        isOpen: isOpenDeleteWorkItem,
+        onOpen: onOpenDeleteWorkItem,
+        onClose: onCloseDeleteWorkItem,
+    } = useDisclosure();
+
     const [workTimeToDelete, SetWorkTimeToDelete] = useState<WorkTime>();
 
     const [name, SetName] = useState(workItem.name);
@@ -56,6 +59,11 @@ function EditWorkItemModel({ onClose, isOpen, workItem }: Props) {
     useEffect(() => {
         if (dataEdit && !isError) {
             onClose();
+            toast({
+                title: "Save",
+                status: "success",
+                duration: 5000,
+            });
         } else if (isError && error) {
             console.log(error);
 
@@ -97,7 +105,6 @@ function EditWorkItemModel({ onClose, isOpen, workItem }: Props) {
     };
 
     const OnSaveWorkItem = () => {
-        console.log();
         const workItemToSave: WorkItem = { ...workItem, name, workTimes };
         Edit(workItemToSave);
     };
@@ -158,6 +165,14 @@ function EditWorkItemModel({ onClose, isOpen, workItem }: Props) {
                         </FormControl>
                     </ModalBody>
                     <ModalFooter>
+                        <IconButton
+                            aria-label="Delete"
+                            icon={<DeleteIcon />}
+                            onClick={onOpenDeleteWorkItem}
+                            colorScheme={"red"}
+                            ml="2"
+                        />
+                        <Spacer />
                         <Button colorScheme="purple" onClick={OnSaveWorkItem} isLoading={isLoadingEdit}>
                             Save
                         </Button>
@@ -173,6 +188,17 @@ function EditWorkItemModel({ onClose, isOpen, workItem }: Props) {
                     isOpen={isDeleteOpen}
                     onClose={onDeleteClose}
                     workTime={workTimeToDelete}
+                />
+            )}
+            {workItem.publicId && (
+                <RemoveWorkItemMode
+                    onDeleted={() => {
+                        onCloseDeleteWorkItem();
+                        onReset();
+                    }}
+                    isOpen={isOpenDeleteWorkItem}
+                    onClose={onCloseDeleteWorkItem}
+                    activeWorkItem={workItem.publicId}
                 />
             )}
         </>
