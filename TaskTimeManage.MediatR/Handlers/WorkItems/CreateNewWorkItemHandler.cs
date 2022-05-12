@@ -5,11 +5,11 @@ using TaskTimeManage.MediatR.DataAccess;
 using TaskTimeManage.MediatR.Models;
 
 namespace TaskTimeManage.MediatR.Handlers.WorkItems;
-public class CreateNewWorkItemHandlers : IRequestHandler<CreateNewWorkItemCommand, WorkItemModel>
+public class CreateNewWorkItemHandler : IRequestHandler<CreateNewWorkItemCommand, WorkItemModel>
 {
 	private readonly TTMDataAccess data;
 
-	public CreateNewWorkItemHandlers(TTMDataAccess data) => this.data = data;
+	public CreateNewWorkItemHandler(TTMDataAccess data) => this.data = data;
 	public async Task<WorkItemModel> Handle(CreateNewWorkItemCommand request, CancellationToken cancellationToken)
 	{
 		Guard(request);
