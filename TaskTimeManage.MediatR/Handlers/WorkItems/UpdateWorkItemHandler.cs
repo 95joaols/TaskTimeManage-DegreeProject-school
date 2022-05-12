@@ -15,10 +15,12 @@ public class UpdateWorkItemHandler : IRequestHandler<UpdateWorkItemCommand, Work
 
 	public async Task<WorkItemModel> Handle(UpdateWorkItemCommand request, CancellationToken cancellationToken)
 	{
-		if (request.WorkItem == null)
-			throw new ArgumentNullException($"'{nameof(request.WorkItem)}' cannot be null", nameof(request.WorkItem));
+		if (request.PublicId == Guid.Empty)
+			throw new ArgumentNullException($"'{nameof(request.PublicId)}' cannot be null", nameof(request.PublicId));
+		if (string.IsNullOrWhiteSpace(request.Name))
+			throw new ArgumentNullException($"'{nameof(request.Name)}' cannot be null", nameof(request.Name));
 
-		WorkItemModel? workItem = await data.WorkItem.FirstOrDefaultAsync(wi => wi.PublicId == request.WorkItem.PublicId, cancellationToken: cancellationToken);
+		WorkItemModel? workItem = await data.WorkItem.FirstOrDefaultAsync(wi => wi.PublicId == request.PublicId, cancellationToken: cancellationToken);
 		if (workItem == null)
 			throw new ArgumentNullException(nameof(workItem));
 

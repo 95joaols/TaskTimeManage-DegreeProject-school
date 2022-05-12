@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TaskTimeManage.Api\TaskTimeManage.Api.csproj" />
+    <ProjectReference Include="..\TaskTimeManage.Core\TaskTimeManage.Core.csproj" />
     <ProjectReference Include="..\TaskTimeManage.Domain\TaskTimeManage.Domain.csproj" />
   </ItemGroup>
 

@@ -3,5 +3,5 @@
 using TaskTimeManage.MediatR.Models;
 
 namespace TaskTimeManage.MediatR.Commands.WorkTimes;
-public record InsertWorkTimeCommand(WorkTimeModel WorkTimes, Guid WorkItemPublicId) : IRequest<WorkTimeModel>;
+public record CreateWorkTimeCommand(DateTime Time, Guid WorkItemPublicId) : IRequest<WorkTimeModel>;
 

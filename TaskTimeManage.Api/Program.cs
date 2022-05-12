@@ -1,3 +1,5 @@
+using MediatR;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
@@ -8,8 +10,9 @@ using Swashbuckle.AspNetCore.Filters;
 
 using System.Text;
 
-using TaskTimeManage.Api.Middleware;
 using TaskTimeManage.Domain.Context;
+using TaskTimeManage.MediatR;
+using TaskTimeManage.MediatR.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,10 +42,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 			};
 		});
 
-builder.Services.AddCoreService();
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddMediatR(typeof(MediatREntrypoint).Assembly);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<TTMDbContext>(option => option.UseNpgsql(connectionString, x => x.MigrationsAssembly("TaskTimeManage.Migrations")));
+builder.Services.AddDbContext<TTMDataAccess>(option => option.UseNpgsql(connectionString, x => x.MigrationsAssembly("TaskTimeManage.Migrations")));
 
 
 var app = builder.Build();

@@ -10,6 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.0-preview.4.22251.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
@@ -17,8 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TaskTimeManage.Core\TaskTimeManage.Core.csproj" />
-    <ProjectReference Include="..\TaskTimeManage.Domain\TaskTimeManage.Domain.csproj" />
+    <ProjectReference Include="..\TaskTimeManage.MediatR\TaskTimeManage.MediatR.csproj" />
     <ProjectReference Include="..\TaskTimeManage.Migrations\TaskTimeManage.Migrations.csproj" />
   </ItemGroup>
 

@@ -3,5 +3,5 @@
 using TaskTimeManage.MediatR.Models;
 
 namespace TaskTimeManage.MediatR.Commands.WorkItems;
-public record UpdateWorkItemCommand(WorkItemModel WorkItem) : IRequest<WorkItemModel>;
+public record UpdateWorkItemCommand(Guid PublicId, string Name) : IRequest<WorkItemModel>;
 
