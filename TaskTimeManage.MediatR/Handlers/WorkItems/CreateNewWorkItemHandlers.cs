@@ -12,14 +12,7 @@ public class CreateNewWorkItemHandlers : IRequestHandler<CreateNewWorkItemComman
 	public CreateNewWorkItemHandlers(TTMDataAccess data) => this.data = data;
 	public async Task<WorkItemModel> Handle(CreateNewWorkItemCommand request, CancellationToken cancellationToken)
 	{
-		if (string.IsNullOrWhiteSpace(request.Name))
-		{
-			throw new ArgumentException($"'{nameof(request.Name)}' cannot be null or whitespace.", nameof(request.Name));
-		}
-		if (request.User == null)
-		{
-			throw new ArgumentNullException($"'{nameof(request.User)}' cannot be null or whitespace.", nameof(request.User));
-		}
+		Guard(request);
 
 		WorkItemModel workItem = new() {
 			Name = request.Name,
@@ -29,5 +22,17 @@ public class CreateNewWorkItemHandlers : IRequestHandler<CreateNewWorkItemComman
 
 
 		return workItem;
+	}
+
+	private static void Guard(CreateNewWorkItemCommand request)
+	{
+		if (string.IsNullOrWhiteSpace(request.Name))
+		{
+			throw new ArgumentException($"'{nameof(request.Name)}' cannot be null or whitespace.", nameof(request.Name));
+		}
+		if (request.User == null)
+		{
+			throw new ArgumentNullException($"'{nameof(request.User)}' cannot be null or whitespace.", nameof(request.User));
+		}
 	}
 }

@@ -17,15 +17,7 @@ public class LoginHandler : IRequestHandler<LoginQuery, string>
 
 	public async Task<string> Handle(LoginQuery request, CancellationToken cancellationToken)
 	{
-		if (string.IsNullOrWhiteSpace(request.Username))
-		{
-			throw new ArgumentException($"'{nameof(request.Username)}' cannot be null or whitespace.", nameof(request.Username));
-		}
-
-		if (string.IsNullOrWhiteSpace(request.Password))
-		{
-			throw new ArgumentException($"'{nameof(request.Password)}' cannot be null or whitespace.", nameof(request.Password));
-		}
+		Guard(request);
 		UserModel? user = await data.User.FirstOrDefaultAsync(u => u.UserName.ToLower() == request.Username.ToLower(), cancellationToken);
 
 		if (user == null)
@@ -40,5 +32,18 @@ public class LoginHandler : IRequestHandler<LoginQuery, string>
 		}
 
 		return Token.GenerateToken(user, request.TokenKey);
+	}
+
+	private static void Guard(LoginQuery request)
+	{
+		if (string.IsNullOrWhiteSpace(request.Username))
+		{
+			throw new ArgumentException($"'{nameof(request.Username)}' cannot be null or whitespace.", nameof(request.Username));
+		}
+
+		if (string.IsNullOrWhiteSpace(request.Password))
+		{
+			throw new ArgumentException($"'{nameof(request.Password)}' cannot be null or whitespace.", nameof(request.Password));
+		}
 	}
 }
