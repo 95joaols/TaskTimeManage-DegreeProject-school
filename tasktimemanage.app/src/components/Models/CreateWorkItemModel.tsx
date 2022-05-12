@@ -13,13 +13,15 @@ import React, { useEffect, useRef, useState } from "react";
 import { useCreateWorkItemMutation } from "../../store/api/WorkApi";
 import { useAppSelector } from "../../store/hook";
 import { selectLoginUser } from "../../store/state/authSlice";
+import { WorkItem } from "../../Types/WorkItem";
 
 type Props = {
+    createWorkItem: (workItem: WorkItem) => void;
     onClose: () => void;
     isOpen: boolean;
 };
 
-function CreateWorkItemModel({ onClose, isOpen }: Props) {
+function CreateWorkItemModel({ onClose, isOpen, createWorkItem }: Props) {
     const user = useAppSelector(selectLoginUser);
     const firstUpdate = useRef(true);
     const [name, setName] = useState("");
@@ -38,6 +40,7 @@ function CreateWorkItemModel({ onClose, isOpen }: Props) {
 
     useEffect(() => {
         if (data) {
+            createWorkItem(data);
             CustomOnClose();
         }
     }, [data]);

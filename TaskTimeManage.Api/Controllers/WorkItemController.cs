@@ -39,6 +39,7 @@ public partial class WorkItemController : ControllerBase
 
 			if (workItemModel != null)
 			{
+				workItemModel.WorkTimes = workItemModel.WorkTimes.OrderBy(o => o.Time).ToList();
 				return Ok(mapper.Map<WorkItemWithWorkTime>(workItemModel));
 			}
 			else
@@ -62,7 +63,7 @@ public partial class WorkItemController : ControllerBase
 
 			if (WorkItemModels.Any())
 			{
-				return Ok(mapper.Map<IEnumerable<WorkItemRespons>>(WorkItemModels));
+				return Ok(mapper.Map<IEnumerable<WorkItemRespons>>(WorkItemModels.OrderByDescending(o => o.Id).ToList()));
 			}
 			else
 			{

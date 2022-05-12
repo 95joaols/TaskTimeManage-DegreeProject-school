@@ -11,7 +11,7 @@ export const workApi = createApi({
     reducerPath: "workApi",
     tagTypes: ["WorkItem"],
     baseQuery: fetchBaseQuery({
-        baseUrl: "https://localhost/api/",
+        baseUrl: "/api/",
 
         prepareHeaders: (headers, { getState }) => {
             // By default, if we have a token in the store, let's use that for authenticated requests

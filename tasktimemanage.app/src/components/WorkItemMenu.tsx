@@ -19,7 +19,7 @@ function WorkItemMenu({ AddWorkItemPress, onWorkItemPress, activeWorkItem }: Pro
     return (
         <Box>
             <Stack p="4" boxShadow="xl" borderRadius="md">
-                <Button size="xs" borderRadius="md" mt={2} colorScheme="purple" onClick={AddWorkItemPress}>
+                <Button size="xs" borderRadius="md" mt={2} mb={4} colorScheme="purple" onClick={AddWorkItemPress}>
                     Add New
                     <AddIcon ml="2" />
                 </Button>
