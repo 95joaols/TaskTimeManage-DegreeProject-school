@@ -1,7 +1,7 @@
 ﻿using MediatR;
 
-using TaskTimeManage.MediatR.Models;
+using TaskTimeManage.Core.Models;
 
-namespace TaskTimeManage.MediatR.Queries.Authentication;
+namespace TaskTimeManage.Core.Queries.Authentication;
 public record GetUserByPublicIdQuery(Guid UserPublicId) : IRequest<UserModel?>;
 

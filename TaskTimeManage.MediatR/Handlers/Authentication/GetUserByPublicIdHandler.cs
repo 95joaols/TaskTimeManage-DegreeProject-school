@@ -2,11 +2,12 @@
 
 using Microsoft.EntityFrameworkCore;
 
-using TaskTimeManage.MediatR.DataAccess;
-using TaskTimeManage.MediatR.Models;
-using TaskTimeManage.MediatR.Queries.Authentication;
+using TaskTimeManage.Core.DataAccess;
 
-namespace TaskTimeManage.MediatR.Handlers.Authentication;
+using TaskTimeManage.Core.Models;
+using TaskTimeManage.Core.Queries.Authentication;
+
+namespace TaskTimeManage.Core.Handlers.Authentication;
 public class GetUserByPublicIdHandler : IRequestHandler<GetUserByPublicIdQuery, UserModel?>
 {
 	private readonly TTMDataAccess data;

@@ -1,11 +1,11 @@
 ﻿using MediatR;
 
-using TaskTimeManage.MediatR.Commands.WorkTimes;
-using TaskTimeManage.MediatR.DataAccess;
-using TaskTimeManage.MediatR.Models;
-using TaskTimeManage.MediatR.Queries.WorkItems;
+using TaskTimeManage.Core.Commands.WorkTimes;
+using TaskTimeManage.Core.DataAccess;
+using TaskTimeManage.Core.Models;
+using TaskTimeManage.Core.Queries.WorkItems;
 
-namespace TaskTimeManage.MediatR.Handlers.WorkTimes;
+namespace TaskTimeManage.Core.Handlers.WorkTimes;
 public class CreateWorkTimeHandler : IRequestHandler<CreateWorkTimeCommand, WorkTimeModel>
 {
 	private readonly TTMDataAccess data;

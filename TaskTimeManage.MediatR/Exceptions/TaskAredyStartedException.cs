@@ -1,4 +1,4 @@
-﻿namespace TaskTimeManage.MediatR.Exceptions;
+﻿namespace TaskTimeManage.Core.Exceptions;
 
 public class TaskAredyStartedException : Exception
 {

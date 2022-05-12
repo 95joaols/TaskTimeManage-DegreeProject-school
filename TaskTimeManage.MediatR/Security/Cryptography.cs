@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace TaskTimeManage.MediatR.Security;
+namespace TaskTimeManage.Core.Security;
 
 public static class Cryptography
 {

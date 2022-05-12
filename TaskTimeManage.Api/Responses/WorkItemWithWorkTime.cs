@@ -1,4 +1,4 @@
-﻿namespace TaskTimeManage.Api.Dtos.Responses;
+﻿namespace TaskTimeManage.Api.Responses;
 
 public class WorkItemWithWorkTime
 {

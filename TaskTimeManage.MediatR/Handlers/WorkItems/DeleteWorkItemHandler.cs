@@ -2,12 +2,13 @@
 
 using Microsoft.EntityFrameworkCore;
 
-using TaskTimeManage.MediatR.Commands.WorkItems;
-using TaskTimeManage.MediatR.Commands.WorkTimes;
-using TaskTimeManage.MediatR.DataAccess;
-using TaskTimeManage.MediatR.Models;
+using TaskTimeManage.Core.Commands.WorkItems;
+using TaskTimeManage.Core.Commands.WorkTimes;
+using TaskTimeManage.Core.DataAccess;
 
-namespace TaskTimeManage.MediatR.Handlers.WorkItems;
+using TaskTimeManage.Core.Models;
+
+namespace TaskTimeManage.Core.Handlers.WorkItems;
 public class DeleteWorkItemHandler : IRequestHandler<DeleteWorkItemCommand, bool>
 {
 	private readonly TTMDataAccess data;

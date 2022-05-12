@@ -58,7 +58,6 @@ function EditWorkItemModel({ onClose, isOpen, workItem, onReset }: Props) {
 
     useEffect(() => {
         if (dataEdit && !isError) {
-            onClose();
             toast({
                 title: "Save",
                 status: "success",
@@ -183,12 +182,7 @@ function EditWorkItemModel({ onClose, isOpen, workItem, onReset }: Props) {
                 </ModalContent>
             </Modal>
             {workTimeToDelete && workItem.publicId && (
-                <RemoveWorkTimeModel
-                    activeWorkItem={workItem.publicId}
-                    isOpen={isDeleteOpen}
-                    onClose={onDeleteClose}
-                    workTime={workTimeToDelete}
-                />
+                <RemoveWorkTimeModel isOpen={isDeleteOpen} onClose={onDeleteClose} workTime={workTimeToDelete} />
             )}
             {workItem.publicId && (
                 <RemoveWorkItemMode

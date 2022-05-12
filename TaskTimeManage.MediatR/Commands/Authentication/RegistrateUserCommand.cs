@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-using TaskTimeManage.MediatR.Models;
+using TaskTimeManage.Core.Models;
 
-namespace TaskTimeManage.MediatR.Commands.Authentication;
+namespace TaskTimeManage.Core.Commands.Authentication;
 public record RegistrateUserCommand(string Username, string Password) : IRequest<UserModel>;

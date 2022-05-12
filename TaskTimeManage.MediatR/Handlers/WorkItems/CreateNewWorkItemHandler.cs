@@ -1,11 +1,12 @@
 ﻿using MediatR;
 
-using TaskTimeManage.MediatR.Commands.WorkItems;
-using TaskTimeManage.MediatR.DataAccess;
-using TaskTimeManage.MediatR.Models;
-using TaskTimeManage.MediatR.Queries.Authentication;
+using TaskTimeManage.Core.Commands.WorkItems;
+using TaskTimeManage.Core.DataAccess;
 
-namespace TaskTimeManage.MediatR.Handlers.WorkItems;
+using TaskTimeManage.Core.Models;
+using TaskTimeManage.Core.Queries.Authentication;
+
+namespace TaskTimeManage.Core.Handlers.WorkItems;
 public class CreateNewWorkItemHandler : IRequestHandler<CreateNewWorkItemCommand, WorkItemModel>
 {
 	private readonly TTMDataAccess data;
@@ -26,11 +27,12 @@ public class CreateNewWorkItemHandler : IRequestHandler<CreateNewWorkItemCommand
 			throw new ArgumentException(nameof(request.UserPublicId));
 		}
 
-	WorkItemModel workItem = new() {
+		WorkItemModel workItem = new() {
 			Name = request.Name,
 			User = userModel,
 		};
 		_ = await data.WorkItem.AddAsync(workItem, cancellationToken);
+		await data.SaveChangesAsync(cancellationToken);
 
 
 		return workItem;

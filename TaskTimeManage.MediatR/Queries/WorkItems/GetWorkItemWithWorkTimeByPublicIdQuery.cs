@@ -1,8 +1,8 @@
 ﻿using MediatR;
 
-using TaskTimeManage.MediatR.Models;
+using TaskTimeManage.Core.Models;
 
-namespace TaskTimeManage.MediatR.Queries.WorkItems;
+namespace TaskTimeManage.Core.Queries.WorkItems;
 public record GetWorkItemWithWorkTimeByPublicIdQuery(Guid PublicId) : IRequest<WorkItemModel?>;
 
 

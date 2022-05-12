@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TaskTimeManage.MediatR\TaskTimeManage.MediatR.csproj" />
+    <ProjectReference Include="..\TaskTimeManage.MediatR\TaskTimeManage.Core.csproj" />
     <ProjectReference Include="..\TaskTimeManage.Migrations\TaskTimeManage.Migrations.csproj" />
   </ItemGroup>
 

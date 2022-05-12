@@ -5,20 +5,12 @@ VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{C044CD24-AF9E-4A56-919B-6D0AC816875C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskTimeManage.Core", "TaskTimeManage.Core\TaskTimeManage.Core.csproj", "{C6780957-D1A9-4D98-8E1D-2F9777F32B6B}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{91D3D95E-4261-44A1-9CD7-28CC104D7C96}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskTimeManage.Core.Tester", "TaskTimeManage.Core.Tester\TaskTimeManage.Core.Tester.csproj", "{F5685A90-8949-4FFB-9361-CD7848493878}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskTimeManage.Domain", "TaskTimeManage.Domain\TaskTimeManage.Domain.csproj", "{318E7D0E-4FEC-40D9-A19E-0EBA42E70A2C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{51A55023-8C3E-4E4E-A467-DAF538215A9A}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskTimeManage.Api.UnitTester", "TaskTimeManage.Api.Tester\TaskTimeManage.Api.UnitTester.csproj", "{F71ECBBD-ED49-4542-904D-197400EF2E93}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{173CD943-105D-4797-A3AB-0B7302BD6E8B}"
 EndProject
@@ -28,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Migrations", "Migrations", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskTimeManage.Migrations", "TaskTimeManage.Migrations\TaskTimeManage.Migrations.csproj", "{C4828300-B0DC-405F-BB70-AD14B92DD879}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTimeManage.MediatR", "TaskTimeManage.MediatR\TaskTimeManage.MediatR.csproj", "{1A02425E-BF43-4505-B54A-AEF08A1C9A6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskTimeManage.Core", "TaskTimeManage.MediatR\TaskTimeManage.Core.csproj", "{1A02425E-BF43-4505-B54A-AEF08A1C9A6F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,22 +28,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C6780957-D1A9-4D98-8E1D-2F9777F32B6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C6780957-D1A9-4D98-8E1D-2F9777F32B6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C6780957-D1A9-4D98-8E1D-2F9777F32B6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C6780957-D1A9-4D98-8E1D-2F9777F32B6B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F5685A90-8949-4FFB-9361-CD7848493878}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F5685A90-8949-4FFB-9361-CD7848493878}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F5685A90-8949-4FFB-9361-CD7848493878}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F5685A90-8949-4FFB-9361-CD7848493878}.Release|Any CPU.Build.0 = Release|Any CPU
-		{318E7D0E-4FEC-40D9-A19E-0EBA42E70A2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{318E7D0E-4FEC-40D9-A19E-0EBA42E70A2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{318E7D0E-4FEC-40D9-A19E-0EBA42E70A2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{318E7D0E-4FEC-40D9-A19E-0EBA42E70A2C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F71ECBBD-ED49-4542-904D-197400EF2E93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F71ECBBD-ED49-4542-904D-197400EF2E93}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F71ECBBD-ED49-4542-904D-197400EF2E93}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F71ECBBD-ED49-4542-904D-197400EF2E93}.Release|Any CPU.Build.0 = Release|Any CPU
 		{173CD943-105D-4797-A3AB-0B7302BD6E8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{173CD943-105D-4797-A3AB-0B7302BD6E8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{173CD943-105D-4797-A3AB-0B7302BD6E8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -73,10 +49,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{C6780957-D1A9-4D98-8E1D-2F9777F32B6B} = {C044CD24-AF9E-4A56-919B-6D0AC816875C}
-		{F5685A90-8949-4FFB-9361-CD7848493878} = {91D3D95E-4261-44A1-9CD7-28CC104D7C96}
-		{318E7D0E-4FEC-40D9-A19E-0EBA42E70A2C} = {C044CD24-AF9E-4A56-919B-6D0AC816875C}
-		{F71ECBBD-ED49-4542-904D-197400EF2E93} = {91D3D95E-4261-44A1-9CD7-28CC104D7C96}
 		{80C0F010-88C8-48EE-A239-0DC479719E88} = {C044CD24-AF9E-4A56-919B-6D0AC816875C}
 		{C4828300-B0DC-405F-BB70-AD14B92DD879} = {7D40268A-C5AD-4C4A-83FA-1998384CE487}
 		{1A02425E-BF43-4505-B54A-AEF08A1C9A6F} = {C044CD24-AF9E-4A56-919B-6D0AC816875C}

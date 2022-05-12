@@ -2,11 +2,11 @@
 
 using Microsoft.EntityFrameworkCore;
 
-using TaskTimeManage.MediatR.Commands.WorkItems;
-using TaskTimeManage.MediatR.DataAccess;
-using TaskTimeManage.MediatR.Models;
+using TaskTimeManage.Core.Commands.WorkItems;
+using TaskTimeManage.Core.DataAccess;
+using TaskTimeManage.Core.Models;
 
-namespace TaskTimeManage.MediatR.Handlers.WorkItems;
+namespace TaskTimeManage.Core.Handlers.WorkItems;
 public class UpdateWorkItemHandler : IRequestHandler<UpdateWorkItemCommand, WorkItemModel>
 {
 	private readonly TTMDataAccess data;
@@ -24,7 +24,7 @@ public class UpdateWorkItemHandler : IRequestHandler<UpdateWorkItemCommand, Work
 		if (workItem == null)
 			throw new ArgumentNullException(nameof(workItem));
 
-		workItem.Name = workItem.Name;
+		workItem.Name = request.Name;
 		await data.SaveChangesAsync(cancellationToken);
 		return workItem;
 	}

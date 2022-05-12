@@ -2,19 +2,13 @@
 
 using Microsoft.EntityFrameworkCore;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TaskTimeManage.Core.Commands.Authentication;
+using TaskTimeManage.Core.DataAccess;
+using TaskTimeManage.Core.Exceptions;
+using TaskTimeManage.Core.Models;
+using TaskTimeManage.Core.Security;
 
-using TaskTimeManage.MediatR.Commands.Authentication;
-using TaskTimeManage.MediatR.DataAccess;
-using TaskTimeManage.MediatR.Exceptions;
-using TaskTimeManage.MediatR.Models;
-using TaskTimeManage.MediatR.Security;
-
-namespace TaskTimeManage.MediatR.Handlers.Authentication;
+namespace TaskTimeManage.Core.Handlers.Authentication;
 public class RegistrateUserHandler : IRequestHandler<RegistrateUserCommand, UserModel>
 {
 	private readonly TTMDataAccess data;

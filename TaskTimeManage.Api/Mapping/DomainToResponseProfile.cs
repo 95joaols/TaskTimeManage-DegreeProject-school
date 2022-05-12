@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 
-using TaskTimeManage.Api.Dtos.Responses;
-using TaskTimeManage.MediatR.Models;
+using TaskTimeManage.Api.Responses;
+using TaskTimeManage.Core.Models;
 
-namespace TaskTimeManage.Api.Dtos.Mapping;
+namespace TaskTimeManage.Api.Mapping;
 
 public class DomainToResponseProfile : Profile
 {

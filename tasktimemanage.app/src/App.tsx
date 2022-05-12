@@ -10,7 +10,7 @@ import { defaultState, setUser } from "./store/state/authSlice";
 import { UserToken } from "./Types/UserToken";
 
 const App = () => {
-    const { name } = useAppSelector((state) => state.auth);
+    const { username: name } = useAppSelector((state) => state.auth);
     const dispatch = useAppDispatch();
 
     const [token, setToken] = useState<UserToken>();

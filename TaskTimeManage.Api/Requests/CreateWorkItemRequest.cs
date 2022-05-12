@@ -1,6 +1,6 @@
-﻿namespace TaskTimeManage.Api.Dtos.Requsts;
+﻿namespace TaskTimeManage.Api.Requests;
 
-public class CreateWorkItemRequsts
+public class CreateWorkItemRequest
 {
 	public string Name
 	{

@@ -2,11 +2,12 @@
 
 using Microsoft.EntityFrameworkCore;
 
-using TaskTimeManage.MediatR.DataAccess;
-using TaskTimeManage.MediatR.Models;
-using TaskTimeManage.MediatR.Queries.WorkItems;
+using TaskTimeManage.Core.DataAccess;
 
-namespace TaskTimeManage.MediatR.Handlers.WorkItems;
+using TaskTimeManage.Core.Models;
+using TaskTimeManage.Core.Queries.WorkItems;
+
+namespace TaskTimeManage.Core.Handlers.WorkItems;
 public class GetWorkItemByUserPublicIdHandler : IRequestHandler<GetWorkItemTimeByUserPublicIdQuery, IEnumerable<WorkItemModel>>
 {
 	private readonly TTMDataAccess data;

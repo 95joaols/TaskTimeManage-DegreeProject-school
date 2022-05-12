@@ -28,8 +28,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\TaskTimeManage.Core\TaskTimeManage.Core.csproj" />
-  </ItemGroup>
-
 </Project>

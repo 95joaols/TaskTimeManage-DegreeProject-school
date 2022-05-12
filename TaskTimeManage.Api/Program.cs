@@ -10,9 +10,8 @@ using Swashbuckle.AspNetCore.Filters;
 
 using System.Text;
 
-using TaskTimeManage.Domain.Context;
-using TaskTimeManage.MediatR;
-using TaskTimeManage.MediatR.DataAccess;
+using TaskTimeManage.Core;
+using TaskTimeManage.Core.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,7 +53,7 @@ var app = builder.Build();
 // migrate any database changes on startup (includes initial db creation)
 using (var scope = app.Services.CreateScope())
 {
-	var dataContext = scope.ServiceProvider.GetRequiredService<TTMDbContext>();
+	var dataContext = scope.ServiceProvider.GetRequiredService<TTMDataAccess>();
 	dataContext.Database.Migrate();
 }
 

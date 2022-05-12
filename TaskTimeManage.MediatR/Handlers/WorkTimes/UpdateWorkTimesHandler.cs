@@ -2,11 +2,11 @@
 
 using Microsoft.EntityFrameworkCore;
 
-using TaskTimeManage.MediatR.Commands.WorkTimes;
-using TaskTimeManage.MediatR.DataAccess;
-using TaskTimeManage.MediatR.Models;
+using TaskTimeManage.Core.Commands.WorkTimes;
+using TaskTimeManage.Core.DataAccess;
+using TaskTimeManage.Core.Models;
 
-namespace TaskTimeManage.MediatR.Handlers.WorkTimes;
+namespace TaskTimeManage.Core.Handlers.WorkTimes;
 public class UpdateWorkTimesHandler : IRequestHandler<UpdateWorkTimesCommand, IEnumerable<WorkTimeModel>>
 {
 	private readonly TTMDataAccess data;
@@ -23,11 +23,11 @@ public class UpdateWorkTimesHandler : IRequestHandler<UpdateWorkTimesCommand, IE
 			throw new ArgumentException(nameof(request.WorkTimes));
 		}
 
-		IEnumerable<WorkTimeModel> workTimeModels = await data.WorkTime.Where(wt => request.WorkTimes.Select(x => x.PublicId).Contains(wt.PublicId)).ToListAsync(cancellationToken: cancellationToken);
+		IEnumerable<WorkTimeModel> workTimeModels = await data.WorkTime.Where(wt => request.WorkTimes.Select(x => x.PublicId).Contains(wt.PublicId)).ToListAsync(cancellationToken);
 
 		foreach (var workTime in workTimeModels)
 		{
-			workTime.Time = request.WorkTimes.FirstOrDefault(wt => wt.PublicId == workTime.PublicId)?.Time ?? workTime.Time;
+			workTime.Time = request.WorkTimes.FirstOrDefault(wt => wt.PublicId == workTime.PublicId).time;
 		}
 		await data.SaveChangesAsync(cancellationToken);
 		return workTimeModels;

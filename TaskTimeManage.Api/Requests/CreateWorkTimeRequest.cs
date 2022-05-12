@@ -1,4 +1,4 @@
-﻿namespace TaskTimeManage.Api.Dtos.Requsts;
+﻿namespace TaskTimeManage.Api.Requests;
 
 public class CreateWorkTimeRequest
 {

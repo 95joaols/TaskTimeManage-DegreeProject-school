@@ -5,11 +5,12 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using TaskTimeManage.Api.Dtos.Requsts;
-using TaskTimeManage.Api.Dtos.Responses;
-using TaskTimeManage.MediatR.Commands.WorkItems;
-using TaskTimeManage.MediatR.Models;
-using TaskTimeManage.MediatR.Queries.WorkItems;
+using TaskTimeManage.Api.Requests;
+using TaskTimeManage.Api.Responses;
+using TaskTimeManage.Core.Commands.WorkItems;
+using TaskTimeManage.Core.Commands.WorkTimes;
+using TaskTimeManage.Core.Models;
+using TaskTimeManage.Core.Queries.WorkItems;
 
 namespace TaskTimeManage.Api.Controllers;
 
@@ -30,7 +31,7 @@ public partial class WorkItemController : ControllerBase
 
 	[HttpGet("{PublicId}")]
 	[Authorize]
-	public async Task<ActionResult<IEnumerable<WorkItemRespons>>> GetWorkItem(Guid PublicId, CancellationToken cancellationToken = default)
+	public async Task<ActionResult<WorkItemRespons>> GetWorkItem(Guid PublicId, CancellationToken cancellationToken = default)
 	{
 		try
 		{
@@ -38,7 +39,7 @@ public partial class WorkItemController : ControllerBase
 
 			if (workItemModel != null)
 			{
-				return Ok(mapper.Map<IEnumerable<WorkItemWithWorkTime>>(workItemModel));
+				return Ok(mapper.Map<WorkItemWithWorkTime>(workItemModel));
 			}
 			else
 			{
@@ -76,7 +77,7 @@ public partial class WorkItemController : ControllerBase
 
 	[HttpPost]
 	[Authorize]
-	public async Task<ActionResult<WorkItemRespons>> CreateWorkItem([FromBody] CreateWorkItemRequsts reqest, CancellationToken cancellationToken = default)
+	public async Task<ActionResult<WorkItemRespons>> CreateWorkItem([FromBody] CreateWorkItemRequest reqest, CancellationToken cancellationToken = default)
 	{
 		try
 		{
@@ -99,11 +100,15 @@ public partial class WorkItemController : ControllerBase
 
 	[HttpPut]
 	[Authorize]
-	public async Task<ActionResult<WorkItemRespons>> EditWorkItem([FromBody] EditWorkItemRequsts reqest, CancellationToken cancellationToken = default)
+	public async Task<ActionResult<WorkItemRespons>> EditWorkItem([FromBody] EditWorkItemRequest reqest, CancellationToken cancellationToken = default)
 	{
 		try
 		{
 			WorkItemModel workItemModel = await mediator.Send(new UpdateWorkItemCommand(reqest.PublicId, reqest.Name), cancellationToken);
+			if (reqest.WorkTimes.Any())
+			{
+				await mediator.Send(new UpdateWorkTimesCommand(reqest.WorkTimes), cancellationToken);
+			}
 
 			if (workItemModel != null)
 			{

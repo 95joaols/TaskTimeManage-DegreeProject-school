@@ -5,12 +5,10 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using TaskTimeManage.Api.Dtos.Requsts;
-using TaskTimeManage.Api.Dtos.Responses;
-using TaskTimeManage.MediatR.Commands.WorkItems;
-using TaskTimeManage.MediatR.Commands.WorkTimes;
-using TaskTimeManage.MediatR.Models;
-using TaskTimeManage.MediatR.Queries.WorkItems;
+using TaskTimeManage.Api.Requests;
+using TaskTimeManage.Api.Responses;
+using TaskTimeManage.Core.Commands.WorkTimes;
+using TaskTimeManage.Core.Models;
 
 namespace TaskTimeManage.Api.Controllers;
 

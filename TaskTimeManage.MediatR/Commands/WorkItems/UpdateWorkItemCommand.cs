@@ -1,7 +1,7 @@
 ﻿using MediatR;
 
-using TaskTimeManage.MediatR.Models;
+using TaskTimeManage.Core.Models;
 
-namespace TaskTimeManage.MediatR.Commands.WorkItems;
+namespace TaskTimeManage.Core.Commands.WorkItems;
 public record UpdateWorkItemCommand(Guid PublicId, string Name) : IRequest<WorkItemModel>;
 

@@ -2,12 +2,12 @@
 
 using Microsoft.EntityFrameworkCore;
 
-using TaskTimeManage.MediatR.DataAccess;
-using TaskTimeManage.MediatR.Models;
-using TaskTimeManage.MediatR.Queries.WorkTimes;
+using TaskTimeManage.Core.DataAccess;
+using TaskTimeManage.Core.Models;
+using TaskTimeManage.Core.Queries.WorkTimes;
 
-namespace TaskTimeManage.MediatR.Handlers.WorkTimes;
-internal class GetWorkTimesByWorkItemPublicIdHandler : IRequestHandler<GetWorkTimesByWorkItemPublicIdQuery, IEnumerable<WorkTimeModel>>
+namespace TaskTimeManage.Core.Handlers.WorkTimes;
+public class GetWorkTimesByWorkItemPublicIdHandler : IRequestHandler<GetWorkTimesByWorkItemPublicIdQuery, IEnumerable<WorkTimeModel>>
 {
 	private readonly TTMDataAccess data;
 
@@ -18,6 +18,6 @@ internal class GetWorkTimesByWorkItemPublicIdHandler : IRequestHandler<GetWorkTi
 		if (request.PublicId == Guid.Empty)
 			throw new ArgumentNullException(nameof(request.PublicId));
 
-		return await data.WorkTime.Where(wt =>wt.WorkItem.PublicId == request.PublicId).ToListAsync(cancellationToken: cancellationToken);
+		return await data.WorkTime.Where(wt => wt.WorkItem.PublicId == request.PublicId).ToListAsync(cancellationToken: cancellationToken);
 	}
 }

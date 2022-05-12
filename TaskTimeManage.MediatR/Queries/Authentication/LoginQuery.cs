@@ -1,5 +1,5 @@
 ﻿using MediatR;
 
-namespace TaskTimeManage.MediatR.Queries.Authentication;
+namespace TaskTimeManage.Core.Queries.Authentication;
 
-public record LoginQuery(string Username, string Password,string TokenKey) : IRequest<string>;
+public record LoginQuery(string Username, string Password, string TokenKey) : IRequest<string>;

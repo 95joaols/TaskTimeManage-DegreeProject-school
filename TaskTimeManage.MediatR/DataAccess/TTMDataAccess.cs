@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-using TaskTimeManage.MediatR.Models;
+using TaskTimeManage.Core.Models;
 
-namespace TaskTimeManage.MediatR.DataAccess;
+namespace TaskTimeManage.Core.DataAccess;
 
 public class TTMDataAccess : DbContext
 {

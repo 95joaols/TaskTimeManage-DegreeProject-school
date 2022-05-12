@@ -1,9 +1,9 @@
 ﻿using MediatR;
 
-using TaskTimeManage.MediatR.Commands.WorkTimes;
-using TaskTimeManage.MediatR.DataAccess;
+using TaskTimeManage.Core.Commands.WorkTimes;
+using TaskTimeManage.Core.DataAccess;
 
-namespace TaskTimeManage.MediatR.Handlers.WorkTimes;
+namespace TaskTimeManage.Core.Handlers.WorkTimes;
 public class DeleteAllWorkTimesByWorkItemIdHandler : IRequestHandler<DeleteAllWorkTimesByWorkItemIdCommand, bool>
 {
 

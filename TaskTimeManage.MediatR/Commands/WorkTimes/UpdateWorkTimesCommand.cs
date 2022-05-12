@@ -1,6 +1,7 @@
 ﻿using MediatR;
 
-using TaskTimeManage.MediatR.Models;
+using TaskTimeManage.Core.Dto;
+using TaskTimeManage.Core.Models;
 
-namespace TaskTimeManage.MediatR.Commands.WorkTimes;
-public record UpdateWorkTimesCommand(IEnumerable<WorkTimeModel> WorkTimes) : IRequest<IEnumerable<WorkTimeModel>>;
+namespace TaskTimeManage.Core.Commands.WorkTimes;
+public record UpdateWorkTimesCommand(IEnumerable<WorkTimesLight> WorkTimes) : IRequest<IEnumerable<WorkTimeModel>>;

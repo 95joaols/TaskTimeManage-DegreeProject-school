@@ -2,11 +2,11 @@
 
 using Microsoft.EntityFrameworkCore;
 
-using TaskTimeManage.MediatR.Commands.WorkTimes;
-using TaskTimeManage.MediatR.DataAccess;
-using TaskTimeManage.MediatR.Models;
+using TaskTimeManage.Core.Commands.WorkTimes;
+using TaskTimeManage.Core.DataAccess;
+using TaskTimeManage.Core.Models;
 
-namespace TaskTimeManage.MediatR.Handlers.WorkTimes;
+namespace TaskTimeManage.Core.Handlers.WorkTimes;
 public class DeleteWorkTimeByPublicIdHandler : IRequestHandler<DeleteWorkTimeByPublicIdCommand, bool>
 {
 

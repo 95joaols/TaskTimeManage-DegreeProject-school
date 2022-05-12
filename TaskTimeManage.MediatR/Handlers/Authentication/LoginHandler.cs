@@ -2,13 +2,13 @@
 
 using Microsoft.EntityFrameworkCore;
 
-using TaskTimeManage.MediatR.DataAccess;
-using TaskTimeManage.MediatR.Exceptions;
-using TaskTimeManage.MediatR.Models;
-using TaskTimeManage.MediatR.Queries.Authentication;
-using TaskTimeManage.MediatR.Security;
+using TaskTimeManage.Core.DataAccess;
+using TaskTimeManage.Core.Exceptions;
+using TaskTimeManage.Core.Models;
+using TaskTimeManage.Core.Queries.Authentication;
+using TaskTimeManage.Core.Security;
 
-namespace TaskTimeManage.MediatR.Handlers.Authentication;
+namespace TaskTimeManage.Core.Handlers.Authentication;
 public class LoginHandler : IRequestHandler<LoginQuery, string>
 {
 	private readonly TTMDataAccess data;

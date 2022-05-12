@@ -3,11 +3,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using TaskTimeManage.Api.Requsts;
-using TaskTimeManage.MediatR.Commands.Authentication;
-using TaskTimeManage.MediatR.Exceptions;
-using TaskTimeManage.MediatR.Models;
-using TaskTimeManage.MediatR.Queries.Authentication;
+using TaskTimeManage.Api.Requests;
+using TaskTimeManage.Core.Commands.Authentication;
+using TaskTimeManage.Core.Exceptions;
+using TaskTimeManage.Core.Models;
+using TaskTimeManage.Core.Queries.Authentication;
 
 namespace TaskTimeManage.Api.Controllers;
 
@@ -26,15 +26,15 @@ public partial class AuthenticationController : ControllerBase
 
 	[HttpPost("Login")]
 	[AllowAnonymous]
-	public async Task<ActionResult<string>> Login([FromBody] UserRequsts reqest, CancellationToken cancellationToken = default)
+	public async Task<ActionResult<string>> Login([FromBody] UserRequest reqest, CancellationToken cancellationToken = default)
 	{
-		if (reqest is null || string.IsNullOrWhiteSpace(reqest.UserName) || string.IsNullOrWhiteSpace(reqest.Password))
+		if (reqest is null || string.IsNullOrWhiteSpace(reqest.Username) || string.IsNullOrWhiteSpace(reqest.Password))
 		{
 			return BadRequest();
 		}
 		try
 		{
-			string token = await mediator.Send(new LoginQuery(reqest.UserName, reqest.Password, configuration.GetSection("AppSettings:Token").Value), cancellationToken);
+			string token = await mediator.Send(new LoginQuery(reqest.Username, reqest.Password, configuration.GetSection("AppSettings:Token").Value), cancellationToken);
 			if (string.IsNullOrWhiteSpace(token))
 			{
 				return Problem(statusCode: 500);
@@ -57,15 +57,15 @@ public partial class AuthenticationController : ControllerBase
 	}
 	[HttpPost("CreateUser")]
 	[AllowAnonymous]
-	public async Task<ActionResult> CreateUserAsync([FromBody] UserRequsts reqest, CancellationToken cancellationToken = default)
+	public async Task<ActionResult> CreateUserAsync([FromBody] UserRequest reqest, CancellationToken cancellationToken = default)
 	{
-		if (reqest is null || string.IsNullOrWhiteSpace(reqest.UserName) || string.IsNullOrWhiteSpace(reqest.Password))
+		if (reqest is null || string.IsNullOrWhiteSpace(reqest.Username) || string.IsNullOrWhiteSpace(reqest.Password))
 		{
 			return BadRequest("Name and Password is needed");
 		}
 		try
 		{
-			UserModel user = await mediator.Send(new RegistrateUserCommand(reqest.UserName, reqest.Password), cancellationToken);
+			UserModel user = await mediator.Send(new RegistrateUserCommand(reqest.Username, reqest.Password), cancellationToken);
 			if (user is not null && user.Id != 0)
 			{
 				return Created("", true);

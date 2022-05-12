@@ -3,9 +3,9 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-using TaskTimeManage.MediatR.Models;
+using TaskTimeManage.Core.Models;
 
-namespace TaskTimeManage.MediatR.Security;
+namespace TaskTimeManage.Core.Security;
 
 public class Token
 {

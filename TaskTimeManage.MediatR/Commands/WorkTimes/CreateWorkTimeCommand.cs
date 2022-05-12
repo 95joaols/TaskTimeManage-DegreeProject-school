@@ -1,7 +1,7 @@
 ﻿using MediatR;
 
-using TaskTimeManage.MediatR.Models;
+using TaskTimeManage.Core.Models;
 
-namespace TaskTimeManage.MediatR.Commands.WorkTimes;
+namespace TaskTimeManage.Core.Commands.WorkTimes;
 public record CreateWorkTimeCommand(DateTime Time, Guid WorkItemPublicId) : IRequest<WorkTimeModel>;
 

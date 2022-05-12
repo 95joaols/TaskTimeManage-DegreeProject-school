@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TaskTimeManage.MediatR.Models;
+namespace TaskTimeManage.Core.Models;
 public class WorkTimeModel
 {
 	[Key]
