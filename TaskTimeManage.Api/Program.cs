@@ -1,3 +1,5 @@
+using MediatR;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
@@ -8,8 +10,8 @@ using Swashbuckle.AspNetCore.Filters;
 
 using System.Text;
 
-using TaskTimeManage.Api.Middleware;
-using TaskTimeManage.Domain.Context;
+using TaskTimeManage.Core;
+using TaskTimeManage.Core.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,10 +41,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 			};
 		});
 
-builder.Services.AddCoreService();
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddMediatR(typeof(MediatREntrypoint).Assembly);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<TTMDbContext>(option => option.UseNpgsql(connectionString, x => x.MigrationsAssembly("TaskTimeManage.Migrations")));
+builder.Services.AddDbContext<TTMDataAccess>(option => option.UseNpgsql(connectionString, x => x.MigrationsAssembly("TaskTimeManage.Migrations")));
 
 
 var app = builder.Build();
@@ -50,7 +53,7 @@ var app = builder.Build();
 // migrate any database changes on startup (includes initial db creation)
 using (var scope = app.Services.CreateScope())
 {
-	var dataContext = scope.ServiceProvider.GetRequiredService<TTMDbContext>();
+	var dataContext = scope.ServiceProvider.GetRequiredService<TTMDataAccess>();
 	dataContext.Database.Migrate();
 }
 

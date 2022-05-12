@@ -1,14 +1,17 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { WorkItem } from "../../Types/WorkItem";
 import { RootState } from "..";
+import { CreateWorkItemRequest } from "../../Types/Requests/CreateWorkItemRequest";
+import { EditWorkItemRequest } from "../../Types/Requests/EditWorkItemRequest";
 import { WorkTime } from "../../Types/WorkTime";
+import { CreateWorkTimeRequest } from "../../Types/Requests/CreateWorkTimeRequest";
 
 // Define a service using a base URL and expected endpoints
 export const workApi = createApi({
     reducerPath: "workApi",
     tagTypes: ["WorkItem"],
     baseQuery: fetchBaseQuery({
-        baseUrl: "https://localhost/api/WorkItem",
+        baseUrl: "/api/",
 
         prepareHeaders: (headers, { getState }) => {
             // By default, if we have a token in the store, let's use that for authenticated requests
@@ -22,89 +25,62 @@ export const workApi = createApi({
     endpoints: (builder) => ({
         getWorkItemForUser: builder.query<WorkItem[], string>({
             query: (body) => ({
-                url: "/WorkItemForUser/" + body,
+                url: "WorkItem/UserId/" + body,
                 method: "GET",
             }),
-            providesTags: (result) =>
-                result
-                    ? [
-                          ...result.map(({ publicId }) => ({
-                              type: "WorkItem" as const,
-                              publicId,
-                          })),
-                          "WorkItem",
-                      ]
-                    : ["WorkItem"],
+            providesTags: ["WorkItem"],
         }),
         getWorkItem: builder.query<WorkItem, string>({
             query: (body) => ({
-                url: "/WorkItemById/" + body,
+                url: "WorkItem/" + body,
                 method: "GET",
             }),
 
-            providesTags: (result) =>
-                result
-                    ? [
-                          {
-                              type: "WorkItem" as const,
-                              id: result.publicId,
-                          },
-                          "WorkItem",
-                      ]
-                    : ["WorkItem"],
+            providesTags: ["WorkItem"],
         }),
-        CreateWorkItem: builder.mutation<WorkItem, WorkItem>({
+        CreateWorkItem: builder.mutation<WorkItem, CreateWorkItemRequest>({
             query: (body) => ({
-                url: "/",
+                url: "WorkItem/",
                 method: "POST",
                 body: body,
             }),
-            invalidatesTags: () => [{ type: "WorkItem" }],
+            invalidatesTags: ["WorkItem"],
         }),
-        EditWorkItem: builder.mutation<WorkItem, WorkItem>({
+        EditWorkItem: builder.mutation<WorkItem, EditWorkItemRequest>({
             query: (body) => ({
-                url: "/",
+                url: "WorkItem/",
                 method: "PUT",
                 body: body,
             }),
-            invalidatesTags: () => [{ type: "WorkItem" }],
-        }),
-        EditWorkTime: builder.mutation<WorkTime, { workTime: WorkTime; TimeItemPublicId: string }>({
-            query: (body) => ({
-                url: "/WorkTime/" + body.TimeItemPublicId,
-                method: "PUT",
-                body: body.workTime,
-            }),
-            invalidatesTags: () => [{ type: "WorkItem" }],
-        }),
-        CreateWorkTime: builder.mutation<WorkTime, { workTime: WorkTime; publicId: string }>({
-            query: (body) => ({
-                url: "/WorkTime",
-                method: "POST",
-                body: body,
-            }),
-            invalidatesTags: (result, error, arg) => [{ type: "WorkItem", id: arg.publicId }],
-        }),
-        DeleteWorkTime: builder.mutation<boolean, { workTime: WorkTime; TimeItemPublicId: string }>({
-            query: (body) => ({
-                url: "/WorkTime/" + body.TimeItemPublicId,
-                method: "DELETE",
-                body: body.workTime,
-                responseHandler: (response) => {
-                    return response.json();
-                },
-            }),
-            invalidatesTags: () => [{ type: "WorkItem" }],
+            invalidatesTags: ["WorkItem"],
         }),
         DeleteWorkItem: builder.mutation<boolean, string>({
             query: (body) => ({
-                url: "/" + body,
+                url: "WorkItem/" + body,
                 method: "DELETE",
                 responseHandler: (response) => {
                     return response.json();
                 },
             }),
-            invalidatesTags: () => [{ type: "WorkItem" }],
+            invalidatesTags: ["WorkItem"],
+        }),
+        CreateWorkTime: builder.mutation<WorkTime, CreateWorkTimeRequest>({
+            query: (body) => ({
+                url: "WorkTime",
+                method: "POST",
+                body: body,
+            }),
+            invalidatesTags: ["WorkItem"],
+        }),
+        DeleteWorkTime: builder.mutation<boolean, string>({
+            query: (body) => ({
+                url: "WorkTime/" + body,
+                method: "DELETE",
+                responseHandler: (response) => {
+                    return response.json();
+                },
+            }),
+            invalidatesTags: ["WorkItem"],
         }),
     }),
 });
@@ -118,6 +94,5 @@ export const {
     useEditWorkItemMutation,
     useCreateWorkTimeMutation,
     useDeleteWorkTimeMutation,
-    useEditWorkTimeMutation,
     useDeleteWorkItemMutation,
 } = workApi;

@@ -16,10 +16,9 @@ type Props = {
     onClose: () => void;
     isOpen: boolean;
     workTime: WorkTime;
-    activeWorkItem: string;
 };
 
-function RemoveWorkTimeModel({ onClose, isOpen, workTime, activeWorkItem }: Props) {
+function RemoveWorkTimeModel({ onClose, isOpen, workTime }: Props) {
     const [Delete, { data, isLoading, error, isError: createUserError }] = useDeleteWorkTimeMutation();
     const toast = useToast();
 
@@ -40,7 +39,7 @@ function RemoveWorkTimeModel({ onClose, isOpen, workTime, activeWorkItem }: Prop
     }, [data]);
 
     const DeleteWorkTime = () => {
-        Delete({ workTime, TimeItemPublicId: activeWorkItem });
+        Delete(workTime.publicId);
     };
 
     return (

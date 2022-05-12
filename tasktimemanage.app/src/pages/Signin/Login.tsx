@@ -45,9 +45,11 @@ const Login = () => {
 
     return (
         <Formik
-            initialValues={{ name: "", password: "" }}
+            initialValues={{ username: "", password: "" }}
             validationSchema={LoginSchema}
             onSubmit={(values) => {
+                console.log(values);
+
                 Login({ ...values });
             }}
         >
@@ -58,8 +60,8 @@ const Login = () => {
                             Login
                         </Heading>
                         <InputControl
-                            name="name"
-                            label="User name"
+                            name="username"
+                            label="Username"
                             inputProps={{
                                 type: "text",
                                 placeholder: "Enter Username...",
@@ -89,7 +91,7 @@ const Login = () => {
 };
 
 const LoginSchema = Yup.object().shape({
-    name: Yup.string().required("Required"),
+    username: Yup.string().required("Required"),
     password: Yup.string().required("Required"),
 });
 

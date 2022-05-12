@@ -1,4 +1,4 @@
 export declare interface WorkTime {
-    publicId?: string;
+    publicId: string;
     time: Date | string;
 }

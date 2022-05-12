@@ -1,0 +1,32 @@
+﻿using MediatR;
+
+using TaskTimeManage.Core.Commands.WorkTimes;
+using TaskTimeManage.Core.DataAccess;
+using TaskTimeManage.Core.Models;
+using TaskTimeManage.Core.Queries.WorkItems;
+
+namespace TaskTimeManage.Core.Handlers.WorkTimes;
+public class CreateWorkTimeHandler : IRequestHandler<CreateWorkTimeCommand, WorkTimeModel>
+{
+	private readonly TTMDataAccess data;
+	private readonly IMediator mediator;
+
+	public CreateWorkTimeHandler(TTMDataAccess data, IMediator mediator)
+	{
+		this.data = data;
+		this.mediator = mediator;
+	}
+
+	public async Task<WorkTimeModel> Handle(CreateWorkTimeCommand request, CancellationToken cancellationToken)
+	{
+		WorkItemModel? workItemModel = await mediator.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(request.WorkItemPublicId), cancellationToken);
+		if (workItemModel == null)
+			throw new ArgumentException(nameof(workItemModel));
+
+		WorkTimeModel workTimeModel = new WorkTimeModel { Time = request.Time, WorkItem = workItemModel };
+		data.WorkTime.Add(workTimeModel);
+		await data.SaveChangesAsync(cancellationToken);
+
+		return workTimeModel;
+	}
+}

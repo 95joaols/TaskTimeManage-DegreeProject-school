@@ -23,7 +23,7 @@ function UserInfo() {
                     Task Time Manage
                 </Heading>
                 <Button size="xs" borderRadius="md" colorScheme="red" color="white" onClick={signout}>
-                    Logout: {user.name}
+                    Logout: {user.username}
                 </Button>
             </Stack>
         </Box>

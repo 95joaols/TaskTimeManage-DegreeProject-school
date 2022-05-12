@@ -11,34 +11,15 @@ services:
       - "0.0.0.0:80:80"
       - "0.0.0.0:443:443"
     depends_on:
-      - react1
-      - react2
-      - react3
-      - api1
-      - api2
-      - api3
+      - react
+      - api
     networks:
       - TTM 
       
 
-  react1:
+  react:
     image: tasktimemanageapp:dev
-    container_name: tasktimemanage.app1
-    restart: on-failure
-    build:
-      context: ./TaskTimeManage.app
-    expose:
-      - "80"
-    stdin_open: true
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-    volumes:
-      - ./TaskTimeManage.app:/app
-    networks:
-      - TTM  
-  react2:
-    image: tasktimemanageapp:dev
-    container_name: tasktimemanage.app2
+    container_name: tasktimemanage.app
     restart: on-failure
     build:
       context: ./TaskTimeManage.app
@@ -52,51 +33,9 @@ services:
     networks:
       - TTM  
 
-  react3:
-    image: tasktimemanageapp:dev
-    container_name: tasktimemanage.app3
-    restart: on-failure
-    build:
-      context: ./TaskTimeManage.app
-    expose:
-      - "80"
-    stdin_open: true
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-    volumes:
-      - ./TaskTimeManage.app:/app
-    networks:
-      - TTM  
-
-  api1:
+  api:
     image: tasktimemanageapi:dev
-    container_name: Tasktimemanage.api1
-    build:
-      context: .
-      dockerfile: TaskTimeManage.Api/Dockerfile
-    expose:
-      - "80"
-    depends_on:
-      - postgres
-    networks:
-      - TTM  
-      - db 
-  api2:
-    image: tasktimemanageapi:dev
-    container_name: Tasktimemanage.api2
-    build:
-      context: .
-      dockerfile: TaskTimeManage.Api/Dockerfile
-    expose:
-      - "80"
-    depends_on:
-      - postgres
-    networks:
-      - TTM  
-      - db 
-  api3:
-    image: tasktimemanageapi:dev
-    container_name: Tasktimemanage.api3
+    container_name: Tasktimemanage.api
     build:
       context: .
       dockerfile: TaskTimeManage.Api/Dockerfile

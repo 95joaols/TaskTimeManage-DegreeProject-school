@@ -1,10 +1,9 @@
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { EditIcon } from "@chakra-ui/icons";
 import { Box, Button, Center, Flex, Heading, IconButton, Text, useDisclosure } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useCreateWorkTimeMutation, useLazyGetWorkItemQuery } from "../store/api/WorkApi";
 import CalculateTime from "./CalculateTime";
 import EditWorkItemModel from "./Models/EditWorkItemModel";
-import RemoveWorkItemMode from "./Models/RemoveWorkItemMode";
 import WorkTimeList from "./WorkTimeList";
 
 type Props = {
@@ -30,7 +29,7 @@ function WorkItemControl({ activeWorkItem, onReset }: Props) {
             if (!LastActive || activeWorkItem !== LastActive) {
                 if (workTimesCount % 2 === 1) {
                     if (LastActive) {
-                        createWorkTimeApi({ workTime: { time: new Date() }, publicId: LastActive });
+                        createWorkTimeApi({ time: new Date(), workItemPublicId: LastActive });
                     }
                 }
                 setLastActive(activeWorkItem);
@@ -40,7 +39,7 @@ function WorkItemControl({ activeWorkItem, onReset }: Props) {
     }, [activeWorkItem]);
 
     const onPress = () => {
-        createWorkTimeApi({ workTime: { time: new Date() }, publicId: activeWorkItem });
+        createWorkTimeApi({ time: new Date(), workItemPublicId: activeWorkItem });
     };
     return (
         <Box>

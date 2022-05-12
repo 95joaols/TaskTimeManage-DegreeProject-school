@@ -3,13 +3,13 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-using TaskTimeManage.Domain.Entity;
+using TaskTimeManage.Core.Models;
 
 namespace TaskTimeManage.Core.Security;
 
 public class Token
 {
-	public static string GenerateToken(User user, string tokenkey)
+	public static string GenerateToken(UserModel user, string tokenkey)
 	{
 		SymmetricSecurityKey? key = new(System.Text.Encoding.UTF8.GetBytes(
 								tokenkey));

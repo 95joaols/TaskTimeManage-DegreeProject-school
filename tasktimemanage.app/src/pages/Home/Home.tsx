@@ -18,7 +18,11 @@ const Home = () => {
                     onWorkItemPress={setActiveWorkItem}
                     activeWorkItem={ActiveWorkItem}
                 />
-                <CreateWorkItemModel isOpen={isOpen} onClose={onClose} />
+                <CreateWorkItemModel
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    createWorkItem={(wi) => setActiveWorkItem(wi.publicId)}
+                />
             </Flex>
             {ActiveWorkItem && (
                 <Box ml="4" p="2" bg="gray" mt="3" boxShadow="xl" borderRadius="md">

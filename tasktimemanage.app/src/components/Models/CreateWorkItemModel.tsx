@@ -10,17 +10,18 @@ import {
 } from "@chakra-ui/modal";
 import { Button, Input, useToast } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
-import { date } from "yup";
 import { useCreateWorkItemMutation } from "../../store/api/WorkApi";
 import { useAppSelector } from "../../store/hook";
 import { selectLoginUser } from "../../store/state/authSlice";
+import { WorkItem } from "../../Types/WorkItem";
 
 type Props = {
+    createWorkItem: (workItem: WorkItem) => void;
     onClose: () => void;
     isOpen: boolean;
 };
 
-function CreateWorkItemModel({ onClose, isOpen }: Props) {
+function CreateWorkItemModel({ onClose, isOpen, createWorkItem }: Props) {
     const user = useAppSelector(selectLoginUser);
     const firstUpdate = useRef(true);
     const [name, setName] = useState("");
@@ -39,6 +40,7 @@ function CreateWorkItemModel({ onClose, isOpen }: Props) {
 
     useEffect(() => {
         if (data) {
+            createWorkItem(data);
             CustomOnClose();
         }
     }, [data]);
@@ -62,7 +64,7 @@ function CreateWorkItemModel({ onClose, isOpen }: Props) {
 
     const CreateWorkItem = () => {
         if (name && user.id) {
-            createWorkItemApi({ name, userId: user.id! });
+            createWorkItemApi({ name, UserPublicId: user.id! });
         } else {
             setIsError(true);
         }
