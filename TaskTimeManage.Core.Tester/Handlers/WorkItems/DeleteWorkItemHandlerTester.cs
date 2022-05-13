@@ -1,6 +1,6 @@
-﻿using AutoFixture;
+﻿using MediatR;
 
-using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 using Moq;
 
@@ -34,6 +34,8 @@ public class DeleteWorkItemHandlerTester
 
 		//Assert
 		results.Should().BeTrue();
+		(await dataAccess.WorkItem.AnyAsync(x => x.Id == workItemModel.Id)).Should().BeFalse();
+
 	}
 	[Fact]
 	public async Task It_Will_Stopp_If_It_Resive_False()

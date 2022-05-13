@@ -28,7 +28,7 @@ public class CreateNewWorkItemHandler : IRequestHandler<CreateNewWorkItemCommand
 		}
 
 		WorkItemModel workItem = new() {
-			Name = request.Name,
+			Name = request.Name.Trim(),
 			User = userModel,
 		};
 		_ = await data.WorkItem.AddAsync(workItem, cancellationToken);

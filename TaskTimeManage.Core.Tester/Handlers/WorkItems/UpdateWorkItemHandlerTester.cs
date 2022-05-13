@@ -6,7 +6,7 @@ public class UpdateWorkItemHandlerTester
 	[Theory]
 	[InlineData("fght6", "hxfhd5b")]
 	[InlineData("jfjf6t", "xdhfgh5r h")]
-	[InlineData("cfgj jyf", "dfhfbtrbh fh ")]
+	[InlineData("cfgj jyf", "dfhfbtrbh fh")]
 	[InlineData("vbnr6hr7n", "fdhxfh f")]
 	[InlineData("xghntntt67", "nht tr65")]
 	[InlineData("tfdynd", "gfxhtryr6 t")]

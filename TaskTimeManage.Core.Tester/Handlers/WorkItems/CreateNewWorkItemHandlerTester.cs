@@ -1,6 +1,4 @@
-﻿using AutoFixture;
-
-using MediatR;
+﻿using MediatR;
 
 using Moq;
 

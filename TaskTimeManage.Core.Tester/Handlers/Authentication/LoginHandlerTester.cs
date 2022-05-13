@@ -1,6 +1,4 @@
-﻿using AutoFixture;
-
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 
 using TaskTimeManage.Core.Queries.Authentication;
 

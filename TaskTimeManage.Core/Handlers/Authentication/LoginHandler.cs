@@ -18,14 +18,14 @@ public class LoginHandler : IRequestHandler<LoginQuery, string>
 	public async Task<string> Handle(LoginQuery request, CancellationToken cancellationToken)
 	{
 		Guard(request);
-		UserModel? user = await data.User.FirstOrDefaultAsync(u => u.UserName.ToLower() == request.Username.ToLower(), cancellationToken);
+		UserModel? user = await data.User.FirstOrDefaultAsync(u => u.UserName.ToLower() == request.Username.Trim().ToLower(), cancellationToken);
 
 		if (user == null)
 		{
 			throw new LogInWrongException();
 		}
 
-		string hashedPassword = Cryptography.Encrypt(Cryptography.Hash(Cryptography.Encrypt(request.Password, user.Salt), user.Salt), user.Salt);
+		string hashedPassword = Cryptography.Encrypt(Cryptography.Hash(Cryptography.Encrypt(request.Password.Trim(), user.Salt), user.Salt), user.Salt);
 		if (hashedPassword != user.Password)
 		{
 			throw new LogInWrongException();

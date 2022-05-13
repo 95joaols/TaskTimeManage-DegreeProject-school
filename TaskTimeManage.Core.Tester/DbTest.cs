@@ -11,13 +11,13 @@ public class DbTest
 	[Fact]
 	public void TestPostgreSqlUniqueClassOk()
 	{
-		//SETUP
-		//ATTEMPT
-		DbContextOptions<TTMDataAccess>? options = this.CreatePostgreSqlUniqueClassOptions<TTMDataAccess>();
-		using TTMDataAccess? context = new TTMDataAccess(options);
-		//VERIFY
+		//Arrange 
+		//Act
+		using TTMDataAccess dataAccess = this.CreateDataAccess();
+
+		//Assert
 		NpgsqlConnectionStringBuilder? builder = new NpgsqlConnectionStringBuilder(
-				context.Database.GetDbConnection().ConnectionString);
+				dataAccess.Database.GetDbConnection().ConnectionString);
 		builder.Database.ShouldEndWith(GetType().Name);
 	}
 }

@@ -1,12 +1,10 @@
-﻿using AutoFixture;
-
-using TaskTimeManage.Core.Queries.WorkItems;
+﻿using TaskTimeManage.Core.Queries.WorkItems;
 
 namespace TaskTimeManage.Core.Handlers.WorkItems;
 public class GetWorkItemByPublicIdHandlerTester
 {
 	[Fact]
-	public async Task I_Can_Delete_A_WorkItem()
+	public async Task I_Can_Get_A_WorkItem_By_Its_PublicId()
 	{
 		//Arrange 
 		Fixture fixture = new();

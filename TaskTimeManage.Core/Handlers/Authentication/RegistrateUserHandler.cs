@@ -18,7 +18,7 @@ public class RegistrateUserHandler : IRequestHandler<RegistrateUserCommand, User
 	public async Task<UserModel> Handle(RegistrateUserCommand request, CancellationToken cancellationToken)
 	{
 		Guard(request);
-		UserModel? user = await data.User.FirstOrDefaultAsync(u => u.UserName.ToLower() == request.Username.ToLower(), cancellationToken);
+		UserModel? user = await data.User.FirstOrDefaultAsync(u => u.UserName.ToLower() == request.Username.Trim().ToLower(), cancellationToken);
 		if (user != null)
 		{
 			throw new UserAlreadyExistsException();
@@ -35,7 +35,7 @@ public class RegistrateUserHandler : IRequestHandler<RegistrateUserCommand, User
 	private static UserModel CreateUser(RegistrateUserCommand request)
 	{
 		string salt = Cryptography.CreatSalt();
-		string hashedPassword = Cryptography.Encrypt(Cryptography.Hash(Cryptography.Encrypt(request.Password, salt), salt), salt);
+		string hashedPassword = Cryptography.Encrypt(Cryptography.Hash(Cryptography.Encrypt(request.Password.Trim(), salt), salt), salt);
 		UserModel createdUser = new() {
 			UserName = request.Username,
 			Password = hashedPassword,
@@ -46,12 +46,12 @@ public class RegistrateUserHandler : IRequestHandler<RegistrateUserCommand, User
 
 	private static void Guard(RegistrateUserCommand request)
 	{
-		if (string.IsNullOrWhiteSpace(request.Username))
+		if (string.IsNullOrWhiteSpace(request.Username.Trim()))
 		{
 			throw new ArgumentException($"'{nameof(request.Username)}' cannot be null or whitespace.", nameof(request.Username));
 		}
 
-		if (string.IsNullOrWhiteSpace(request.Password))
+		if (string.IsNullOrWhiteSpace(request.Password.Trim()))
 		{
 			throw new ArgumentException($"'{nameof(request.Password)}' cannot be null or whitespace.", nameof(request.Password));
 		}

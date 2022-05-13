@@ -1,6 +1,4 @@
-﻿using AutoFixture;
-
-using TaskTimeManage.Core.Queries.WorkItems;
+﻿using TaskTimeManage.Core.Queries.WorkItems;
 
 namespace TaskTimeManage.Core.Handlers.WorkItems;
 public class GetWorkItemByUserPublicIdHandlerTester

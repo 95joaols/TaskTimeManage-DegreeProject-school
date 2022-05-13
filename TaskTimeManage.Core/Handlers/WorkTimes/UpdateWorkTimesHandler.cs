@@ -28,6 +28,7 @@ public class UpdateWorkTimesHandler : IRequestHandler<UpdateWorkTimesCommand, IE
 		foreach (var workTime in workTimeModels)
 		{
 			workTime.Time = request.WorkTimes.FirstOrDefault(wt => wt.PublicId == workTime.PublicId).time;
+			workTime.Time = workTime.Time > DateTime.UtcNow ?   DateTime.UtcNow : workTime.Time;
 		}
 		await data.SaveChangesAsync(cancellationToken);
 		return workTimeModels;
