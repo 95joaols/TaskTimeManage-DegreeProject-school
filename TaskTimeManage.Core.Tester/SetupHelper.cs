@@ -46,6 +46,22 @@ internal class SetupHelper
 
 		return await createNewWorkItemHandler.Handle(request, CancellationToken.None);
 	}
+	public async Task<WorkItemModel> SetupWorkItemAsync(string name, UserModel userModel)
+	{
+		Fixture fixture = new();
+		string username = fixture.Create<string>();
+		string password = fixture.Create<string>();
+
+
+		Mock<IMediator>? mediatorMoq = new Mock<IMediator>();
+		mediatorMoq.Setup(x => x.Send(new GetUserByPublicIdQuery(userModel.PublicId),
+		It.IsAny<CancellationToken>())).ReturnsAsync(userModel);
+
+		CreateNewWorkItemHandler createNewWorkItemHandler = new(data, mediatorMoq.Object);
+		CreateNewWorkItemCommand request = new(name, userModel.PublicId);
+
+		return await createNewWorkItemHandler.Handle(request, CancellationToken.None);
+	}
 
 }
 internal static class SetupHelperExtensien

@@ -21,7 +21,7 @@ public class RegistrateUserHandlerTester
 		RegistrateUserHandler sut = new(dataAccess);
 		RegistrateUserCommand request = new(username, password);
 		//Act 
-		UserModel userModel = await sut.Handle(request, CancellationToken.None);
+		var userModel = await sut.Handle(request, CancellationToken.None);
 		//Assert 
 		userModel.Should().NotBeNull();
 		userModel.Id.Should().NotBe(0);

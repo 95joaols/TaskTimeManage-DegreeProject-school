@@ -22,7 +22,7 @@ public class GetWorkItemByPublicIdHandlerTester
 		GetWorkItemWithWorkTimeByPublicIdQuery request = new(workItemModel.PublicId);
 
 		//Act
-		WorkItemModel? results = await sut.Handle(request, CancellationToken.None);
+		var results = await sut.Handle(request, CancellationToken.None);
 
 		//Assert
 		results.Should().NotBeNull();

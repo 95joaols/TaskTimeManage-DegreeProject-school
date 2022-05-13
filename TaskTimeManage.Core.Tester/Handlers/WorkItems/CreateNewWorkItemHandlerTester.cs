@@ -33,7 +33,7 @@ public class CreateNewWorkItemHandlerTester
 		CreateNewWorkItemCommand request = new(name, userModel.PublicId);
 
 		//Act
-		WorkItemModel? results = await sut.Handle(request, CancellationToken.None);
+		var results = await sut.Handle(request, CancellationToken.None);
 
 		//Assert
 		results.Should().NotBeNull();

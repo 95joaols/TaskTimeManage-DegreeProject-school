@@ -28,8 +28,10 @@ public class LoginHandlerTester
 
 		LoginHandler sut = new(dataAccess);
 		LoginQuery request = new(username, password, tokenKey);
+
 		//Act 
-		string? results = await sut.Handle(request, CancellationToken.None);
+		var results = await sut.Handle(request, CancellationToken.None);
+
 		//Assert
 		results.Should().NotBeNullOrWhiteSpace();
 	}
