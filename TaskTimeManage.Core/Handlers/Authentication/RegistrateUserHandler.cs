@@ -18,7 +18,7 @@ public class RegistrateUserHandler : IRequestHandler<RegistrateUserCommand, User
 	public async Task<UserModel> Handle(RegistrateUserCommand request, CancellationToken cancellationToken)
 	{
 		Guard(request);
-		UserModel? user = await data.User.FirstOrDefaultAsync(u => u.UserName == request.Username, cancellationToken);
+		UserModel? user = await data.User.FirstOrDefaultAsync(u => u.UserName.ToLower() == request.Username.ToLower(), cancellationToken);
 		if (user != null)
 		{
 			throw new UserAlreadyExistsException();

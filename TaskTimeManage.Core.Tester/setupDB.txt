@@ -1,0 +1,1 @@
+﻿docker run --name testsupport.test -e POSTGRES_PASSWORD=läyflyoyhpågklrtkdogkopsäkhflöhkkdlökho -p 5432:5432 -d postgres
