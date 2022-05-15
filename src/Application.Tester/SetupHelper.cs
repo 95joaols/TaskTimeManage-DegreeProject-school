@@ -103,7 +103,7 @@ static internal class SetupHelperExtensien
 	public static IApplicationDbContext CreateDataAccess<T>(this T caller)
 	{
 		DbContextOptions<ApplicationDbContext>? options = caller.CreatePostgreSqlUniqueClassOptions<ApplicationDbContext>();
-		ApplicationDbContext dataAccess = new ApplicationDbContext(options);
+		ApplicationDbContext dataAccess = new(options);
 		dataAccess.Database.EnsureClean();
 		return dataAccess;
 	}

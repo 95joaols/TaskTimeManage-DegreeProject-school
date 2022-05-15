@@ -20,8 +20,8 @@ public class LoginHandler : IRequestHandler<LoginQuery, string>
 
 	public async Task<string> Handle(LoginQuery request, CancellationToken cancellationToken)
 	{
-		Guard.Against.NullOrWhiteSpace(request.Username);
-		Guard.Against.NullOrWhiteSpace(request.Password);
+		_ = Guard.Against.NullOrWhiteSpace(request.Username);
+		_ = Guard.Against.NullOrWhiteSpace(request.Password);
 
 		User? user = await data.User.FirstOrDefaultAsync(u => u.UserName.ToLower() == request.Username.Trim().ToLower(), cancellationToken);
 

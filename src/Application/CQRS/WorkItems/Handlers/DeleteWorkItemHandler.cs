@@ -24,11 +24,11 @@ public class DeleteWorkItemHandler : IRequestHandler<DeleteWorkItemCommand, bool
 	}
 	public async Task<bool> Handle(DeleteWorkItemCommand request, CancellationToken cancellationToken)
 	{
-		Guard.Against.Default(request.PublicId);
+		_ = Guard.Against.Default(request.PublicId);
 
 		WorkItem? workItem = await data.WorkItem.FirstOrDefaultAsync(t => t.PublicId == request.PublicId, cancellationToken);
 
-		Guard.Against.Null(workItem);
+		_ = Guard.Against.Null(workItem);
 
 		if (!await mediator.Send(new DeleteAllWorkTimesByWorkItemIdCommand(workItem.Id), cancellationToken))
 		{

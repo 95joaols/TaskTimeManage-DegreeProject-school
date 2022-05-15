@@ -22,8 +22,8 @@ public class CreateNewWorkItemHandler : IRequestHandler<CreateNewWorkItemCommand
 
 	public async Task<WorkItem> Handle(CreateNewWorkItemCommand request, CancellationToken cancellationToken)
 	{
-		Guard.Against.NullOrWhiteSpace(request.Name);
-		Guard.Against.Default(request.UserPublicId);
+		_ = Guard.Against.NullOrWhiteSpace(request.Name);
+		_ = Guard.Against.Default(request.UserPublicId);
 
 		User? User = await mediator.Send(new GetUserByPublicIdQuery(request.UserPublicId), cancellationToken);
 		if (User == null)

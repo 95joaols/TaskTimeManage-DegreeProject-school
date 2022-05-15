@@ -20,8 +20,8 @@ public class RegistrateUserHandler : IRequestHandler<RegistrateUserCommand, User
 
 	public async Task<User> Handle(RegistrateUserCommand request, CancellationToken cancellationToken)
 	{
-		Guard.Against.NullOrWhiteSpace(request.Username);
-		Guard.Against.NullOrWhiteSpace(request.Password);
+		_ = Guard.Against.NullOrWhiteSpace(request.Username);
+		_ = Guard.Against.NullOrWhiteSpace(request.Password);
 		User? user = await data.User.FirstOrDefaultAsync(u => u.UserName.ToLower() == request.Username.Trim().ToLower(), cancellationToken);
 		if (user != null)
 		{

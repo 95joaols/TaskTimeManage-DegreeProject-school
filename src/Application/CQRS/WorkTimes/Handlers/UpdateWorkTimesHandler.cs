@@ -17,7 +17,7 @@ public class UpdateWorkTimesHandler : IRequestHandler<UpdateWorkTimesCommand, IE
 	public UpdateWorkTimesHandler(IApplicationDbContext data) => this.data = data;
 	public async Task<IEnumerable<WorkTime>> Handle(UpdateWorkTimesCommand request, CancellationToken cancellationToken)
 	{
-		Guard.Against.NullOrEmpty(request.WorkTimes);
+		_ = Guard.Against.NullOrEmpty(request.WorkTimes);
 
 		IEnumerable<WorkTime> WorkTimes = await data.WorkTime.Where(wt => request.WorkTimes.Select(x => x.PublicId).Contains(wt.PublicId)).ToListAsync(cancellationToken);
 

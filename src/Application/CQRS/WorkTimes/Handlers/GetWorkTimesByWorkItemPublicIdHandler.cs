@@ -18,7 +18,7 @@ public class GetWorkTimesByWorkItemPublicIdHandler : IRequestHandler<GetWorkTime
 
 	public async Task<IEnumerable<WorkTime>> Handle(GetWorkTimesByWorkItemPublicIdQuery request, CancellationToken cancellationToken)
 	{
-		Guard.Against.Default(request.PublicId);
+		_ = Guard.Against.Default(request.PublicId);
 
 		return await data.WorkTime.Where(wt => wt.WorkItem.PublicId == request.PublicId).ToListAsync(cancellationToken: cancellationToken);
 	}

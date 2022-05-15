@@ -51,9 +51,9 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
 
 	}
 
-	public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+	public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
 	{
-		foreach (var entry in ChangeTracker.Entries().Where(x => x.Entity is BaseEntity<int> or BaseEntity<string> or BaseEntity<Guid>))
+		foreach (Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry? entry in ChangeTracker.Entries().Where(x => x.Entity is BaseEntity<int> or BaseEntity<string> or BaseEntity<Guid>))
 		{
 			switch (entry.State)
 			{
@@ -66,7 +66,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
 			}
 		}
 
-		var result = await base.SaveChangesAsync(cancellationToken);
+		int result = await base.SaveChangesAsync(cancellationToken);
 
 		return result;
 	}

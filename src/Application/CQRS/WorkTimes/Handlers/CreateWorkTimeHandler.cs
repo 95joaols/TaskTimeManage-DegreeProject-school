@@ -22,10 +22,10 @@ public class CreateWorkTimeHandler : IRequestHandler<CreateWorkTimeCommand, Work
 
 	public async Task<WorkTime> Handle(CreateWorkTimeCommand request, CancellationToken cancellationToken)
 	{
-		Guard.Against.Default(request.WorkItemPublicId);
+		_ = Guard.Against.Default(request.WorkItemPublicId);
 
 		WorkItem? WorkItem = await mediator.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(request.WorkItemPublicId), cancellationToken);
-		Guard.Against.Null(WorkItem);
+		_ = Guard.Against.Null(WorkItem);
 
 
 		WorkTime WorkTime = new() {

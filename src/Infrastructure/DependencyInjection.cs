@@ -1,33 +1,33 @@
 ﻿using Application.Common.Interfaces;
+using Application.Common.Settings;
 
+using Infrastructure.Persistence;
+
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+
 using System.Text;
-using Application.Common.Settings;
-using Infrastructure.Persistence;
 
 namespace Infrastructure;
 public static class DependencyInjection
 {
 	public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
 	{
-		services.AddDbContext<ApplicationDbContext>(options => {
-			services.AddDbContext<ApplicationDbContext>(options => {
-				options.UseNpgsql(configuration.GetConnectionString("FlowPostgres"),
+		_ = services.AddDbContext<ApplicationDbContext>(options => {
+			_ = services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("FlowPostgres"),
 								b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName))
-						.EnableSensitiveDataLogging();
-			});
-			services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
+						.EnableSensitiveDataLogging());
+			_ = services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
 
 		});
 
-		var appSettingsSection = configuration.GetSection("ApplicationSecuritySettings");
-		var applicationSecuritySettings = appSettingsSection.Get<ApplicationSecuritySettings>();
-		var key = Encoding.ASCII.GetBytes(applicationSecuritySettings.Secret);
-		services.AddAuthentication(x => {
+		IConfigurationSection? appSettingsSection = configuration.GetSection("ApplicationSecuritySettings");
+		ApplicationSecuritySettings? applicationSecuritySettings = appSettingsSection.Get<ApplicationSecuritySettings>();
+		byte[]? key = Encoding.ASCII.GetBytes(applicationSecuritySettings.Secret);
+		_ = services.AddAuthentication(x => {
 			x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 			x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 		})
@@ -41,7 +41,7 @@ public static class DependencyInjection
 				ValidateAudience = false
 			};
 		});
-		services.AddRouting(x => x.LowercaseUrls = true);
+		_ = services.AddRouting(x => x.LowercaseUrls = true);
 
 		return services;
 	}

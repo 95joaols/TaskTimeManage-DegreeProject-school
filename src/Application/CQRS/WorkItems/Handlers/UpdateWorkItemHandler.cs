@@ -18,14 +18,14 @@ public class UpdateWorkItemHandler : IRequestHandler<UpdateWorkItemCommand, Work
 
 	public async Task<WorkItem> Handle(UpdateWorkItemCommand request, CancellationToken cancellationToken)
 	{
-		Guard.Against.Default(request.PublicId);
+		_ = Guard.Against.Default(request.PublicId);
 
-		Guard.Against.NullOrWhiteSpace(request.Name);
+		_ = Guard.Against.NullOrWhiteSpace(request.Name);
 
 
 		WorkItem? workItem = await data.WorkItem.FirstOrDefaultAsync(wi => wi.PublicId == request.PublicId, cancellationToken: cancellationToken);
 
-		Guard.Against.Null(workItem);
+		_ = Guard.Against.Null(workItem);
 
 
 		workItem.Name = request.Name.Trim();

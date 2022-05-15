@@ -19,7 +19,7 @@ public class GetUserByPublicIdHandler : IRequestHandler<GetUserByPublicIdQuery, 
 
 	public async Task<User?> Handle(GetUserByPublicIdQuery request, CancellationToken cancellationToken)
 	{
-		Guard.Against.Default(request.UserPublicId);
+		_ = Guard.Against.Default(request.UserPublicId);
 
 		return await data.User.FirstOrDefaultAsync(u => u.PublicId == request.UserPublicId, cancellationToken);
 	}
