@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Application.CQRS.WorkItems.Commands;
 
-using TaskTimeManage.Core.Commands.WorkItems;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TaskTimeManage.Api.Controllers.WorkItems;
 

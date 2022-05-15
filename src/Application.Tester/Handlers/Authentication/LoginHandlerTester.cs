@@ -1,7 +1,8 @@
-﻿using Application;
-using Application.DataAccess;
-using Application.Models;
-using Application.Queries.Authentication;
+﻿using Application.Common.Interfaces;
+using Application.CQRS.Authentication.Handlers;
+using Application.CQRS.Authentication.Queries;
+
+using Domain.Entities;
 
 using Microsoft.Extensions.Configuration;
 
@@ -12,7 +13,7 @@ public class LoginHandlerTester
 	public async Task I_Can_Login_And_Get_A_Token()
 	{
 		//Arrange 
-		using TTMDataAccess dataAccess = this.CreateDataAccess();
+		using IApplicationDbContext dataAccess = this.CreateDataAccess();
 
 		IConfigurationRoot? config = new ConfigurationBuilder()
 		.SetBasePath(AppContext.BaseDirectory)
@@ -25,7 +26,7 @@ public class LoginHandlerTester
 		string tokenKey = config.GetSection("AppSettings:Token").Value;
 
 		SetupHelper helper = new(dataAccess);
-		UserModel userModel = await helper.SetupUserAsync(username, password);
+		User user = await helper.SetupUserAsync(username, password);
 
 		LoginHandler sut = new(dataAccess);
 		LoginQuery request = new(username, password, tokenKey);

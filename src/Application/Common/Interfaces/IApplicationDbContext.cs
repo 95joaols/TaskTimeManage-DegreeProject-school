@@ -3,7 +3,7 @@
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Common.Interfaces;
-public interface IApplicationDbContext
+public interface IApplicationDbContext : IDisposable
 {
 	DbSet<User> User
 	{

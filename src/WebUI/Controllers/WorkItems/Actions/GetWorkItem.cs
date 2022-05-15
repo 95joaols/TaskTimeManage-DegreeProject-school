@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Application.Common.Models.Generated;
+using Application.CQRS.WorkItems.Queries;
+
+using Domain.Entities;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-using TaskTimeManage.Core.Models;
-using TaskTimeManage.Core.Queries.WorkItems;
-
-using WebUI.Responses;
 
 namespace TaskTimeManage.Api.Controllers.WorkItems;
 
@@ -12,16 +12,16 @@ public partial class WorkItemController
 {
 	[HttpGet("{PublicId}")]
 	[Authorize]
-	public async Task<ActionResult<WorkItemRespons>> GetWorkItemAsync(Guid PublicId, CancellationToken cancellationToken = default)
+	public async Task<ActionResult<WorkItemDto>> GetWorkItemAsync(Guid PublicId, CancellationToken cancellationToken = default)
 	{
 		try
 		{
-			WorkItemModel? workItemModel = await mediator.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(PublicId), cancellationToken);
+			WorkItem? workItem = await mediator.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(PublicId), cancellationToken);
 
-			if (workItemModel != null)
+			if (workItem != null)
 			{
-				workItemModel.WorkTimes = workItemModel.WorkTimes.OrderBy(o => o.Time).ToList();
-				return Ok(mapper.Map<WorkItemWithWorkTime>(workItemModel));
+				workItem.WorkTimes = workItem.WorkTimes.OrderBy(o => o.Time).ToList();
+				return Ok(mapper.Map<WorkItem>(workItem));
 			}
 			else
 			{

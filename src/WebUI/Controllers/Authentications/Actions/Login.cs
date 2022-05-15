@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Application.Common.Exceptions;
+using Application.CQRS.Authentication.Queries;
 
-using TaskTimeManage.Core.Exceptions;
-using TaskTimeManage.Core.Queries.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 using WebUI.Requests;
 

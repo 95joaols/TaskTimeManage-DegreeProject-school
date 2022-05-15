@@ -1,8 +1,9 @@
-﻿using Application;
-using Application.Commands.Authentication;
-using Application.DataAccess;
-using Application.Exceptions;
-using Application.Models;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interfaces;
+using Application.CQRS.Authentication.Commands;
+using Application.CQRS.Authentication.Handlers;
+
+using Domain.Entities;
 
 namespace Application.Handlers.Authentication;
 public class RegistrateUserHandlerTester
@@ -19,18 +20,18 @@ public class RegistrateUserHandlerTester
 	public async Task I_Can_Registrate_A_New_User(string username, string password)
 	{
 		//Arrange 
-		using TTMDataAccess dataAccess = this.CreateDataAccess();
+		using IApplicationDbContext dataAccess = this.CreateDataAccess();
 
 		RegistrateUserHandler sut = new(dataAccess);
 		RegistrateUserCommand request = new(username, password);
 		//Act 
-		UserModel? userModel = await sut.Handle(request, CancellationToken.None);
+		User? user = await sut.Handle(request, CancellationToken.None);
 		//Assert 
-		_ = userModel.Should().NotBeNull();
-		_ = userModel.Id.Should().NotBe(0);
-		_ = userModel.PublicId.Should().NotBeEmpty();
-		_ = userModel.UserName.Should().Be(username);
-		_ = userModel.Password.Should().NotBe(password);
+		_ = user.Should().NotBeNull();
+		_ = user.Id.Should().NotBe(0);
+		_ = user.PublicId.Should().NotBeEmpty();
+		_ = user.UserName.Should().Be(username);
+		_ = user.Password.Should().NotBe(password);
 
 	}
 
@@ -38,7 +39,7 @@ public class RegistrateUserHandlerTester
 	public async Task I_Cant_Create_Multiple_On_Same_Name()
 	{
 		//Arrange
-		using TTMDataAccess? dataAccess = this.CreateDataAccess();
+		using IApplicationDbContext? dataAccess = this.CreateDataAccess();
 
 		RegistrateUserHandler sut = new(dataAccess);
 

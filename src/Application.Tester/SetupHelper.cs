@@ -1,27 +1,31 @@
-﻿using Application.Commands.Authentication;
-using Application.Commands.WorkItems;
-using Application.Commands.WorkTimes;
-using Application.DataAccess;
-using Application.Handlers.Authentication;
-using Application.Handlers.WorkItems;
-using Application.Handlers.WorkTimes;
-using Application.Models;
+﻿using Application.Common.Interfaces;
+using Application.CQRS.Authentication.Commands;
+using Application.CQRS.Authentication.Handlers;
+using Application.CQRS.Authentication.Queries;
+using Application.CQRS.WorkItems.Commands;
+using Application.CQRS.WorkItems.Handlers;
+using Application.CQRS.WorkItems.Queries;
+using Application.CQRS.WorkTimes.Commands;
+using Application.CQRS.WorkTimes.Handlers;
+
+using Domain.Entities;
+
+using Infrastructure.Persistence;
 
 using MediatR;
 
-using Moq;
+using Microsoft.EntityFrameworkCore;
 
-using TaskTimeManage.Core.Queries.Authentication;
-using TaskTimeManage.Core.Queries.WorkItems;
+using Moq;
 
 namespace Application;
 internal class SetupHelper
 {
-	private readonly TTMDataAccess dataAccess;
-	public SetupHelper(TTMDataAccess data) => dataAccess = data;
+	private readonly IApplicationDbContext dataAccess;
+	public SetupHelper(IApplicationDbContext data) => dataAccess = data;
 
 
-	public async Task<UserModel> SetupUserAsync(string username, string password)
+	public async Task<User> SetupUserAsync(string username, string password)
 	{
 		RegistrateUserHandler registrateUserHandler = new(dataAccess);
 		RegistrateUserCommand request = new(username, password);
@@ -29,25 +33,25 @@ internal class SetupHelper
 		return await registrateUserHandler.Handle(request, CancellationToken.None);
 	}
 
-	public async Task<WorkItemModel> SetupWorkItemAsync(string name)
+	public async Task<WorkItem> SetupWorkItemAsync(string name)
 	{
 		Fixture fixture = new();
 		string username = fixture.Create<string>();
 		string password = fixture.Create<string>();
 
 
-		UserModel userModel = await SetupUserAsync(username, password);
+		User User = await SetupUserAsync(username, password);
 
 		Mock<IMediator>? mediatorMoq = new();
-		_ = mediatorMoq.Setup(x => x.Send(new GetUserByPublicIdQuery(userModel.PublicId),
-		It.IsAny<CancellationToken>())).ReturnsAsync(userModel);
+		_ = mediatorMoq.Setup(x => x.Send(new GetUserByPublicIdQuery(User.PublicId),
+		It.IsAny<CancellationToken>())).ReturnsAsync(User);
 
 		CreateNewWorkItemHandler createNewWorkItemHandler = new(dataAccess, mediatorMoq.Object);
-		CreateNewWorkItemCommand request = new(name, userModel.PublicId);
+		CreateNewWorkItemCommand request = new(name, User.PublicId);
 
 		return await createNewWorkItemHandler.Handle(request, CancellationToken.None);
 	}
-	public async Task<WorkItemModel> SetupWorkItemAsync(string name, UserModel userModel)
+	public async Task<WorkItem> SetupWorkItemAsync(string name, User User)
 	{
 		Fixture fixture = new();
 		string username = fixture.Create<string>();
@@ -55,40 +59,40 @@ internal class SetupHelper
 
 
 		Mock<IMediator>? mediatorMoq = new();
-		_ = mediatorMoq.Setup(x => x.Send(new GetUserByPublicIdQuery(userModel.PublicId),
-		It.IsAny<CancellationToken>())).ReturnsAsync(userModel);
+		_ = mediatorMoq.Setup(x => x.Send(new GetUserByPublicIdQuery(User.PublicId),
+		It.IsAny<CancellationToken>())).ReturnsAsync(User);
 
 		CreateNewWorkItemHandler createNewWorkItemHandler = new(dataAccess, mediatorMoq.Object);
-		CreateNewWorkItemCommand request = new(name, userModel.PublicId);
+		CreateNewWorkItemCommand request = new(name, User.PublicId);
 
 		return await createNewWorkItemHandler.Handle(request, CancellationToken.None);
 	}
-	public async Task<WorkTimeModel> SetupWorkTimeAsync(DateTime time)
+	public async Task<WorkTime> SetupWorkTimeAsync(DateTime time)
 	{
 		Fixture fixture = new();
 		string name = fixture.Create<string>();
 
-		WorkItemModel workItemModel = await SetupWorkItemAsync(name);
+		WorkItem WorkItem = await SetupWorkItemAsync(name);
 		Mock<IMediator>? mediatorMoq = new();
-		_ = mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(workItemModel.PublicId),
-		It.IsAny<CancellationToken>())).ReturnsAsync(workItemModel);
+		_ = mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(WorkItem.PublicId),
+		It.IsAny<CancellationToken>())).ReturnsAsync(WorkItem);
 
 		CreateWorkTimeHandler createWorkTimeHandler = new(dataAccess, mediatorMoq.Object);
-		CreateWorkTimeCommand request = new(time, workItemModel.PublicId);
+		CreateWorkTimeCommand request = new(time, WorkItem.PublicId);
 
 		return await createWorkTimeHandler.Handle(request, CancellationToken.None);
 	}
-	public async Task<WorkTimeModel> SetupWorkTimeAsync(DateTime time, WorkItemModel workItemModel)
+	public async Task<WorkTime> SetupWorkTimeAsync(DateTime time, WorkItem WorkItem)
 	{
 		Fixture fixture = new();
 		string name = fixture.Create<string>();
 
 		Mock<IMediator>? mediatorMoq = new();
-		_ = mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(workItemModel.PublicId),
-		It.IsAny<CancellationToken>())).ReturnsAsync(workItemModel);
+		_ = mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(WorkItem.PublicId),
+		It.IsAny<CancellationToken>())).ReturnsAsync(WorkItem);
 
 		CreateWorkTimeHandler createWorkTimeHandler = new(dataAccess, mediatorMoq.Object);
-		CreateWorkTimeCommand request = new(time, workItemModel.PublicId);
+		CreateWorkTimeCommand request = new(time, WorkItem.PublicId);
 
 		return await createWorkTimeHandler.Handle(request, CancellationToken.None);
 	}
@@ -96,10 +100,10 @@ internal class SetupHelper
 }
 static internal class SetupHelperExtensien
 {
-	public static TTMDataAccess CreateDataAccess<T>(this T caller)
+	public static IApplicationDbContext CreateDataAccess<T>(this T caller)
 	{
-		Microsoft.EntityFrameworkCore.DbContextOptions<TTMDataAccess>? options = caller.CreatePostgreSqlUniqueClassOptions<TTMDataAccess>();
-		TTMDataAccess dataAccess = new(options);
+		DbContextOptions<ApplicationDbContext>? options = caller.CreatePostgreSqlUniqueClassOptions<ApplicationDbContext>();
+		ApplicationDbContext dataAccess = new ApplicationDbContext(options);
 		dataAccess.Database.EnsureClean();
 		return dataAccess;
 	}

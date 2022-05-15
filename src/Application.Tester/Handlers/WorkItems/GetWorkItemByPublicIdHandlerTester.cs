@@ -1,7 +1,8 @@
-﻿using Application;
-using Application.DataAccess;
-using Application.Models;
-using Application.Queries.WorkItems;
+﻿using Application.Common.Interfaces;
+using Application.CQRS.WorkItems.Handlers;
+using Application.CQRS.WorkItems.Queries;
+
+using Domain.Entities;
 
 namespace Application.Handlers.WorkItems;
 public class GetWorkItemByPublicIdHandlerTester
@@ -13,20 +14,20 @@ public class GetWorkItemByPublicIdHandlerTester
 		Fixture fixture = new();
 		string name = fixture.Create<string>();
 
-		using TTMDataAccess dataAccess = this.CreateDataAccess();
+		using IApplicationDbContext dataAccess = this.CreateDataAccess();
 
 		SetupHelper helper = new(dataAccess);
-		WorkItemModel workItemModel = await helper.SetupWorkItemAsync(name);
+		WorkItem workItem = await helper.SetupWorkItemAsync(name);
 
 
 		GetWorkItemByPublicIdHandler sut = new(dataAccess);
-		GetWorkItemWithWorkTimeByPublicIdQuery request = new(workItemModel.PublicId);
+		GetWorkItemWithWorkTimeByPublicIdQuery request = new(workItem.PublicId);
 
 		//Act
-		WorkItemModel? results = await sut.Handle(request, CancellationToken.None);
+		WorkItem? results = await sut.Handle(request, CancellationToken.None);
 
 		//Assert
 		_ = results.Should().NotBeNull();
-		_ = results.Should().BeEquivalentTo(workItemModel);
+		_ = results.Should().BeEquivalentTo(workItem);
 	}
 }

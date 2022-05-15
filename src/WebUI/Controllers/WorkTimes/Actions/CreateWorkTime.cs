@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Application.Common.Models.Generated;
+using Application.CQRS.WorkTimes.Commands;
+
+using Domain.Entities;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using TaskTimeManage.Core.Commands.WorkTimes;
-using TaskTimeManage.Core.Models;
-
 using WebUI.Requests;
-using WebUI.Responses;
 
 namespace TaskTimeManage.Api.Controllers.WorkTimes;
 
@@ -14,17 +15,17 @@ public partial class WorkTimeController
 
 	[HttpPost]
 	[Authorize]
-	public async Task<ActionResult<WorkTimeRespons>> CreateWorkTimeAsync([FromBody] CreateWorkTimeRequest request, CancellationToken cancellationToken = default)
+	public async Task<ActionResult<WorkTimeDto>> CreateWorkTimeAsync([FromBody] CreateWorkTimeRequest request, CancellationToken cancellationToken = default)
 	{
 		try
 		{
-			WorkTimeModel workItemModel = await mediator.Send(new CreateWorkTimeCommand(request.Time, request.WorkItemPublicId), cancellationToken);
-			if (workItemModel == null)
+			WorkTime workItem = await mediator.Send(new CreateWorkTimeCommand(request.Time, request.WorkItemPublicId), cancellationToken);
+			if (workItem == null)
 			{
 				return BadRequest();
 			}
 
-			return Created("", mapper.Map<WorkTimeRespons>(workItemModel));
+			return Created("", mapper.Map<WorkTimeDto>(workItem));
 		}
 		catch (Exception ex)
 		{

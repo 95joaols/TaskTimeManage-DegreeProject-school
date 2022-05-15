@@ -1,8 +1,9 @@
-﻿using Application;
-using Application.Commands.WorkTimes;
-using Application.DataAccess;
-using Application.Dto;
-using Application.Models;
+﻿using Application.Common.Interfaces;
+using Application.Common.Models.Generated;
+using Application.CQRS.WorkTimes.Commands;
+using Application.CQRS.WorkTimes.Handlers;
+
+using Domain.Entities;
 
 namespace Application.Handlers.WorkTimes;
 public class UpdateWorkTimesHandlerTester
@@ -22,22 +23,22 @@ public class UpdateWorkTimesHandlerTester
 		string name = fixture.Create<string>();
 		IEnumerable<DateTime> times = fixture.CreateMany<DateTime>(count);
 
-		using TTMDataAccess dataAccess = this.CreateDataAccess();
+		using IApplicationDbContext dataAccess = this.CreateDataAccess();
 
 		SetupHelper helper = new(dataAccess);
-		WorkItemModel workItemModel = await helper.SetupWorkItemAsync(name);
-		List<WorkTimeModel> WorkTimes = new();
+		WorkItem workItem = await helper.SetupWorkItemAsync(name);
+		List<WorkTime> WorkTimes = new();
 
 		foreach (DateTime time in times)
 		{
-			WorkTimes.Add(await helper.SetupWorkTimeAsync(time.ToUniversalTime(), workItemModel));
+			WorkTimes.Add(await helper.SetupWorkTimeAsync(time.ToUniversalTime(), workItem));
 		}
-		List<WorkTimesLight> toUpdate = new();
-		foreach (WorkTimeModel? WorkTime in WorkTimes)
+		List<WorkTimeDto> toUpdate = new();
+		foreach (WorkTime? WorkTime in WorkTimes)
 		{
 			toUpdate.Add(new() {
 				PublicId = WorkTime.PublicId,
-				time = fixture.Create<DateTime>().ToUniversalTime()
+				Time = fixture.Create<DateTime>().ToUniversalTime()
 
 			});
 			;
@@ -48,14 +49,14 @@ public class UpdateWorkTimesHandlerTester
 		UpdateWorkTimesCommand request = new(toUpdate);
 
 		//Act
-		IEnumerable<WorkTimeModel>? results = await sut.Handle(request, CancellationToken.None);
+		IEnumerable<WorkTime>? results = await sut.Handle(request, CancellationToken.None);
 
 		//Assert
 		_ = results.Should().NotBeNullOrEmpty();
 		_ = results.Should().HaveCount(count);
-		foreach (WorkTimeModel? result in results)
+		foreach (WorkTime? result in results)
 		{
-			_ = result.Time.Should().Be(toUpdate.FirstOrDefault(x => x.PublicId == result.PublicId).time);
+			_ = result.Time.Should().Be(toUpdate.FirstOrDefault(x => x.PublicId == result.PublicId).Time);
 		}
 	}
 }

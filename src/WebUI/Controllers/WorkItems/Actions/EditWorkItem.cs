@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Application.Common.Models.Generated;
+using Application.CQRS.WorkItems.Commands;
+using Application.CQRS.WorkTimes.Commands;
+
+using Domain.Entities;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using TaskTimeManage.Core.Commands.WorkItems;
-using TaskTimeManage.Core.Commands.WorkTimes;
-using TaskTimeManage.Core.Models;
-
 using WebUI.Requests;
-using WebUI.Responses;
 
 namespace TaskTimeManage.Api.Controllers.WorkItems;
 
@@ -14,19 +15,19 @@ public partial class WorkItemController
 {
 	[HttpPut]
 	[Authorize]
-	public async Task<ActionResult<WorkItemRespons>> EditWorkItemAsync([FromBody] EditWorkItemRequest reqest, CancellationToken cancellationToken = default)
+	public async Task<ActionResult<WorkItemDto>> EditWorkItemAsync([FromBody] EditWorkItemRequest reqest, CancellationToken cancellationToken = default)
 	{
 		try
 		{
-			WorkItemModel workItemModel = await mediator.Send(new UpdateWorkItemCommand(reqest.PublicId, reqest.Name), cancellationToken);
+			WorkItem workItem = await mediator.Send(new UpdateWorkItemCommand(reqest.PublicId, reqest.Name), cancellationToken);
 			if (reqest.WorkTimes.Any())
 			{
 				_ = await mediator.Send(new UpdateWorkTimesCommand(reqest.WorkTimes), cancellationToken);
 			}
 
-			if (workItemModel != null)
+			if (workItem != null)
 			{
-				return Ok(mapper.Map<WorkItemRespons>(workItemModel));
+				return Ok(mapper.Map<WorkItemDto>(workItem));
 			}
 			else
 			{

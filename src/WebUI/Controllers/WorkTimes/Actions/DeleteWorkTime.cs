@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Application.CQRS.WorkTimes.Commands;
 
-using TaskTimeManage.Core.Commands.WorkTimes;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TaskTimeManage.Api.Controllers.WorkTimes;
 

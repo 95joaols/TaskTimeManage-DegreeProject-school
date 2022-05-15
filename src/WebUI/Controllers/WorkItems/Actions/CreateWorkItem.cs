@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Application.Common.Models.Generated;
+using Application.CQRS.WorkItems.Commands;
+
+using Domain.Entities;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using TaskTimeManage.Core.Commands.WorkItems;
-using TaskTimeManage.Core.Models;
-
 using WebUI.Requests;
-using WebUI.Responses;
 
 namespace TaskTimeManage.Api.Controllers.WorkItems;
 
@@ -13,15 +14,15 @@ public partial class WorkItemController
 {
 	[HttpPost]
 	[Authorize]
-	public async Task<ActionResult<WorkItemRespons>> CreateWorkItemAsync([FromBody] CreateWorkItemRequest reqest, CancellationToken cancellationToken = default)
+	public async Task<ActionResult<WorkItemDto>> CreateWorkItemAsync([FromBody] CreateWorkItemRequest reqest, CancellationToken cancellationToken = default)
 	{
 		try
 		{
-			WorkItemModel workItemModel = await mediator.Send(new CreateNewWorkItemCommand(reqest.Name, reqest.UserPublicId), cancellationToken);
+			WorkItem workItem = await mediator.Send(new CreateNewWorkItemCommand(reqest.Name, reqest.UserPublicId), cancellationToken);
 
-			if (workItemModel != null)
+			if (workItem != null)
 			{
-				return Created("", mapper.Map<WorkItemRespons>(workItemModel));
+				return Created("", mapper.Map<WorkItemDto>(workItem));
 			}
 			else
 			{

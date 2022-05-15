@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Application.Common.Exceptions;
+using Application.CQRS.Authentication.Commands;
 
-using TaskTimeManage.Core.Commands.Authentication;
-using TaskTimeManage.Core.Exceptions;
-using TaskTimeManage.Core.Models;
+using Domain.Entities;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 using WebUI.Requests;
 
@@ -21,7 +22,7 @@ public partial class AuthenticationController
 		}
 		try
 		{
-			UserModel user = await mediator.Send(new RegistrateUserCommand(reqest.Username, reqest.Password), cancellationToken);
+			User user = await mediator.Send(new RegistrateUserCommand(reqest.Username, reqest.Password), cancellationToken);
 			if (user is not null && user.Id != 0)
 			{
 				return Created("", true);

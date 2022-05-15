@@ -1,13 +1,13 @@
-﻿using Application;
-using Application.Commands.WorkItems;
-using Application.DataAccess;
-using Application.Models;
+﻿using Application.Common.Interfaces;
+using Application.CQRS.Authentication.Queries;
+using Application.CQRS.WorkItems.Commands;
+using Application.CQRS.WorkItems.Handlers;
+
+using Domain.Entities;
 
 using MediatR;
 
 using Moq;
-
-using TaskTimeManage.Core.Queries.Authentication;
 
 namespace Application.Handlers.WorkItems;
 public class CreateNewWorkItemHandlerTester
@@ -21,21 +21,21 @@ public class CreateNewWorkItemHandlerTester
 		string username = fixture.Create<string>();
 		string password = fixture.Create<string>();
 
-		using TTMDataAccess dataAccess = this.CreateDataAccess();
+		using IApplicationDbContext dataAccess = this.CreateDataAccess();
 
 
 		SetupHelper helper = new(dataAccess);
-		UserModel userModel = await helper.SetupUserAsync(username, password);
+		User user = await helper.SetupUserAsync(username, password);
 
 		Mock<IMediator>? mediatorMoq = new();
-		_ = mediatorMoq.Setup(x => x.Send(new GetUserByPublicIdQuery(userModel.PublicId),
-		It.IsAny<CancellationToken>())).ReturnsAsync(userModel);
+		_ = mediatorMoq.Setup(x => x.Send(new GetUserByPublicIdQuery(user.PublicId),
+		It.IsAny<CancellationToken>())).ReturnsAsync(user);
 
 		CreateNewWorkItemHandler sut = new(dataAccess, mediatorMoq.Object);
-		CreateNewWorkItemCommand request = new(name, userModel.PublicId);
+		CreateNewWorkItemCommand request = new(name, user.PublicId);
 
 		//Act
-		WorkItemModel? results = await sut.Handle(request, CancellationToken.None);
+		WorkItem? results = await sut.Handle(request, CancellationToken.None);
 
 		//Assert
 		_ = results.Should().NotBeNull();

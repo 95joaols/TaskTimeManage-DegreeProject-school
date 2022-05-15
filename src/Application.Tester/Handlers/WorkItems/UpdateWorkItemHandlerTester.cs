@@ -1,7 +1,8 @@
-﻿using Application;
-using Application.Commands.WorkItems;
-using Application.DataAccess;
-using Application.Models;
+﻿using Application.Common.Interfaces;
+using Application.CQRS.WorkItems.Commands;
+using Application.CQRS.WorkItems.Handlers;
+
+using Domain.Entities;
 
 namespace Application.Handlers.WorkItems;
 public class UpdateWorkItemHandlerTester
@@ -17,17 +18,17 @@ public class UpdateWorkItemHandlerTester
 	public async Task I_Can_Edit_The_Name_On_WorkItem(string oldName, string newName)
 	{
 		//Arrange 
-		using TTMDataAccess dataAccess = this.CreateDataAccess();
+		using IApplicationDbContext dataAccess = this.CreateDataAccess();
 
 
 		SetupHelper helper = new(dataAccess);
-		WorkItemModel workItemModel = await helper.SetupWorkItemAsync(oldName);
+		WorkItem workItem = await helper.SetupWorkItemAsync(oldName);
 
 		UpdateWorkItemHandler sut = new(dataAccess);
-		UpdateWorkItemCommand request = new(workItemModel.PublicId, newName);
+		UpdateWorkItemCommand request = new(workItem.PublicId, newName);
 
 		//Act
-		WorkItemModel? results = await sut.Handle(request, CancellationToken.None);
+		WorkItem? results = await sut.Handle(request, CancellationToken.None);
 
 		//Assert
 		_ = results.Should().NotBeNull();

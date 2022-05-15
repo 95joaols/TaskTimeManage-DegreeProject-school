@@ -1,7 +1,8 @@
-﻿using Application;
-using Application.Commands.WorkTimes;
-using Application.DataAccess;
-using Application.Models;
+﻿using Application.Common.Interfaces;
+using Application.CQRS.WorkTimes.Commands;
+using Application.CQRS.WorkTimes.Handlers;
+
+using Domain.Entities;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -23,23 +24,23 @@ public class DeleteAllWorkTimesByWorkItemIdHandlerTester
 		string name = fixture.Create<string>();
 		IEnumerable<DateTime> times = fixture.CreateMany<DateTime>(count);
 
-		using TTMDataAccess dataAccess = this.CreateDataAccess();
+		using IApplicationDbContext dataAccess = this.CreateDataAccess();
 
 		SetupHelper helper = new(dataAccess);
-		WorkItemModel workItemModel = await helper.SetupWorkItemAsync(name);
+		WorkItem workItem = await helper.SetupWorkItemAsync(name);
 		foreach (DateTime time in times)
 		{
-			_ = await helper.SetupWorkTimeAsync(time.ToUniversalTime(), workItemModel);
+			_ = await helper.SetupWorkTimeAsync(time.ToUniversalTime(), workItem);
 		}
 
 		DeleteAllWorkTimesByWorkItemIdHandler sut = new(dataAccess);
-		DeleteAllWorkTimesByWorkItemIdCommand request = new(workItemModel.Id);
+		DeleteAllWorkTimesByWorkItemIdCommand request = new(workItem.Id);
 
 		//Act
 		bool results = await sut.Handle(request, CancellationToken.None);
 
 		//Assert
 		_ = results.Should().BeTrue();
-		_ = (await dataAccess.WorkTime.AnyAsync(x => x.WorkItemId == workItemModel.Id)).Should().BeFalse();
+		_ = (await dataAccess.WorkTime.AnyAsync(x => x.WorkItemId == workItem.Id)).Should().BeFalse();
 	}
 }

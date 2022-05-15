@@ -1,7 +1,8 @@
-﻿using Application;
-using Application.DataAccess;
-using Application.Models;
-using Application.Queries.WorkTimes;
+﻿using Application.Common.Interfaces;
+using Application.CQRS.WorkTimes.Handlers;
+using Application.CQRS.WorkTimes.Queries;
+
+using Domain.Entities;
 
 namespace Application.Handlers.WorkTimes;
 public class GetWorkTimesByWorkItemPublicIdHandlerTester
@@ -20,23 +21,23 @@ public class GetWorkTimesByWorkItemPublicIdHandlerTester
 		string name = fixture.Create<string>();
 		IEnumerable<DateTime> times = fixture.CreateMany<DateTime>(count);
 
-		using TTMDataAccess dataAccess = this.CreateDataAccess();
+		using IApplicationDbContext dataAccess = this.CreateDataAccess();
 
 		SetupHelper helper = new(dataAccess);
-		WorkItemModel workItemModel = await helper.SetupWorkItemAsync(name);
-		List<WorkTimeModel> WorkTimes = new();
+		WorkItem workItem = await helper.SetupWorkItemAsync(name);
+		List<WorkTime> WorkTimes = new();
 
 		foreach (DateTime time in times)
 		{
-			WorkTimes.Add(await helper.SetupWorkTimeAsync(time.ToUniversalTime(), workItemModel));
+			WorkTimes.Add(await helper.SetupWorkTimeAsync(time.ToUniversalTime(), workItem));
 		}
 
 
 		GetWorkTimesByWorkItemPublicIdHandler sut = new(dataAccess);
-		GetWorkTimesByWorkItemPublicIdQuery request = new(workItemModel.PublicId);
+		GetWorkTimesByWorkItemPublicIdQuery request = new(workItem.PublicId);
 
 		//Act
-		IEnumerable<WorkTimeModel>? results = await sut.Handle(request, CancellationToken.None);
+		IEnumerable<WorkTime>? results = await sut.Handle(request, CancellationToken.None);
 
 		//Assert
 		_ = results.Should().NotBeNullOrEmpty();

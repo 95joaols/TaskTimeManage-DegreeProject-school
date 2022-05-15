@@ -6,7 +6,7 @@ using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Application.DataAccess;
+namespace Infrastructure.Persistence;
 
 public class ApplicationDbContext : DbContext, IApplicationDbContext
 {

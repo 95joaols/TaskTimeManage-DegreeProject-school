@@ -23,8 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TaskTimeManage.Core\TaskTimeManage.Core.csproj" />
-    <ProjectReference Include="..\TaskTimeManage.Migrations\TaskTimeManage.Migrations.csproj" />
+    <ProjectReference Include="..\Application\Application.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿using TaskTimeManage.Core.Dto;
+﻿using Application.Common.Models.Generated;
 
 namespace WebUI.Requests;
 
@@ -12,7 +12,7 @@ public class EditWorkItemRequest
 	{
 		get; set;
 	}
-	public IEnumerable<WorkTimesLight>? WorkTimes
+	public IEnumerable<WorkTimeDto>? WorkTimes
 	{
 		get; set;
 	}

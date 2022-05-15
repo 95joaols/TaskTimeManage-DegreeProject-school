@@ -1,7 +1,8 @@
-﻿using Application;
-using Application.Commands.WorkTimes;
-using Application.DataAccess;
-using Application.Models;
+﻿using Application.Common.Interfaces;
+using Application.CQRS.WorkTimes.Commands;
+using Application.CQRS.WorkTimes.Handlers;
+
+using Domain.Entities;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -17,20 +18,20 @@ public class DeleteWorkTimeByPublicIdHandlerTester
 		string name = fixture.Create<string>();
 		DateTime time = fixture.Create<DateTime>();
 
-		using TTMDataAccess dataAccess = this.CreateDataAccess();
+		using IApplicationDbContext dataAccess = this.CreateDataAccess();
 
 		SetupHelper helper = new(dataAccess);
-		WorkTimeModel workTimeModel = await helper.SetupWorkTimeAsync(time.ToUniversalTime());
+		WorkTime workTime = await helper.SetupWorkTimeAsync(time.ToUniversalTime());
 
 
 		DeleteWorkTimeByPublicIdHandler sut = new(dataAccess);
-		DeleteWorkTimeByPublicIdCommand request = new(workTimeModel.PublicId);
+		DeleteWorkTimeByPublicIdCommand request = new(workTime.PublicId);
 
 		//Act
 		bool results = await sut.Handle(request, CancellationToken.None);
 
 		//Assert
 		_ = results.Should().BeTrue();
-		_ = (await dataAccess.WorkTime.AnyAsync(x => x.Id == workTimeModel.Id)).Should().BeFalse();
+		_ = (await dataAccess.WorkTime.AnyAsync(x => x.Id == workTime.Id)).Should().BeFalse();
 	}
 }

@@ -1,13 +1,13 @@
-﻿using Application;
-using Application.Commands.WorkTimes;
-using Application.DataAccess;
-using Application.Models;
+﻿using Application.Common.Interfaces;
+using Application.CQRS.WorkItems.Queries;
+using Application.CQRS.WorkTimes.Commands;
+using Application.CQRS.WorkTimes.Handlers;
+
+using Domain.Entities;
 
 using MediatR;
 
 using Moq;
-
-using TaskTimeManage.Core.Queries.WorkItems;
 
 namespace Application.Handlers.WorkTimes;
 public class CreateWorkTimeHandlerTester
@@ -23,21 +23,21 @@ public class CreateWorkTimeHandlerTester
 		DateTime time = fixture.Create<DateTime>().ToUniversalTime();
 
 
-		using TTMDataAccess dataAccess = this.CreateDataAccess();
+		using IApplicationDbContext dataAccess = this.CreateDataAccess();
 
 
 		SetupHelper helper = new(dataAccess);
-		WorkItemModel workItemModel = await helper.SetupWorkItemAsync(name);
+		WorkItem workItem = await helper.SetupWorkItemAsync(name);
 
 		Mock<IMediator>? mediatorMoq = new();
-		_ = mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(workItemModel.PublicId),
-		It.IsAny<CancellationToken>())).ReturnsAsync(workItemModel);
+		_ = mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(workItem.PublicId),
+		It.IsAny<CancellationToken>())).ReturnsAsync(workItem);
 
 		CreateWorkTimeHandler sut = new(dataAccess, mediatorMoq.Object);
-		CreateWorkTimeCommand request = new(time, workItemModel.PublicId);
+		CreateWorkTimeCommand request = new(time, workItem.PublicId);
 
 		//Act
-		WorkTimeModel? results = await sut.Handle(request, CancellationToken.None);
+		WorkTime? results = await sut.Handle(request, CancellationToken.None);
 
 		//Assert
 		_ = results.Should().NotBeNull();

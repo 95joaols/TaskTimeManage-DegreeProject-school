@@ -1,7 +1,8 @@
-﻿using Application;
-using Application.DataAccess;
-using Application.Models;
-using Application.Queries.WorkItems;
+﻿using Application.Common.Interfaces;
+using Application.CQRS.WorkItems.Handlers;
+using Application.CQRS.WorkItems.Queries;
+
+using Domain.Entities;
 
 namespace Application.Handlers.WorkItems;
 public class GetWorkItemByUserPublicIdHandlerTester
@@ -20,21 +21,21 @@ public class GetWorkItemByUserPublicIdHandlerTester
 		IEnumerable<string> names = fixture.CreateMany<string>(count);
 		string username = fixture.Create<string>();
 		string password = fixture.Create<string>();
-		using TTMDataAccess dataAccess = this.CreateDataAccess();
-		List<WorkItemModel> workItems = new();
+		using IApplicationDbContext dataAccess = this.CreateDataAccess();
+		List<WorkItem> workItems = new();
 
 
 		SetupHelper helper = new(dataAccess);
-		UserModel userModel = await helper.SetupUserAsync(username, password);
+		User user = await helper.SetupUserAsync(username, password);
 		foreach (string? name in names)
 		{
-			workItems.Add(await helper.SetupWorkItemAsync(name, userModel));
+			workItems.Add(await helper.SetupWorkItemAsync(name, user));
 		}
 		GetWorkItemByUserPublicIdHandler sut = new(dataAccess);
-		GetWorkItemTimeByUserPublicIdQuery request = new(userModel.PublicId);
+		GetWorkItemTimeByUserPublicIdQuery request = new(user.PublicId);
 
 		//Act
-		IEnumerable<WorkItemModel>? results = await sut.Handle(request, CancellationToken.None);
+		IEnumerable<WorkItem>? results = await sut.Handle(request, CancellationToken.None);
 
 		//Assert
 		_ = results.Should().NotBeNullOrEmpty();
