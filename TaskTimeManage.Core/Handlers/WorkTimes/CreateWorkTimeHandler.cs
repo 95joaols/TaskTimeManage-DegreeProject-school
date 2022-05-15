@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Ardalis.GuardClauses;
+
+using MediatR;
 
 using TaskTimeManage.Core.Commands.WorkTimes;
 using TaskTimeManage.Core.DataAccess;
@@ -19,11 +21,11 @@ public class CreateWorkTimeHandler : IRequestHandler<CreateWorkTimeCommand, Work
 
 	public async Task<WorkTimeModel> Handle(CreateWorkTimeCommand request, CancellationToken cancellationToken)
 	{
+		Guard.Against.Default(request.WorkItemPublicId);
+
 		WorkItemModel? workItemModel = await mediator.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(request.WorkItemPublicId), cancellationToken);
-		if (workItemModel == null)
-		{
-			throw new ArgumentException(nameof(workItemModel));
-		}
+		Guard.Against.Null(workItemModel);
+
 
 		WorkTimeModel workTimeModel = new() {
 			Time = request.Time,

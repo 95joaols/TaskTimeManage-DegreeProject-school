@@ -1,11 +1,13 @@
-﻿using MediatR;
+﻿using Ardalis.GuardClauses;
+
+using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
 using TaskTimeManage.Core.Commands.WorkItems;
 using TaskTimeManage.Core.Commands.WorkTimes;
 using TaskTimeManage.Core.DataAccess;
-
+using TaskTimeManage.Core.Exceptions;
 using TaskTimeManage.Core.Models;
 
 namespace TaskTimeManage.Core.Handlers.WorkItems;
@@ -21,16 +23,15 @@ public class DeleteWorkItemHandler : IRequestHandler<DeleteWorkItemCommand, bool
 	}
 	public async Task<bool> Handle(DeleteWorkItemCommand request, CancellationToken cancellationToken)
 	{
+		Guard.Against.Default(request.PublicId);
 
 		WorkItemModel? workItem = await data.WorkItem.FirstOrDefaultAsync(t => t.PublicId == request.PublicId, cancellationToken);
 
-		if (workItem is null)
-		{
-			throw new ArgumentNullException(nameof(workItem));
-		}
+		Guard.Against.Null(workItem);
+
 		if (!await mediator.Send(new DeleteAllWorkTimesByWorkItemIdCommand(workItem.Id), cancellationToken))
 		{
-			throw new Exception("Error Cant delete All Work Times");
+			throw new UnableToDeleteWorkTimesException();
 		}
 
 		_ = data.WorkItem.Remove(workItem);

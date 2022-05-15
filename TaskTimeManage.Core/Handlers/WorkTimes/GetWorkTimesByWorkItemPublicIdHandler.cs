@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Ardalis.GuardClauses;
+
+using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -15,10 +17,7 @@ public class GetWorkTimesByWorkItemPublicIdHandler : IRequestHandler<GetWorkTime
 
 	public async Task<IEnumerable<WorkTimeModel>> Handle(GetWorkTimesByWorkItemPublicIdQuery request, CancellationToken cancellationToken)
 	{
-		if (request.PublicId == Guid.Empty)
-		{
-			throw new ArgumentNullException(nameof(request.PublicId));
-		}
+		Guard.Against.Default(request.PublicId);
 
 		return await data.WorkTime.Where(wt => wt.WorkItem.PublicId == request.PublicId).ToListAsync(cancellationToken: cancellationToken);
 	}

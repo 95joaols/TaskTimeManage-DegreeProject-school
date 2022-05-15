@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Ardalis.GuardClauses;
+
+using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -16,10 +18,8 @@ public class GetUserByPublicIdHandler : IRequestHandler<GetUserByPublicIdQuery, 
 
 	public async Task<UserModel?> Handle(GetUserByPublicIdQuery request, CancellationToken cancellationToken)
 	{
-		if (request.UserPublicId == Guid.Empty)
-		{
-			throw new ArgumentNullException($"'{nameof(request.UserPublicId)}' cannot be null or whitespace.", nameof(request.UserPublicId));
-		}
+		Guard.Against.Default(request.UserPublicId);
+
 		return await data.User.FirstOrDefaultAsync(u => u.PublicId == request.UserPublicId, cancellationToken);
 	}
 }

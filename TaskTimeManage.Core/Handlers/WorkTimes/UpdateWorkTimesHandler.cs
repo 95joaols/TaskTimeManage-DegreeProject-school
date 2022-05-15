@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Ardalis.GuardClauses;
+
+using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -14,14 +16,7 @@ public class UpdateWorkTimesHandler : IRequestHandler<UpdateWorkTimesCommand, IE
 	public UpdateWorkTimesHandler(TTMDataAccess data) => this.data = data;
 	public async Task<IEnumerable<WorkTimeModel>> Handle(UpdateWorkTimesCommand request, CancellationToken cancellationToken)
 	{
-		if (request.WorkTimes == null)
-		{
-			throw new ArgumentNullException(nameof(request.WorkTimes));
-		}
-		if (!request.WorkTimes.Any())
-		{
-			throw new ArgumentException(nameof(request.WorkTimes));
-		}
+		Guard.Against.NullOrEmpty(request.WorkTimes);
 
 		IEnumerable<WorkTimeModel> workTimeModels = await data.WorkTime.Where(wt => request.WorkTimes.Select(x => x.PublicId).Contains(wt.PublicId)).ToListAsync(cancellationToken);
 

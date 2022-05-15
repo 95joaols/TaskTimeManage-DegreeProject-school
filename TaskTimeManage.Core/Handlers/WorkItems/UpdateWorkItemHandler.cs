@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Ardalis.GuardClauses;
+
+using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -15,21 +17,15 @@ public class UpdateWorkItemHandler : IRequestHandler<UpdateWorkItemCommand, Work
 
 	public async Task<WorkItemModel> Handle(UpdateWorkItemCommand request, CancellationToken cancellationToken)
 	{
-		if (request.PublicId == Guid.Empty)
-		{
-			throw new ArgumentNullException($"'{nameof(request.PublicId)}' cannot be null", nameof(request.PublicId));
-		}
+		Guard.Against.Default(request.PublicId);
 
-		if (string.IsNullOrWhiteSpace(request.Name.Trim()))
-		{
-			throw new ArgumentNullException($"'{nameof(request.Name)}' cannot be null", nameof(request.Name));
-		}
+		Guard.Against.NullOrWhiteSpace(request.Name);
+
 
 		WorkItemModel? workItem = await data.WorkItem.FirstOrDefaultAsync(wi => wi.PublicId == request.PublicId, cancellationToken: cancellationToken);
-		if (workItem == null)
-		{
-			throw new ArgumentNullException(nameof(workItem));
-		}
+
+		Guard.Against.Null(workItem);
+
 
 		workItem.Name = request.Name.Trim();
 		_ = await data.SaveChangesAsync(cancellationToken);

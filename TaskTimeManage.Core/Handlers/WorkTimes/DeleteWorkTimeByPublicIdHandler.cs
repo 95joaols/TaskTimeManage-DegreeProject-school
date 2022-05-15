@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Ardalis.GuardClauses;
+
+using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -16,12 +18,11 @@ public class DeleteWorkTimeByPublicIdHandler : IRequestHandler<DeleteWorkTimeByP
 
 	public async Task<bool> Handle(DeleteWorkTimeByPublicIdCommand request, CancellationToken cancellationToken)
 	{
-		WorkTimeModel? workTimeModel = await data.WorkTime.FirstOrDefaultAsync(x => x.PublicId == request.PublicId, cancellationToken: cancellationToken);
+		Guard.Against.Default(request.PublicId);
 
-		if (workTimeModel == null)
-		{
-			throw new ArgumentException(nameof(workTimeModel));
-		}
+		WorkTimeModel? workTimeModel = await data.WorkTime.FirstOrDefaultAsync(x => x.PublicId == request.PublicId, cancellationToken: cancellationToken);
+		Guard.Against.Null(workTimeModel);
+
 
 		_ = data.WorkTime.Remove(workTimeModel);
 		return await data.SaveChangesAsync(cancellationToken) == 1;

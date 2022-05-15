@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Ardalis.GuardClauses;
+
+using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +19,8 @@ public class RegistrateUserHandler : IRequestHandler<RegistrateUserCommand, User
 
 	public async Task<UserModel> Handle(RegistrateUserCommand request, CancellationToken cancellationToken)
 	{
-		Guard(request);
+		Guard.Against.NullOrWhiteSpace(request.Username);
+		Guard.Against.NullOrWhiteSpace(request.Password);
 		UserModel? user = await data.User.FirstOrDefaultAsync(u => u.UserName.ToLower() == request.Username.Trim().ToLower(), cancellationToken);
 		if (user != null)
 		{
@@ -42,18 +45,5 @@ public class RegistrateUserHandler : IRequestHandler<RegistrateUserCommand, User
 			Salt = salt,
 		};
 		return createdUser;
-	}
-
-	private static void Guard(RegistrateUserCommand request)
-	{
-		if (string.IsNullOrWhiteSpace(request.Username.Trim()))
-		{
-			throw new ArgumentException($"'{nameof(request.Username)}' cannot be null or whitespace.", nameof(request.Username));
-		}
-
-		if (string.IsNullOrWhiteSpace(request.Password.Trim()))
-		{
-			throw new ArgumentException($"'{nameof(request.Password)}' cannot be null or whitespace.", nameof(request.Password));
-		}
 	}
 }

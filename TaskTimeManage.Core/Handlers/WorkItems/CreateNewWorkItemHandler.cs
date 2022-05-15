@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Ardalis.GuardClauses;
+
+using MediatR;
 
 using TaskTimeManage.Core.Commands.WorkItems;
 using TaskTimeManage.Core.DataAccess;
@@ -20,7 +22,9 @@ public class CreateNewWorkItemHandler : IRequestHandler<CreateNewWorkItemCommand
 
 	public async Task<WorkItemModel> Handle(CreateNewWorkItemCommand request, CancellationToken cancellationToken)
 	{
-		Guard(request);
+		Guard.Against.NullOrWhiteSpace(request.Name);
+		Guard.Against.Default(request.UserPublicId);
+
 		UserModel? userModel = await mediator.Send(new GetUserByPublicIdQuery(request.UserPublicId), cancellationToken);
 		if (userModel == null)
 		{
@@ -36,17 +40,5 @@ public class CreateNewWorkItemHandler : IRequestHandler<CreateNewWorkItemCommand
 
 
 		return workItem;
-	}
-
-	private static void Guard(CreateNewWorkItemCommand request)
-	{
-		if (string.IsNullOrWhiteSpace(request.Name))
-		{
-			throw new ArgumentException($"'{nameof(request.Name)}' cannot be null or whitespace.", nameof(request.Name));
-		}
-		if (request.UserPublicId == Guid.Empty)
-		{
-			throw new ArgumentNullException($"'{nameof(request.UserPublicId)}' cannot be null or whitespace.", nameof(request.UserPublicId));
-		}
 	}
 }

@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Ardalis.GuardClauses;
+
+using MediatR;
 
 using TaskTimeManage.Core.Commands.WorkTimes;
 using TaskTimeManage.Core.DataAccess;
@@ -13,10 +15,7 @@ public class DeleteAllWorkTimesByWorkItemIdHandler : IRequestHandler<DeleteAllWo
 
 	public async Task<bool> Handle(DeleteAllWorkTimesByWorkItemIdCommand request, CancellationToken cancellationToken)
 	{
-		if (request.WorkItemId == 0)
-		{
-			throw new ArgumentOutOfRangeException(nameof(request.WorkItemId));
-		}
+		Guard.Against.NegativeOrZero(request.WorkItemId);
 
 		data.WorkTime.RemoveRange(data.WorkTime.Where(wt => wt.WorkItemId == request.WorkItemId));
 
