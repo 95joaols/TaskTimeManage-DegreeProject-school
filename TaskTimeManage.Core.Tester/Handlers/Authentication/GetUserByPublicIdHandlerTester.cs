@@ -18,10 +18,10 @@ public class GetUserByPublicIdHandlerTester
 		GetUserByPublicIdQuery request = new(userModel.PublicId);
 
 		//Act 
-		var results = await sut.Handle(request, CancellationToken.None);
+		UserModel? results = await sut.Handle(request, CancellationToken.None);
 
 		//Assert
-		results.Should().NotBeNull();
-		results.Should().BeEquivalentTo(userModel);
+		_ = results.Should().NotBeNull();
+		_ = results.Should().BeEquivalentTo(userModel);
 	}
 }

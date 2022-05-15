@@ -19,9 +19,11 @@ public class DeleteWorkTimeByPublicIdHandler : IRequestHandler<DeleteWorkTimeByP
 		WorkTimeModel? workTimeModel = await data.WorkTime.FirstOrDefaultAsync(x => x.PublicId == request.PublicId, cancellationToken: cancellationToken);
 
 		if (workTimeModel == null)
+		{
 			throw new ArgumentException(nameof(workTimeModel));
+		}
 
-		data.WorkTime.Remove(workTimeModel);
+		_ = data.WorkTime.Remove(workTimeModel);
 		return await data.SaveChangesAsync(cancellationToken) == 1;
 	}
 }

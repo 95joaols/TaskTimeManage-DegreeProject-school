@@ -20,10 +20,10 @@ public class GetWorkItemByPublicIdHandlerTester
 		GetWorkItemWithWorkTimeByPublicIdQuery request = new(workItemModel.PublicId);
 
 		//Act
-		var results = await sut.Handle(request, CancellationToken.None);
+		WorkItemModel? results = await sut.Handle(request, CancellationToken.None);
 
 		//Assert
-		results.Should().NotBeNull();
-		results.Should().BeEquivalentTo(workItemModel);
+		_ = results.Should().NotBeNull();
+		_ = results.Should().BeEquivalentTo(workItemModel);
 	}
 }

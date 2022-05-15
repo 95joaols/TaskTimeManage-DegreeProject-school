@@ -25,20 +25,20 @@ public class CreateWorkTimeHandlerTester
 		SetupHelper helper = new(dataAccess);
 		WorkItemModel workItemModel = await helper.SetupWorkItemAsync(name);
 
-		Mock<IMediator>? mediatorMoq = new Mock<IMediator>();
-		mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(workItemModel.PublicId),
+		Mock<IMediator>? mediatorMoq = new();
+		_ = mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(workItemModel.PublicId),
 		It.IsAny<CancellationToken>())).ReturnsAsync(workItemModel);
 
 		CreateWorkTimeHandler sut = new(dataAccess, mediatorMoq.Object);
 		CreateWorkTimeCommand request = new(time, workItemModel.PublicId);
 
 		//Act
-		var results = await sut.Handle(request, CancellationToken.None);
+		WorkTimeModel? results = await sut.Handle(request, CancellationToken.None);
 
 		//Assert
-		results.Should().NotBeNull();
-		results.Id.Should().NotBe(0);
-		results.PublicId.Should().NotBeEmpty();
-		results.Time.Should().Be(time);
+		_ = results.Should().NotBeNull();
+		_ = results.Id.Should().NotBe(0);
+		_ = results.PublicId.Should().NotBeEmpty();
+		_ = results.Time.Should().Be(time);
 	}
 }

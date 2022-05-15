@@ -21,11 +21,16 @@ public class CreateWorkTimeHandler : IRequestHandler<CreateWorkTimeCommand, Work
 	{
 		WorkItemModel? workItemModel = await mediator.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(request.WorkItemPublicId), cancellationToken);
 		if (workItemModel == null)
+		{
 			throw new ArgumentException(nameof(workItemModel));
+		}
 
-		WorkTimeModel workTimeModel = new WorkTimeModel { Time = request.Time, WorkItem = workItemModel };
-		data.WorkTime.Add(workTimeModel);
-		await data.SaveChangesAsync(cancellationToken);
+		WorkTimeModel workTimeModel = new() {
+			Time = request.Time,
+			WorkItem = workItemModel
+		};
+		_ = data.WorkTime.Add(workTimeModel);
+		_ = await data.SaveChangesAsync(cancellationToken);
 
 		return workTimeModel;
 	}

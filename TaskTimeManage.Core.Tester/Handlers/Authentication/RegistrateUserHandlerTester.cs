@@ -21,13 +21,13 @@ public class RegistrateUserHandlerTester
 		RegistrateUserHandler sut = new(dataAccess);
 		RegistrateUserCommand request = new(username, password);
 		//Act 
-		var userModel = await sut.Handle(request, CancellationToken.None);
+		UserModel? userModel = await sut.Handle(request, CancellationToken.None);
 		//Assert 
-		userModel.Should().NotBeNull();
-		userModel.Id.Should().NotBe(0);
-		userModel.PublicId.Should().NotBeEmpty();
-		userModel.UserName.Should().Be(username);
-		userModel.Password.Should().NotBe(password);
+		_ = userModel.Should().NotBeNull();
+		_ = userModel.Id.Should().NotBe(0);
+		_ = userModel.PublicId.Should().NotBeEmpty();
+		_ = userModel.UserName.Should().Be(username);
+		_ = userModel.Password.Should().NotBe(password);
 
 	}
 
@@ -40,11 +40,11 @@ public class RegistrateUserHandlerTester
 		RegistrateUserHandler sut = new(dataAccess);
 
 		RegistrateUserCommand request = new("Test", "Test");
-		await sut.Handle(request, CancellationToken.None);
+		_ = await sut.Handle(request, CancellationToken.None);
 
 		//Act
 		//Assert
-		await sut.Invoking(s => s.Handle(request, CancellationToken.None)).Should().ThrowAsync<UserAlreadyExistsException>();
+		_ = await sut.Invoking(s => s.Handle(request, CancellationToken.None)).Should().ThrowAsync<UserAlreadyExistsException>();
 
 	}
 }

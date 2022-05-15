@@ -4,7 +4,7 @@ using Npgsql;
 
 using Xunit.Extensions.AssertExtensions;
 
-namespace TaskTimeManage.Core.Tester;
+namespace TaskTimeManage.Core;
 
 public class DbTest
 {
@@ -16,7 +16,7 @@ public class DbTest
 		using TTMDataAccess dataAccess = this.CreateDataAccess();
 
 		//Assert
-		NpgsqlConnectionStringBuilder? builder = new NpgsqlConnectionStringBuilder(
+		NpgsqlConnectionStringBuilder? builder = new(
 				dataAccess.Database.GetDbConnection().ConnectionString);
 		builder.Database.ShouldEndWith(GetType().Name);
 	}

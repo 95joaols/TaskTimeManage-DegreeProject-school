@@ -20,7 +20,7 @@ public class DeleteAllWorkTimesByWorkItemIdHandler : IRequestHandler<DeleteAllWo
 
 		data.WorkTime.RemoveRange(data.WorkTime.Where(wt => wt.WorkItemId == request.WorkItemId));
 
-		await data.SaveChangesAsync(cancellationToken);
+		_ = await data.SaveChangesAsync(cancellationToken);
 		return true;
 	}
 }

@@ -11,7 +11,7 @@ public class LoginHandlerTester
 		//Arrange 
 		using TTMDataAccess dataAccess = this.CreateDataAccess();
 
-		var config = new ConfigurationBuilder()
+		IConfigurationRoot? config = new ConfigurationBuilder()
 		.SetBasePath(AppContext.BaseDirectory)
 		.AddJsonFile("appsettings.json", false, true)
 		.Build();
@@ -28,9 +28,9 @@ public class LoginHandlerTester
 		LoginQuery request = new(username, password, tokenKey);
 
 		//Act 
-		var results = await sut.Handle(request, CancellationToken.None);
+		string? results = await sut.Handle(request, CancellationToken.None);
 
 		//Assert
-		results.Should().NotBeNullOrWhiteSpace();
+		_ = results.Should().NotBeNullOrWhiteSpace();
 	}
 }

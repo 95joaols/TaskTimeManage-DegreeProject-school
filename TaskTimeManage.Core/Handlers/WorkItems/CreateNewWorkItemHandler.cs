@@ -32,7 +32,7 @@ public class CreateNewWorkItemHandler : IRequestHandler<CreateNewWorkItemCommand
 			User = userModel,
 		};
 		_ = await data.WorkItem.AddAsync(workItem, cancellationToken);
-		await data.SaveChangesAsync(cancellationToken);
+		_ = await data.SaveChangesAsync(cancellationToken);
 
 
 		return workItem;

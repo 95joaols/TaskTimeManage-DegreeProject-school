@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using TaskTimeManage.Core.Commands.WorkTimes;
+﻿using TaskTimeManage.Core.Commands.WorkTimes;
 using TaskTimeManage.Core.Dto;
 
 namespace TaskTimeManage.Core.Handlers.WorkTimes;
@@ -31,12 +25,12 @@ public class UpdateWorkTimesHandlerTester
 		WorkItemModel workItemModel = await helper.SetupWorkItemAsync(name);
 		List<WorkTimeModel> WorkTimes = new();
 
-		foreach (var time in times)
+		foreach (DateTime time in times)
 		{
 			WorkTimes.Add(await helper.SetupWorkTimeAsync(time.ToUniversalTime(), workItemModel));
 		}
 		List<WorkTimesLight> toUpdate = new();
-		foreach (var WorkTime in WorkTimes)
+		foreach (WorkTimeModel? WorkTime in WorkTimes)
 		{
 			toUpdate.Add(new() {
 				PublicId = WorkTime.PublicId,
@@ -51,14 +45,14 @@ public class UpdateWorkTimesHandlerTester
 		UpdateWorkTimesCommand request = new(toUpdate);
 
 		//Act
-		var results = await sut.Handle(request, CancellationToken.None);
+		IEnumerable<WorkTimeModel>? results = await sut.Handle(request, CancellationToken.None);
 
 		//Assert
-		results.Should().NotBeNullOrEmpty();
-		results.Should().HaveCount(count);
-		foreach (var result in results)
+		_ = results.Should().NotBeNullOrEmpty();
+		_ = results.Should().HaveCount(count);
+		foreach (WorkTimeModel? result in results)
 		{
-			result.Time.Should().Be(toUpdate.FirstOrDefault(x => x.PublicId == result.PublicId).time);
+			_ = result.Time.Should().Be(toUpdate.FirstOrDefault(x => x.PublicId == result.PublicId).time);
 		}
 	}
 }

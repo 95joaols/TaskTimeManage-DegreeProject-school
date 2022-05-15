@@ -15,10 +15,7 @@ namespace TaskTimeManage.Core;
 internal class SetupHelper
 {
 	private readonly TTMDataAccess dataAccess;
-	public SetupHelper(TTMDataAccess data)
-	{
-		this.dataAccess = data;
-	}
+	public SetupHelper(TTMDataAccess data) => dataAccess = data;
 
 
 	public async Task<UserModel> SetupUserAsync(string username, string password)
@@ -38,8 +35,8 @@ internal class SetupHelper
 
 		UserModel userModel = await SetupUserAsync(username, password);
 
-		Mock<IMediator>? mediatorMoq = new Mock<IMediator>();
-		mediatorMoq.Setup(x => x.Send(new GetUserByPublicIdQuery(userModel.PublicId),
+		Mock<IMediator>? mediatorMoq = new();
+		_ = mediatorMoq.Setup(x => x.Send(new GetUserByPublicIdQuery(userModel.PublicId),
 		It.IsAny<CancellationToken>())).ReturnsAsync(userModel);
 
 		CreateNewWorkItemHandler createNewWorkItemHandler = new(dataAccess, mediatorMoq.Object);
@@ -54,8 +51,8 @@ internal class SetupHelper
 		string password = fixture.Create<string>();
 
 
-		Mock<IMediator>? mediatorMoq = new Mock<IMediator>();
-		mediatorMoq.Setup(x => x.Send(new GetUserByPublicIdQuery(userModel.PublicId),
+		Mock<IMediator>? mediatorMoq = new();
+		_ = mediatorMoq.Setup(x => x.Send(new GetUserByPublicIdQuery(userModel.PublicId),
 		It.IsAny<CancellationToken>())).ReturnsAsync(userModel);
 
 		CreateNewWorkItemHandler createNewWorkItemHandler = new(dataAccess, mediatorMoq.Object);
@@ -69,8 +66,8 @@ internal class SetupHelper
 		string name = fixture.Create<string>();
 
 		WorkItemModel workItemModel = await SetupWorkItemAsync(name);
-		Mock<IMediator>? mediatorMoq = new Mock<IMediator>();
-		mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(workItemModel.PublicId),
+		Mock<IMediator>? mediatorMoq = new();
+		_ = mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(workItemModel.PublicId),
 		It.IsAny<CancellationToken>())).ReturnsAsync(workItemModel);
 
 		CreateWorkTimeHandler createWorkTimeHandler = new(dataAccess, mediatorMoq.Object);
@@ -83,8 +80,8 @@ internal class SetupHelper
 		Fixture fixture = new();
 		string name = fixture.Create<string>();
 
-		Mock<IMediator>? mediatorMoq = new Mock<IMediator>();
-		mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(workItemModel.PublicId),
+		Mock<IMediator>? mediatorMoq = new();
+		_ = mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(workItemModel.PublicId),
 		It.IsAny<CancellationToken>())).ReturnsAsync(workItemModel);
 
 		CreateWorkTimeHandler createWorkTimeHandler = new(dataAccess, mediatorMoq.Object);
@@ -94,12 +91,12 @@ internal class SetupHelper
 	}
 
 }
-internal static class SetupHelperExtensien
+static internal class SetupHelperExtensien
 {
 	public static TTMDataAccess CreateDataAccess<T>(this T caller)
 	{
 		Microsoft.EntityFrameworkCore.DbContextOptions<TTMDataAccess>? options = caller.CreatePostgreSqlUniqueClassOptions<TTMDataAccess>();
-		TTMDataAccess dataAccess = new TTMDataAccess(options);
+		TTMDataAccess dataAccess = new(options);
 		dataAccess.Database.EnsureClean();
 		return dataAccess;
 	}

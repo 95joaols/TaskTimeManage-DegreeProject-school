@@ -24,10 +24,10 @@ public class UpdateWorkItemHandlerTester
 		UpdateWorkItemCommand request = new(workItemModel.PublicId, newName);
 
 		//Act
-		var results = await sut.Handle(request, CancellationToken.None);
+		WorkItemModel? results = await sut.Handle(request, CancellationToken.None);
 
 		//Assert
-		results.Should().NotBeNull();
-		results.Name.Should().Be(newName);
+		_ = results.Should().NotBeNull();
+		_ = results.Name.Should().Be(newName);
 	}
 }

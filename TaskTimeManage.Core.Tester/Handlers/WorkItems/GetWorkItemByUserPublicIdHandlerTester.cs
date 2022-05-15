@@ -23,7 +23,7 @@ public class GetWorkItemByUserPublicIdHandlerTester
 
 		SetupHelper helper = new(dataAccess);
 		UserModel userModel = await helper.SetupUserAsync(username, password);
-		foreach (var name in names)
+		foreach (string? name in names)
 		{
 			workItems.Add(await helper.SetupWorkItemAsync(name, userModel));
 		}
@@ -31,12 +31,12 @@ public class GetWorkItemByUserPublicIdHandlerTester
 		GetWorkItemTimeByUserPublicIdQuery request = new(userModel.PublicId);
 
 		//Act
-		var results = await sut.Handle(request, CancellationToken.None);
+		IEnumerable<WorkItemModel>? results = await sut.Handle(request, CancellationToken.None);
 
 		//Assert
-		results.Should().NotBeNullOrEmpty();
-		results.Should().HaveCount(count);
-		results.ToList().Should().BeEquivalentTo(workItems, options =>
+		_ = results.Should().NotBeNullOrEmpty();
+		_ = results.Should().HaveCount(count);
+		_ = results.ToList().Should().BeEquivalentTo(workItems, options =>
 		options.ExcludingNestedObjects());
 	}
 }

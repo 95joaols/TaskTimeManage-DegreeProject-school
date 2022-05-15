@@ -16,7 +16,9 @@ public class GetWorkItemByPublicIdHandler : IRequestHandler<GetWorkItemWithWorkT
 	public async Task<WorkItemModel?> Handle(GetWorkItemWithWorkTimeByPublicIdQuery request, CancellationToken cancellationToken)
 	{
 		if (request.PublicId == Guid.Empty)
+		{
 			throw new ArgumentNullException(nameof(request.PublicId));
+		}
 
 		return await data.WorkItem.Include(x => x.WorkTimes).FirstOrDefaultAsync(wt => wt.PublicId == request.PublicId, cancellationToken: cancellationToken);
 	}

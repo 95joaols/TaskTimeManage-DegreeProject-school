@@ -16,7 +16,9 @@ public class GetWorkItemByUserPublicIdHandler : IRequestHandler<GetWorkItemTimeB
 	public async Task<IEnumerable<WorkItemModel>> Handle(GetWorkItemTimeByUserPublicIdQuery request, CancellationToken cancellationToken)
 	{
 		if (request.PublicId == Guid.Empty)
+		{
 			throw new ArgumentNullException(nameof(request.PublicId));
+		}
 
 		return await data.WorkItem.Where(wt => wt.User.PublicId == request.PublicId).ToListAsync(cancellationToken);
 

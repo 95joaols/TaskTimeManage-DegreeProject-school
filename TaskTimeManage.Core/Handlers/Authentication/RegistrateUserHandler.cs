@@ -27,7 +27,7 @@ public class RegistrateUserHandler : IRequestHandler<RegistrateUserCommand, User
 
 		UserModel createdUser = CreateUser(request);
 		_ = await data.User.AddAsync(createdUser, cancellationToken);
-		await data.SaveChangesAsync(cancellationToken);
+		_ = await data.SaveChangesAsync(cancellationToken);
 		return createdUser;
 
 	}

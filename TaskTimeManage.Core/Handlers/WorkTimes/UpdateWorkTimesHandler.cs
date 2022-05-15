@@ -25,12 +25,12 @@ public class UpdateWorkTimesHandler : IRequestHandler<UpdateWorkTimesCommand, IE
 
 		IEnumerable<WorkTimeModel> workTimeModels = await data.WorkTime.Where(wt => request.WorkTimes.Select(x => x.PublicId).Contains(wt.PublicId)).ToListAsync(cancellationToken);
 
-		foreach (var workTime in workTimeModels)
+		foreach (WorkTimeModel? workTime in workTimeModels)
 		{
 			workTime.Time = request.WorkTimes.FirstOrDefault(wt => wt.PublicId == workTime.PublicId).time;
-			workTime.Time = workTime.Time > DateTime.UtcNow ?   DateTime.UtcNow : workTime.Time;
+			workTime.Time = workTime.Time > DateTime.UtcNow ? DateTime.UtcNow : workTime.Time;
 		}
-		await data.SaveChangesAsync(cancellationToken);
+		_ = await data.SaveChangesAsync(cancellationToken);
 		return workTimeModels;
 	}
 }

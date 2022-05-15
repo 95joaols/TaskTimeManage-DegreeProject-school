@@ -29,9 +29,11 @@ public class DeleteWorkItemHandler : IRequestHandler<DeleteWorkItemCommand, bool
 			throw new ArgumentNullException(nameof(workItem));
 		}
 		if (!await mediator.Send(new DeleteAllWorkTimesByWorkItemIdCommand(workItem.Id), cancellationToken))
+		{
 			throw new Exception("Error Cant delete All Work Times");
+		}
 
-		data.WorkItem.Remove(workItem);
+		_ = data.WorkItem.Remove(workItem);
 		return await data.SaveChangesAsync(cancellationToken) == 1;
 	}
 }

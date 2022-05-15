@@ -24,9 +24,9 @@ public class DeleteAllWorkTimesByWorkItemIdHandlerTester
 
 		SetupHelper helper = new(dataAccess);
 		WorkItemModel workItemModel = await helper.SetupWorkItemAsync(name);
-		foreach (var time in times)
+		foreach (DateTime time in times)
 		{
-			await helper.SetupWorkTimeAsync(time.ToUniversalTime(), workItemModel);
+			_ = await helper.SetupWorkTimeAsync(time.ToUniversalTime(), workItemModel);
 		}
 
 		DeleteAllWorkTimesByWorkItemIdHandler sut = new(dataAccess);
@@ -36,7 +36,7 @@ public class DeleteAllWorkTimesByWorkItemIdHandlerTester
 		bool results = await sut.Handle(request, CancellationToken.None);
 
 		//Assert
-		results.Should().BeTrue();
-		(await dataAccess.WorkTime.AnyAsync(x => x.WorkItemId == workItemModel.Id)).Should().BeFalse();
+		_ = results.Should().BeTrue();
+		_ = (await dataAccess.WorkTime.AnyAsync(x => x.WorkItemId == workItemModel.Id)).Should().BeFalse();
 	}
 }

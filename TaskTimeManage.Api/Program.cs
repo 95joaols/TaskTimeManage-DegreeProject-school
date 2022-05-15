@@ -13,7 +13,7 @@ using System.Text;
 using TaskTimeManage.Core;
 using TaskTimeManage.Core.DataAccess;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
@@ -44,16 +44,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddMediatR(typeof(MediatREntrypoint).Assembly);
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<TTMDataAccess>(option => option.UseNpgsql(connectionString, x => x.MigrationsAssembly("TaskTimeManage.Migrations")));
 
 
-var app = builder.Build();
+WebApplication? app = builder.Build();
 
 // migrate any database changes on startup (includes initial db creation)
-using (var scope = app.Services.CreateScope())
+using (IServiceScope? scope = app.Services.CreateScope())
 {
-	var dataContext = scope.ServiceProvider.GetRequiredService<TTMDataAccess>();
+	TTMDataAccess? dataContext = scope.ServiceProvider.GetRequiredService<TTMDataAccess>();
 	dataContext.Database.Migrate();
 }
 

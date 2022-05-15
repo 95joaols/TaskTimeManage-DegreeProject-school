@@ -18,7 +18,7 @@ public class DeleteWorkTimeByPublicIdHandlerTester
 
 		SetupHelper helper = new(dataAccess);
 		WorkTimeModel workTimeModel = await helper.SetupWorkTimeAsync(time.ToUniversalTime());
-		
+
 
 		DeleteWorkTimeByPublicIdHandler sut = new(dataAccess);
 		DeleteWorkTimeByPublicIdCommand request = new(workTimeModel.PublicId);
@@ -27,7 +27,7 @@ public class DeleteWorkTimeByPublicIdHandlerTester
 		bool results = await sut.Handle(request, CancellationToken.None);
 
 		//Assert
-		results.Should().BeTrue();
-		(await dataAccess.WorkTime.AnyAsync(x => x.Id == workTimeModel.Id)).Should().BeFalse();
+		_ = results.Should().BeTrue();
+		_ = (await dataAccess.WorkTime.AnyAsync(x => x.Id == workTimeModel.Id)).Should().BeFalse();
 	}
 }

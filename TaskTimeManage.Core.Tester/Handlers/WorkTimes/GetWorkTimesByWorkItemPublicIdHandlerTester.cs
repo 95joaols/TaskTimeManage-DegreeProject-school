@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using TaskTimeManage.Core.Queries.WorkTimes;
+﻿using TaskTimeManage.Core.Queries.WorkTimes;
 
 namespace TaskTimeManage.Core.Handlers.WorkTimes;
 public class GetWorkTimesByWorkItemPublicIdHandlerTester
@@ -29,7 +23,7 @@ public class GetWorkTimesByWorkItemPublicIdHandlerTester
 		WorkItemModel workItemModel = await helper.SetupWorkItemAsync(name);
 		List<WorkTimeModel> WorkTimes = new();
 
-		foreach (var time in times)
+		foreach (DateTime time in times)
 		{
 			WorkTimes.Add(await helper.SetupWorkTimeAsync(time.ToUniversalTime(), workItemModel));
 		}
@@ -39,12 +33,12 @@ public class GetWorkTimesByWorkItemPublicIdHandlerTester
 		GetWorkTimesByWorkItemPublicIdQuery request = new(workItemModel.PublicId);
 
 		//Act
-		var results = await sut.Handle(request, CancellationToken.None);
+		IEnumerable<WorkTimeModel>? results = await sut.Handle(request, CancellationToken.None);
 
 		//Assert
-		results.Should().NotBeNullOrEmpty();
-		results.Should().HaveCount(count);
-		results.ToList().Should().BeEquivalentTo(WorkTimes, options =>
+		_ = results.Should().NotBeNullOrEmpty();
+		_ = results.Should().HaveCount(count);
+		_ = results.ToList().Should().BeEquivalentTo(WorkTimes, options =>
 		options.ExcludingNestedObjects());
 	}
 }
