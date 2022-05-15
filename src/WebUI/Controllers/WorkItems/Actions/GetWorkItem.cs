@@ -21,7 +21,7 @@ public partial class WorkItemController
 			if (workItem != null)
 			{
 				workItem.WorkTimes = workItem.WorkTimes.OrderBy(o => o.Time).ToList();
-				return Ok(mapper.Map<WorkItem>(workItem));
+				return Ok(mapper.Map<WorkItemDto>(workItem));
 			}
 			else
 			{

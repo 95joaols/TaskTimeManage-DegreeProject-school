@@ -6,7 +6,7 @@ services:
     container_name: tasktimemanage.proxy
     build:
       network: host
-      context: ./TaskTimeManage.Proxy
+      context: ./src/Proxy
     ports:
       - "0.0.0.0:80:80"
       - "0.0.0.0:443:443"
@@ -18,27 +18,27 @@ services:
       
 
   react:
-    image: tasktimemanageapp:dev
-    container_name: tasktimemanage.app
+    image: tasktimemanageweb:dev
+    container_name: tasktimemanage.web
     restart: on-failure
     build:
-      context: ./TaskTimeManage.app
+      context: ./src/WebUI/TaskTimeManage.Web
     expose:
       - "80"
     stdin_open: true
     environment:
       - CHOKIDAR_USEPOLLING=true
     volumes:
-      - ./TaskTimeManage.app:/app
+      - ./src/WebUI/TaskTimeManage.Web:/app
     networks:
       - TTM  
 
   api:
     image: tasktimemanageapi:dev
-    container_name: Tasktimemanage.api
+    container_name: Tasktimemanage.WebUI
     build:
       context: .
-      dockerfile: TaskTimeManage.Api/Dockerfile
+      dockerfile: ./src/WebUI/Dockerfile
     expose:
       - "80"
     depends_on:

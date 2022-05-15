@@ -6,7 +6,7 @@ public class WorkTimeDto
 	{
 		get; set;
 	}
-	public DateTime Time
+	public DateTimeOffset Time
 	{
 		get; set;
 	}

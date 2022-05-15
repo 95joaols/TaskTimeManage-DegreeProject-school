@@ -1,8 +1,11 @@
 ﻿using Application.Common.Exceptions;
+using Application.Common.Settings;
 using Application.CQRS.Authentication.Queries;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+using System.Text;
 
 using WebUI.Requests;
 
@@ -20,7 +23,10 @@ public partial class AuthenticationController
 		}
 		try
 		{
-			string token = await mediator.Send(new LoginQuery(reqest.Username, reqest.Password, configuration.GetSection("AppSettings:Token").Value), cancellationToken);
+			IConfigurationSection? appSettingsSection = configuration.GetSection("ApplicationSecuritySettings");
+			ApplicationSecuritySettings? applicationSecuritySettings = appSettingsSection.Get<ApplicationSecuritySettings>();
+
+			string token = await mediator.Send(new LoginQuery(reqest.Username, reqest.Password, applicationSecuritySettings.Secret), cancellationToken);
 			if (string.IsNullOrWhiteSpace(token))
 			{
 				return Problem(statusCode: 500);

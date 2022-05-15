@@ -59,6 +59,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
 			{
 				case EntityState.Added:
 					entry.Property("CreatedAt").CurrentValue = DateTimeOffset.UtcNow;
+					entry.Property("UpdatedAt").CurrentValue = DateTimeOffset.UtcNow;
 					break;
 				case EntityState.Modified:
 					entry.Property("UpdatedAt").CurrentValue = DateTimeOffset.UtcNow;

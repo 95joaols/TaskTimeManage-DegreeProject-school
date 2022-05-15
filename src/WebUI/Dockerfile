@@ -5,19 +5,19 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["TaskTimeManage.Api/TaskTimeManage.Api.csproj", "TaskTimeManage.Api/"]
-COPY ["TaskTimeManage.Core/TaskTimeManage.Core.csproj", "TaskTimeManage.Core/"]
-COPY ["TaskTimeManage.Domain/TaskTimeManage.Domain.csproj", "TaskTimeManage.Domain/"]
-COPY ["TaskTimeManage.Migrations/TaskTimeManage.Migrations.csproj", "TaskTimeManage.Migrations/"]
-RUN dotnet restore "TaskTimeManage.Api/TaskTimeManage.Api.csproj"
+COPY ["src/WebUI/WebUI.csproj", "src/WebUI/"]
+COPY ["src/Application/Application.csproj", "src/Application/"]
+COPY ["src/Domain/Domain.csproj", "src/Domain/"]
+COPY ["src/Infrastructure/Infrastructure.csproj", "src/Infrastructure/"]
+RUN dotnet restore "src/WebUI/WebUI.csproj"
 COPY . .
-WORKDIR "/src/TaskTimeManage.Api"
-RUN dotnet build "TaskTimeManage.Api.csproj" -c Release -o /app/build
+WORKDIR "/src/src/WebUI"
+RUN dotnet build "WebUI.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "TaskTimeManage.Api.csproj" -c Release -o /app/publish
+RUN dotnet publish "WebUI.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "TaskTimeManage.Api.dll"]
+ENTRYPOINT ["dotnet", "WebUI.dll"]

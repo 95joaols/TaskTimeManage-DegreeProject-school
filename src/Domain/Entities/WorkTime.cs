@@ -6,7 +6,7 @@ namespace Domain.Entities;
 public sealed class WorkTime : BaseEntity<int>
 {
 	[Required]
-	public DateTime Time
+	public DateTimeOffset Time
 	{
 		get; set;
 	}

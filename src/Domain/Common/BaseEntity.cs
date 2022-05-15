@@ -16,11 +16,11 @@ public abstract class BaseEntity<TKey>
 	{
 		get; set;
 	}
-	public DateTime? CreatedAt
+	public DateTimeOffset CreatedAt
 	{
 		get; set;
 	}
-	public DateTime? UpdatedAt
+	public DateTimeOffset UpdatedAt
 	{
 		get; set;
 	}

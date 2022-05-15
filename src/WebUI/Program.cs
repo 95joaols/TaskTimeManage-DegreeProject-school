@@ -33,20 +33,8 @@ builder.Services.AddSwaggerGen(options => {
 
 	options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-		.AddJwtBearer(options => {
-			options.TokenValidationParameters = new TokenValidationParameters {
-				ValidateIssuerSigningKey = true,
-				IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-							.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
-				ValidateIssuer = false,
-				ValidateAudience = false
-			};
-		});
 
 
-string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(option => option.UseNpgsql(connectionString, x => x.MigrationsAssembly("TaskTimeManage.Migrations")));
 
 
 WebApplication? app = builder.Build();

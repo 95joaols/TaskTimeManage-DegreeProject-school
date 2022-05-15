@@ -17,12 +17,11 @@ public static class DependencyInjection
 	public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
 	{
 		_ = services.AddDbContext<ApplicationDbContext>(options => {
-			_ = services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("FlowPostgres"),
-								b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName))
-						.EnableSensitiveDataLogging());
-			_ = services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
-
+			options.UseNpgsql(configuration.GetConnectionString("TaskTimeManagePostgres"),
+										b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName))
+								.EnableSensitiveDataLogging();
 		});
+		_ = services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
 
 		IConfigurationSection? appSettingsSection = configuration.GetSection("ApplicationSecuritySettings");
 		ApplicationSecuritySettings? applicationSecuritySettings = appSettingsSection.Get<ApplicationSecuritySettings>();
