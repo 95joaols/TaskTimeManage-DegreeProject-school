@@ -12,7 +12,7 @@ services:
       - "0.0.0.0:443:443"
     depends_on:
       - react
-      - api
+      - WebUI
     networks:
       - TTM 
       
@@ -26,14 +26,10 @@ services:
     expose:
       - "80"
     stdin_open: true
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-    volumes:
-      - ./src/WebUI/TaskTimeManage.Web:/app
     networks:
       - TTM  
 
-  api:
+  WebUI:
     image: tasktimemanageapi:dev
     container_name: Tasktimemanage.WebUI
     build:
