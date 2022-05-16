@@ -75,7 +75,7 @@ const Signup = () => {
                             }}
                         />
                         <InputControl
-                            name="RepeatPassword"
+                            name="repeatPassword"
                             label="Repeat Password"
                             inputProps={{
                                 placeholder: "Repeat Password...",
@@ -100,7 +100,7 @@ const Signup = () => {
 const SignupSchema = Yup.object().shape({
     username: Yup.string().required("Required"),
     password: Yup.string().required("Required"),
-    RepeatPassword: Yup.string().required("Required"),
+    repeatPassword: Yup.string().required("Required"),
 });
 
 export default Signup;
