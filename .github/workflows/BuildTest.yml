@@ -21,5 +21,3 @@ jobs:
       run: dotnet restore TaskTimeManage.sln
     - name: Build
       run: dotnet build TaskTimeManage.sln --no-restore
-    - name: Test
-      run: dotnet test TaskTimeManage.sln --no-build --verbosity normal
