@@ -1,0 +1,68 @@
+﻿using Application.Common.Interfaces;
+using Application.CQRS.WorkItems.Commands;
+using Application.CQRS.WorkItems.Handlers;
+using Application.CQRS.WorkTimes.Commands;
+
+using Domain.Entities;
+
+using MediatR;
+
+using Microsoft.EntityFrameworkCore;
+
+using Moq;
+
+namespace Application.Handlers.WorkItems;
+public class DeleteWorkItemHandlerTester
+{
+	[Fact]
+	public async Task I_Can_Delete_A_WorkItem()
+	{
+		//Arrange 
+		Fixture fixture = new();
+		string name = fixture.Create<string>();
+
+		using IApplicationDbContext dataAccess = this.CreateDataAccess();
+
+		SetupHelper helper = new(dataAccess);
+		WorkItem workItem = await helper.SetupWorkItemAsync(name);
+
+		Mock<IMediator>? mediatorMoq = new();
+		_ = mediatorMoq.Setup(x => x.Send(new DeleteAllWorkTimesByWorkItemIdCommand(workItem.Id),
+		It.IsAny<CancellationToken>())).ReturnsAsync(true);
+
+		DeleteWorkItemHandler sut = new(dataAccess, mediatorMoq.Object);
+		DeleteWorkItemCommand request = new(workItem.PublicId);
+
+		//Act
+		bool results = await sut.Handle(request, CancellationToken.None);
+
+		//Assert
+		_ = results.Should().BeTrue();
+		_ = (await dataAccess.WorkItem.AnyAsync(x => x.Id == workItem.Id)).Should().BeFalse();
+
+	}
+	[Fact]
+	public async Task It_Will_Stopp_If_It_Resive_False()
+	{
+		//Arrange 
+		Fixture fixture = new();
+		string name = fixture.Create<string>();
+
+		using IApplicationDbContext dataAccess = this.CreateDataAccess();
+
+		SetupHelper helper = new(dataAccess);
+		WorkItem WorkItem = await helper.SetupWorkItemAsync(name);
+
+		Mock<IMediator>? mediatorMoq = new();
+		_ = mediatorMoq.Setup(x => x.Send(new DeleteAllWorkTimesByWorkItemIdCommand(WorkItem.Id),
+		It.IsAny<CancellationToken>())).ReturnsAsync(false);
+
+		DeleteWorkItemHandler sut = new(dataAccess, mediatorMoq.Object);
+		DeleteWorkItemCommand request = new(WorkItem.PublicId);
+
+		//Act
+		//Assert
+		_ = await sut.Invoking(s => s.Handle(request, CancellationToken.None)).Should().ThrowAsync<Exception>();
+	}
+
+}
