@@ -44,7 +44,7 @@ public partial class AuthenticationController
 			{
 				return Problem(title: ex.Message, detail: ex.Message, statusCode: 400);
 			}
-			return Problem(detail: ex.Message, statusCode: 500);
+			return Problem(title: ex.Message, detail: ex.Message, statusCode: 500);
 		}
 	}
 }
