@@ -33,6 +33,6 @@ jobs:
     - run: npm run build --if-present
       working-directory: src/WebUI/TaskTimeManage.Web
     
-    - name: Run lint household-app
+    - name: Run lint
       run: npm run lint --if-present
       working-directory: src/WebUI/TaskTimeManage.Web
