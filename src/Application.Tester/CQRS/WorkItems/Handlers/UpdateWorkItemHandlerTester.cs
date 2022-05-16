@@ -1,10 +1,9 @@
 ﻿using Application.Common.Interfaces;
 using Application.CQRS.WorkItems.Commands;
-using Application.CQRS.WorkItems.Handlers;
 
 using Domain.Entities;
 
-namespace Application.Handlers.WorkItems;
+namespace Application.CQRS.WorkItems.Handlers;
 public class UpdateWorkItemHandlerTester
 {
 	[Theory]

@@ -1,10 +1,9 @@
 ﻿using Application.Common.Interfaces;
-using Application.CQRS.Authentication.Handlers;
 using Application.CQRS.Authentication.Queries;
 
 using Domain.Entities;
 
-namespace Application.Handlers.Authentication;
+namespace Application.CQRS.Authentication.Handlers;
 public class GetUserByPublicIdHandlerTester
 {
 	[Fact]

@@ -1,12 +1,11 @@
 ﻿using Application.Common.Interfaces;
-using Application.CQRS.Authentication.Handlers;
 using Application.CQRS.Authentication.Queries;
 
 using Domain.Entities;
 
 using Microsoft.Extensions.Configuration;
 
-namespace Application.Handlers.Authentication;
+namespace Application.CQRS.Authentication.Handlers;
 public class LoginHandlerTester
 {
 	[Fact]

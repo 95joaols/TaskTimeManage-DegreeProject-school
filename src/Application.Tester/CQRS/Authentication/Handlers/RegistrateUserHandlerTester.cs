@@ -1,11 +1,10 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.CQRS.Authentication.Commands;
-using Application.CQRS.Authentication.Handlers;
 
 using Domain.Entities;
 
-namespace Application.Handlers.Authentication;
+namespace Application.CQRS.Authentication.Handlers;
 public class RegistrateUserHandlerTester
 {
 	[Theory]

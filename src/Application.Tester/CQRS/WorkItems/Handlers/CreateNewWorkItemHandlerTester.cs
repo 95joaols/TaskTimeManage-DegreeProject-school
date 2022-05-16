@@ -1,7 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Application.CQRS.Authentication.Queries;
 using Application.CQRS.WorkItems.Commands;
-using Application.CQRS.WorkItems.Handlers;
 
 using Domain.Entities;
 
@@ -9,7 +8,7 @@ using MediatR;
 
 using Moq;
 
-namespace Application.Handlers.WorkItems;
+namespace Application.CQRS.WorkItems.Handlers;
 public class CreateNewWorkItemHandlerTester
 {
 	[Fact]

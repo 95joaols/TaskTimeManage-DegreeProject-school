@@ -1,6 +1,5 @@
 ﻿using Application.Common.Interfaces;
 using Application.CQRS.WorkItems.Commands;
-using Application.CQRS.WorkItems.Handlers;
 using Application.CQRS.WorkTimes.Commands;
 
 using Domain.Entities;
@@ -11,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 using Moq;
 
-namespace Application.Handlers.WorkItems;
+namespace Application.CQRS.WorkItems.Handlers;
 public class DeleteWorkItemHandlerTester
 {
 	[Fact]
