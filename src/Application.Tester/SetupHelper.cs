@@ -11,8 +11,6 @@ using Application.moq;
 
 using Domain.Entities;
 
-using Infrastructure.Persistence;
-
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
@@ -25,11 +23,11 @@ internal class SetupHelper
 	private readonly IApplicationDbContext dataAccess;
 	public SetupHelper(IApplicationDbContext data) => dataAccess = data;
 
-	public static async Task<IApplicationDbContext> CreateDataAccess()
+	public async static Task<IApplicationDbContext> CreateDataAccess()
 	{
 		DbContextOptions<ApplicationDbContextMoq>? options = SqliteInMemory.CreateOptions<ApplicationDbContextMoq>();
 		ApplicationDbContextMoq dataAccess = new(options);
-		await dataAccess.Database.EnsureCreatedAsync();
+		_ = await dataAccess.Database.EnsureCreatedAsync();
 		return dataAccess;
 	}
 
@@ -109,5 +107,5 @@ internal class SetupHelper
 }
 static internal class SetupHelperExtensien
 {
-	
+
 }

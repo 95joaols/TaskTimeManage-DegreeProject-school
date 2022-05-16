@@ -20,13 +20,15 @@ public partial class AuthenticationController
 	{
 		try
 		{
-			Guard.Against.Null(reqest);
-			Guard.Against.NullOrWhiteSpace(reqest.Username);
-			Guard.Against.NullOrWhiteSpace(reqest.Password);
-			Guard.Against.NullOrWhiteSpace(reqest.RepeatPassword);
+			_ = Guard.Against.Null(reqest);
+			_ = Guard.Against.NullOrWhiteSpace(reqest.Username);
+			_ = Guard.Against.NullOrWhiteSpace(reqest.Password);
+			_ = Guard.Against.NullOrWhiteSpace(reqest.RepeatPassword);
 
 			if (reqest.Password != reqest.RepeatPassword)
+			{
 				throw new PasswordNotSameException();
+			}
 
 			User user = await mediator.Send(new RegistrateUserCommand(reqest.Username, reqest.Password), cancellationToken);
 			if (user is not null && user.Id != 0)
@@ -40,7 +42,7 @@ public partial class AuthenticationController
 		}
 		catch (Exception ex)
 		{
-			if (ex is PasswordNotSameException || ex is UserAlreadyExistsException)
+			if (ex is PasswordNotSameException or UserAlreadyExistsException)
 			{
 				return Problem(title: ex.Message, detail: ex.Message, statusCode: 400);
 			}
