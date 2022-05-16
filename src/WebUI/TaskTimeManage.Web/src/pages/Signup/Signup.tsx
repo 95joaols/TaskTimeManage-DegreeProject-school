@@ -36,13 +36,13 @@ const Signup = () => {
 
     return (
         <Formik
-            initialValues={{ username: "", password: "", RepeatPassword: "" }}
+            initialValues={{ username: "", password: "", repeatPassword: "" }}
             validationSchema={SignupSchema}
             onSubmit={(values) => {
                 const form = { ...values };
 
-                if (form.password === form.RepeatPassword) {
-                    createUser({ username: form.username, password: form.password });
+                if (form.password === form.repeatPassword) {
+                    createUser(form);
                 } else {
                     toast({
                         title: "The password and Repeat Password are not the same",

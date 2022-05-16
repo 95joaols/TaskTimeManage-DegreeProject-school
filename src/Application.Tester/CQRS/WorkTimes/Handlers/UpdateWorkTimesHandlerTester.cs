@@ -1,11 +1,10 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models.Generated;
 using Application.CQRS.WorkTimes.Commands;
-using Application.CQRS.WorkTimes.Handlers;
 
 using Domain.Entities;
 
-namespace Application.Handlers.WorkTimes;
+namespace Application.CQRS.WorkTimes.Handlers;
 public class UpdateWorkTimesHandlerTester
 {
 	[Theory]
@@ -23,7 +22,7 @@ public class UpdateWorkTimesHandlerTester
 		string name = fixture.Create<string>();
 		IEnumerable<DateTime> times = fixture.CreateMany<DateTime>(count);
 
-		using IApplicationDbContext dataAccess = this.CreateDataAccess();
+		using IApplicationDbContext dataAccess = await SetupHelper.CreateDataAccess();
 
 		SetupHelper helper = new(dataAccess);
 		WorkItem workItem = await helper.SetupWorkItemAsync(name);

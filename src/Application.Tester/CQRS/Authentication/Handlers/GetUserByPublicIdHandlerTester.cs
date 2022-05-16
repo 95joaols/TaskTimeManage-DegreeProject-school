@@ -1,17 +1,16 @@
 ﻿using Application.Common.Interfaces;
-using Application.CQRS.Authentication.Handlers;
 using Application.CQRS.Authentication.Queries;
 
 using Domain.Entities;
 
-namespace Application.Handlers.Authentication;
+namespace Application.CQRS.Authentication.Handlers;
 public class GetUserByPublicIdHandlerTester
 {
 	[Fact]
 	public async Task I_Can_Get_A_User()
 	{
 		//Arrange 
-		using IApplicationDbContext dataAccess = this.CreateDataAccess();
+		using IApplicationDbContext dataAccess = await SetupHelper.CreateDataAccess();
 
 		SetupHelper helper = new(dataAccess);
 		User user = await helper.SetupUserAsync("Test", "Test");

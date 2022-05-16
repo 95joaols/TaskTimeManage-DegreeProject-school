@@ -1,6 +1,5 @@
 ﻿using Application.Common.Interfaces;
 using Application.CQRS.WorkItems.Commands;
-using Application.CQRS.WorkItems.Handlers;
 using Application.CQRS.WorkTimes.Commands;
 
 using Domain.Entities;
@@ -11,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 using Moq;
 
-namespace Application.Handlers.WorkItems;
+namespace Application.CQRS.WorkItems.Handlers;
 public class DeleteWorkItemHandlerTester
 {
 	[Fact]
@@ -21,7 +20,7 @@ public class DeleteWorkItemHandlerTester
 		Fixture fixture = new();
 		string name = fixture.Create<string>();
 
-		using IApplicationDbContext dataAccess = this.CreateDataAccess();
+		using IApplicationDbContext dataAccess = await SetupHelper.CreateDataAccess();
 
 		SetupHelper helper = new(dataAccess);
 		WorkItem workItem = await helper.SetupWorkItemAsync(name);
@@ -48,7 +47,7 @@ public class DeleteWorkItemHandlerTester
 		Fixture fixture = new();
 		string name = fixture.Create<string>();
 
-		using IApplicationDbContext dataAccess = this.CreateDataAccess();
+		using IApplicationDbContext dataAccess = await SetupHelper.CreateDataAccess();
 
 		SetupHelper helper = new(dataAccess);
 		WorkItem WorkItem = await helper.SetupWorkItemAsync(name);

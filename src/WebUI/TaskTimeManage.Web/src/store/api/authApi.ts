@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { UserRegistrantsRequest } from "../../Types/Requests/UserRegistrantsRequest";
 import { UserRequest } from "../../Types/Requests/UserRequest";
 
 // Define a service using a base URL and expected endpoints
@@ -18,7 +19,7 @@ export const authApi = createApi({
                 };
             },
         }),
-        createUser: builder.mutation<boolean, UserRequest>({
+        createUser: builder.mutation<boolean, UserRegistrantsRequest>({
             query: (body) => {
                 return {
                     url: "CreateUser",

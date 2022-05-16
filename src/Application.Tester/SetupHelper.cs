@@ -7,6 +7,7 @@ using Application.CQRS.WorkItems.Handlers;
 using Application.CQRS.WorkItems.Queries;
 using Application.CQRS.WorkTimes.Commands;
 using Application.CQRS.WorkTimes.Handlers;
+using Application.moq;
 
 using Domain.Entities;
 
@@ -23,6 +24,14 @@ internal class SetupHelper
 {
 	private readonly IApplicationDbContext dataAccess;
 	public SetupHelper(IApplicationDbContext data) => dataAccess = data;
+
+	public static async Task<IApplicationDbContext> CreateDataAccess()
+	{
+		DbContextOptions<ApplicationDbContextMoq>? options = SqliteInMemory.CreateOptions<ApplicationDbContextMoq>();
+		ApplicationDbContextMoq dataAccess = new(options);
+		await dataAccess.Database.EnsureCreatedAsync();
+		return dataAccess;
+	}
 
 
 	public async Task<User> SetupUserAsync(string username, string password)
@@ -100,11 +109,5 @@ internal class SetupHelper
 }
 static internal class SetupHelperExtensien
 {
-	public static IApplicationDbContext CreateDataAccess<T>(this T caller)
-	{
-		DbContextOptions<ApplicationDbContext>? options = caller.CreatePostgreSqlUniqueClassOptions<ApplicationDbContext>();
-		ApplicationDbContext dataAccess = new(options);
-		dataAccess.Database.EnsureClean();
-		return dataAccess;
-	}
+	
 }

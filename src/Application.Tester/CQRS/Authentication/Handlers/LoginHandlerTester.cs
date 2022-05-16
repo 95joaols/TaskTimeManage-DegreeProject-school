@@ -1,19 +1,18 @@
 ﻿using Application.Common.Interfaces;
-using Application.CQRS.Authentication.Handlers;
 using Application.CQRS.Authentication.Queries;
 
 using Domain.Entities;
 
 using Microsoft.Extensions.Configuration;
 
-namespace Application.Handlers.Authentication;
+namespace Application.CQRS.Authentication.Handlers;
 public class LoginHandlerTester
 {
 	[Fact]
 	public async Task I_Can_Login_And_Get_A_Token()
 	{
 		//Arrange 
-		using IApplicationDbContext dataAccess = this.CreateDataAccess();
+		using IApplicationDbContext dataAccess = await SetupHelper.CreateDataAccess();
 
 		IConfigurationRoot? config = new ConfigurationBuilder()
 		.SetBasePath(AppContext.BaseDirectory)

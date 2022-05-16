@@ -1,10 +1,9 @@
 ﻿using Application.Common.Interfaces;
-using Application.CQRS.WorkItems.Handlers;
 using Application.CQRS.WorkItems.Queries;
 
 using Domain.Entities;
 
-namespace Application.Handlers.WorkItems;
+namespace Application.CQRS.WorkItems.Handlers;
 public class GetWorkItemByUserPublicIdHandlerTester
 {
 	[Theory]
@@ -21,7 +20,7 @@ public class GetWorkItemByUserPublicIdHandlerTester
 		IEnumerable<string> names = fixture.CreateMany<string>(count);
 		string username = fixture.Create<string>();
 		string password = fixture.Create<string>();
-		using IApplicationDbContext dataAccess = this.CreateDataAccess();
+		using IApplicationDbContext dataAccess = await SetupHelper.CreateDataAccess();
 		List<WorkItem> workItems = new();
 
 

@@ -20,12 +20,15 @@ const Login = () => {
 
     useEffect(() => {
         if (isError && error) {
-            toast({
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                title: JSON.parse((error as any).data).title,
-                status: "error",
-                duration: 5000,
-            });
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            if ((error as any)?.data) {
+                toast({
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    title: (error as any).data.title,
+                    status: "error",
+                    duration: 5000,
+                });
+            }
         }
         if (isSuccess && token) {
             const user: UserToken = jwt(token);

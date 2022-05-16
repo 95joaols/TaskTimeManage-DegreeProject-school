@@ -1,12 +1,11 @@
 ﻿using Application.Common.Interfaces;
 using Application.CQRS.WorkTimes.Commands;
-using Application.CQRS.WorkTimes.Handlers;
 
 using Domain.Entities;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Handlers.WorkTimes;
+namespace Application.CQRS.WorkTimes.Handlers;
 public class DeleteWorkTimeByPublicIdHandlerTester
 {
 	[Fact]
@@ -18,7 +17,7 @@ public class DeleteWorkTimeByPublicIdHandlerTester
 		string name = fixture.Create<string>();
 		DateTime time = fixture.Create<DateTime>();
 
-		using IApplicationDbContext dataAccess = this.CreateDataAccess();
+		using IApplicationDbContext dataAccess = await SetupHelper.CreateDataAccess();
 
 		SetupHelper helper = new(dataAccess);
 		WorkTime workTime = await helper.SetupWorkTimeAsync(time.ToUniversalTime());
