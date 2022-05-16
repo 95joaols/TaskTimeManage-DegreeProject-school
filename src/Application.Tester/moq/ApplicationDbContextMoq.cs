@@ -42,8 +42,6 @@ public class ApplicationDbContextMoq : DbContext, IApplicationDbContext
 
 		_ = builder.Entity<WorkTime>().HasIndex(x => x.PublicId).IsUnique();
 
-
-
 	}
 
 	public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
