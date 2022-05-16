@@ -35,12 +35,10 @@ builder.Services.AddSwaggerGen(options => {
 
 WebApplication? app = builder.Build();
 
+
 // migrate any database changes on startup (includes initial db creation)
-using (IServiceScope? scope = app.Services.CreateScope())
-{
-	ApplicationDbContext? dataContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-	dataContext.Database.Migrate();
-}
+ApplicationDbContext dataContext = app.Services.GetRequiredService<ApplicationDbContext>();
+dataContext.Database.Migrate();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
