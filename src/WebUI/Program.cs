@@ -3,15 +3,11 @@ using Application;
 using Infrastructure;
 using Infrastructure.Persistence;
 
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 using Swashbuckle.AspNetCore.Filters;
-
-using System.Text;
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 

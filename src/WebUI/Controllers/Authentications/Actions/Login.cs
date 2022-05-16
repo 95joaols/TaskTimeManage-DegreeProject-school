@@ -5,8 +5,6 @@ using Application.CQRS.Authentication.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using System.Text;
-
 using WebUI.Requests;
 
 namespace TaskTimeManage.Api.Controllers.Authentications;
