@@ -26,7 +26,9 @@ function WorkItemBox({ workItem, onPress, activeWorkItem }: Props) {
             bg={Color}
             p={5}
             onClick={() => {
-                onPress(workItem.publicId!);
+                if (workItem.publicId) {
+                    onPress(workItem.publicId);
+                }
             }}
         >
             <Text color={"white"}>{workItem.name}</Text>

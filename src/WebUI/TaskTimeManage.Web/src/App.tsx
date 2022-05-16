@@ -34,8 +34,6 @@ const App = () => {
         }
     }, [name]);
 
-    console.log("token", token);
-
     return (
         <Router>
             <Routes>

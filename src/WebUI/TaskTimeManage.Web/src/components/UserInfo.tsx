@@ -1,5 +1,5 @@
 import { Box, Stack } from "@chakra-ui/layout";
-import { Button, Heading, Text } from "@chakra-ui/react";
+import { Button, Heading } from "@chakra-ui/react";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";

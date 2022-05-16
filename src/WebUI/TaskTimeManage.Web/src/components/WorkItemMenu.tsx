@@ -14,6 +14,7 @@ type Props = {
 
 function WorkItemMenu({ AddWorkItemPress, onWorkItemPress, activeWorkItem }: Props) {
     const user = useAppSelector(selectLoginUser);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const { data: WorkItemList, isLoading } = useGetWorkItemForUserQuery(user.id!);
 
     return (

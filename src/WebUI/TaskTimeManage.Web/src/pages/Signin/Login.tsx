@@ -19,13 +19,9 @@ const Login = () => {
     const [Login, { data: token, isLoading, error, isError, isSuccess }] = useLoginMutation();
 
     useEffect(() => {
-        console.log(token);
         if (isError && error) {
-            console.log(error);
-            console.log((error as any).data);
-            console.log(JSON.parse((error as any).data));
-
             toast({
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 title: JSON.parse((error as any).data).title,
                 status: "error",
                 duration: 5000,
@@ -35,8 +31,6 @@ const Login = () => {
             const user: UserToken = jwt(token);
 
             dispatch(setUser({ token: token, name: user.unique_name, id: user.nameid }));
-
-            console.log("test");
 
             localStorage.setItem("token", token);
             navigate("/");
@@ -48,8 +42,6 @@ const Login = () => {
             initialValues={{ username: "", password: "" }}
             validationSchema={LoginSchema}
             onSubmit={(values) => {
-                console.log(values);
-
                 Login({ ...values });
             }}
         >

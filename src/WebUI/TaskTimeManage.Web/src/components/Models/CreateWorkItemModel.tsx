@@ -26,6 +26,7 @@ function CreateWorkItemModel({ onClose, isOpen, createWorkItem }: Props) {
     const firstUpdate = useRef(true);
     const [name, setName] = useState("");
     const [isError, setIsError] = useState(false);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleInputChange = (e: any) => setName(e.target.value);
     const [createWorkItemApi, { data, isLoading, error, isError: createUserError }] = useCreateWorkItemMutation();
     const toast = useToast();
@@ -48,6 +49,7 @@ function CreateWorkItemModel({ onClose, isOpen, createWorkItem }: Props) {
     useEffect(() => {
         if (createUserError) {
             toast({
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 title: (error as any).data.title,
                 status: "error",
                 duration: 5000,
@@ -64,7 +66,7 @@ function CreateWorkItemModel({ onClose, isOpen, createWorkItem }: Props) {
 
     const CreateWorkItem = () => {
         if (name && user.id) {
-            createWorkItemApi({ name, UserPublicId: user.id! });
+            createWorkItemApi({ name, UserPublicId: user.id });
         } else {
             setIsError(true);
         }

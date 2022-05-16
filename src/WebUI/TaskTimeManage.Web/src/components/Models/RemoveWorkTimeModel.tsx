@@ -25,6 +25,7 @@ function RemoveWorkTimeModel({ onClose, isOpen, workTime }: Props) {
     useEffect(() => {
         if (createUserError) {
             toast({
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 title: (error as any).data.title,
                 status: "error",
                 duration: 5000,

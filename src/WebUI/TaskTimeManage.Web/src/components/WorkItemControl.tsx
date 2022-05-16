@@ -18,7 +18,7 @@ function WorkItemControl({ activeWorkItem, onReset }: Props) {
     const [workTimesCount, setWorkTimesCount] = useState(0);
 
     const [trigger, WorkItemResult] = useLazyGetWorkItemQuery();
-    const [createWorkTimeApi, { isLoading, error }] = useCreateWorkTimeMutation();
+    const [createWorkTimeApi, { isLoading }] = useCreateWorkTimeMutation();
 
     useEffect(() => {
         setWorkTimesCount(WorkItemResult.data?.workTimes?.length ?? 0);

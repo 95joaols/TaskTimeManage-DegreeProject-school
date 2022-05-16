@@ -25,9 +25,8 @@ function RemoveWorkItemMode({ onClose, onDeleted, isOpen, activeWorkItem }: Prop
 
     useEffect(() => {
         if (createUserError) {
-            console.log("error", error);
-
             toast({
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 title: (error as any).data.title,
                 status: "error",
                 duration: 5000,
@@ -36,8 +35,6 @@ function RemoveWorkItemMode({ onClose, onDeleted, isOpen, activeWorkItem }: Prop
     }, [createUserError, error]);
 
     useEffect(() => {
-        console.log("data", data);
-
         if (data) {
             onClose();
             onDeleted();
