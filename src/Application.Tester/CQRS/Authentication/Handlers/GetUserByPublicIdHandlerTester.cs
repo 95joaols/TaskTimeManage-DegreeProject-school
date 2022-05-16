@@ -10,7 +10,7 @@ public class GetUserByPublicIdHandlerTester
 	public async Task I_Can_Get_A_User()
 	{
 		//Arrange 
-		using IApplicationDbContext dataAccess = this.CreateDataAccess();
+		using IApplicationDbContext dataAccess = await SetupHelper.CreateDataAccess();
 
 		SetupHelper helper = new(dataAccess);
 		User user = await helper.SetupUserAsync("Test", "Test");

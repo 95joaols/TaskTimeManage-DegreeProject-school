@@ -3,13 +3,13 @@
     "Docker Compose": {
       "commandName": "DockerCompose",
       "composeLaunchAction": "None",
-      "composeLaunchServiceName": "api",
+      "composeLaunchServiceName": "WebUI",
       "commandVersion": "1.0",
       "serviceActions": {
         "postgres": "StartWithoutDebugging",
         "proxy": "StartWithoutDebugging",
-        "api": "StartDebugging",
-        "react": "StartWithoutDebugging",
+        "WebUI": "StartDebugging",
+        "react": "StartWithoutDebugging"
       }
     }
   }

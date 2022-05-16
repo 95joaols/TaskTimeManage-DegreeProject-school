@@ -19,7 +19,7 @@ public class RegistrateUserHandlerTester
 	public async Task I_Can_Registrate_A_New_User(string username, string password)
 	{
 		//Arrange 
-		using IApplicationDbContext dataAccess = this.CreateDataAccess();
+		using IApplicationDbContext dataAccess = await SetupHelper.CreateDataAccess();
 
 		RegistrateUserHandler sut = new(dataAccess);
 		RegistrateUserCommand request = new(username, password);
@@ -38,7 +38,7 @@ public class RegistrateUserHandlerTester
 	public async Task I_Cant_Create_Multiple_On_Same_Name()
 	{
 		//Arrange
-		using IApplicationDbContext? dataAccess = this.CreateDataAccess();
+		using IApplicationDbContext? dataAccess = await SetupHelper.CreateDataAccess();
 
 		RegistrateUserHandler sut = new(dataAccess);
 

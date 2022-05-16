@@ -22,7 +22,7 @@ public class CreateWorkTimeHandlerTester
 		DateTime time = fixture.Create<DateTime>().ToUniversalTime();
 
 
-		using IApplicationDbContext dataAccess = this.CreateDataAccess();
+		using IApplicationDbContext dataAccess = await SetupHelper.CreateDataAccess();
 
 
 		SetupHelper helper = new(dataAccess);

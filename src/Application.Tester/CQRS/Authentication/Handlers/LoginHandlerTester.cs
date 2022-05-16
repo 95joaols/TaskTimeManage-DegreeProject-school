@@ -12,7 +12,7 @@ public class LoginHandlerTester
 	public async Task I_Can_Login_And_Get_A_Token()
 	{
 		//Arrange 
-		using IApplicationDbContext dataAccess = this.CreateDataAccess();
+		using IApplicationDbContext dataAccess = await SetupHelper.CreateDataAccess();
 
 		IConfigurationRoot? config = new ConfigurationBuilder()
 		.SetBasePath(AppContext.BaseDirectory)

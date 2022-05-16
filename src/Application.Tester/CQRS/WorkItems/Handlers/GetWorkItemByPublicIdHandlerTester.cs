@@ -13,7 +13,7 @@ public class GetWorkItemByPublicIdHandlerTester
 		Fixture fixture = new();
 		string name = fixture.Create<string>();
 
-		using IApplicationDbContext dataAccess = this.CreateDataAccess();
+		using IApplicationDbContext dataAccess = await SetupHelper.CreateDataAccess();
 
 		SetupHelper helper = new(dataAccess);
 		WorkItem workItem = await helper.SetupWorkItemAsync(name);

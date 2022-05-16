@@ -17,7 +17,7 @@ public class DeleteWorkTimeByPublicIdHandlerTester
 		string name = fixture.Create<string>();
 		DateTime time = fixture.Create<DateTime>();
 
-		using IApplicationDbContext dataAccess = this.CreateDataAccess();
+		using IApplicationDbContext dataAccess = await SetupHelper.CreateDataAccess();
 
 		SetupHelper helper = new(dataAccess);
 		WorkTime workTime = await helper.SetupWorkTimeAsync(time.ToUniversalTime());

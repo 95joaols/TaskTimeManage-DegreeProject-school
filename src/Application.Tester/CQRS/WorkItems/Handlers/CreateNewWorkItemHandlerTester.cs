@@ -20,7 +20,7 @@ public class CreateNewWorkItemHandlerTester
 		string username = fixture.Create<string>();
 		string password = fixture.Create<string>();
 
-		using IApplicationDbContext dataAccess = this.CreateDataAccess();
+		using IApplicationDbContext dataAccess = await SetupHelper.CreateDataAccess();
 
 
 		SetupHelper helper = new(dataAccess);
