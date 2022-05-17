@@ -12,14 +12,14 @@ using Microsoft.EntityFrameworkCore;
 namespace Application.CQRS.WorkItems.Handlers;
 public class GetWorkItemByPublicIdHandler : IRequestHandler<GetWorkItemWithWorkTimeByPublicIdQuery, WorkItem?>
 {
-	private readonly IApplicationDbContext data;
+  private readonly IApplicationDbContext data;
 
-	public GetWorkItemByPublicIdHandler(IApplicationDbContext data) => this.data = data;
+  public GetWorkItemByPublicIdHandler(IApplicationDbContext data) => this.data = data;
 
-	public async Task<WorkItem?> Handle(GetWorkItemWithWorkTimeByPublicIdQuery request, CancellationToken cancellationToken)
-	{
-		_ = Guard.Against.Default(request.PublicId);
+  public async Task<WorkItem?> Handle(GetWorkItemWithWorkTimeByPublicIdQuery request, CancellationToken cancellationToken)
+  {
+    _ = Guard.Against.Default(request.PublicId);
 
-		return await data.WorkItem.Include(x => x.WorkTimes).FirstOrDefaultAsync(wt => wt.PublicId == request.PublicId, cancellationToken: cancellationToken);
-	}
+    return await data.WorkItem.Include(x => x.WorkTimes).FirstOrDefaultAsync(wt => wt.PublicId == request.PublicId, cancellationToken: cancellationToken);
+  }
 }
