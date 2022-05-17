@@ -20,7 +20,7 @@ public sealed class User : BaseEntity
   {
     get; set;
   }
-  public IEnumerable<WorkItem> Tasks
+  public IEnumerable<WorkItem> WorkItems
   {
     get; set;
   }
