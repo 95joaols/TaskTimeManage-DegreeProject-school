@@ -10,26 +10,26 @@ using WebUI.Requests;
 
 namespace TaskTimeManage.Api.Controllers.WorkTimes;
 
-public partial class WorkTimeController
+public partial class WorkTimeController //NOSONAR
 {
 
-	[HttpPost]
-	[Authorize]
-	public async Task<ActionResult<WorkTimeDto>> CreateWorkTimeAsync([FromBody] CreateWorkTimeRequest request, CancellationToken cancellationToken = default)
-	{
-		try
-		{
-			WorkTime workItem = await mediator.Send(new CreateWorkTimeCommand(request.Time, request.WorkItemPublicId), cancellationToken);
-			if (workItem == null)
-			{
-				return BadRequest();
-			}
+  [HttpPost]
+  [Authorize]
+  public async Task<ActionResult<WorkTimeDto>> CreateWorkTimeAsync([FromBody] CreateWorkTimeRequest request, CancellationToken cancellationToken)
+  {
+    try
+    {
+      WorkTime workItem = await mediator.Send(new CreateWorkTimeCommand(request.Time, request.WorkItemPublicId), cancellationToken);
+      if (workItem == null)
+      {
+        return BadRequest();
+      }
 
-			return Created("", mapper.Map<WorkTimeDto>(workItem));
-		}
-		catch (Exception ex)
-		{
-			return Problem(title: ex.Message, statusCode: 500);
-		}
-	}
+      return Created("", mapper.Map<WorkTimeDto>(workItem));
+    }
+    catch (Exception ex)
+    {
+      return Problem(title: ex.Message, statusCode: 500);
+    }
+  }
 }

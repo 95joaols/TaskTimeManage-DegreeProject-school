@@ -9,17 +9,17 @@ namespace Application.CQRS.WorkTimes.Handlers;
 public class DeleteAllWorkTimesByWorkItemIdHandler : IRequestHandler<DeleteAllWorkTimesByWorkItemIdCommand, bool>
 {
 
-	private readonly IApplicationDbContext data;
+  private readonly IApplicationDbContext data;
 
-	public DeleteAllWorkTimesByWorkItemIdHandler(IApplicationDbContext data) => this.data = data;
+  public DeleteAllWorkTimesByWorkItemIdHandler(IApplicationDbContext data) => this.data = data;
 
-	public async Task<bool> Handle(DeleteAllWorkTimesByWorkItemIdCommand request, CancellationToken cancellationToken)
-	{
-		_ = Guard.Against.NegativeOrZero(request.WorkItemId);
+  public async Task<bool> Handle(DeleteAllWorkTimesByWorkItemIdCommand request, CancellationToken cancellationToken)
+  {
+    _ = Guard.Against.NegativeOrZero(request.WorkItemId);
 
-		data.WorkTime.RemoveRange(data.WorkTime.Where(wt => wt.WorkItemId == request.WorkItemId));
+    data.WorkTime.RemoveRange(data.WorkTime.Where(wt => wt.WorkItemId == request.WorkItemId));
 
-		_ = await data.SaveChangesAsync(cancellationToken);
-		return true;
-	}
+    _ = await data.SaveChangesAsync(cancellationToken);
+    return true;
+  }
 }

@@ -8,28 +8,28 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TaskTimeManage.Api.Controllers.WorkItems;
 
-public partial class WorkItemController
+public partial class WorkItemController //NOSONAR
 {
-	[HttpGet("UserId/{UserId}")]
-	[Authorize]
-	public async Task<ActionResult<IEnumerable<WorkItemDto>>> GetWorkItemForUserAsync(Guid userId, CancellationToken cancellationToken = default)
-	{
-		try
-		{
-			IEnumerable<WorkItem> WorkItems = await mediator.Send(new GetWorkItemTimeByUserPublicIdQuery(userId), cancellationToken);
+  [HttpGet("UserId/{UserId}")]
+  [Authorize]
+  public async Task<ActionResult<IEnumerable<WorkItemDto>>> GetWorkItemForUserAsync(Guid userId, CancellationToken cancellationToken)
+  {
+    try
+    {
+      IEnumerable<WorkItem> WorkItems = await mediator.Send(new GetWorkItemTimeByUserPublicIdQuery(userId), cancellationToken);
 
-			if (WorkItems.Any())
-			{
-				return Ok(mapper.Map<IEnumerable<WorkItemDto>>(WorkItems.OrderByDescending(o => o.Id).ToList()));
-			}
-			else
-			{
-				return NoContent();
-			}
-		}
-		catch (Exception ex)
-		{
-			return Problem(title: ex.Message, statusCode: 500);
-		}
-	}
+      if (WorkItems.Any())
+      {
+        return Ok(mapper.Map<IEnumerable<WorkItemDto>>(WorkItems.OrderByDescending(o => o.Id).ToList()));
+      }
+      else
+      {
+        return NoContent();
+      }
+    }
+    catch (Exception ex)
+    {
+      return Problem(title: ex.Message, statusCode: 500);
+    }
+  }
 }

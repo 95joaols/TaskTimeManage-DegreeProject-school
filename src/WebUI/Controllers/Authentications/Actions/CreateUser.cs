@@ -12,41 +12,41 @@ using WebUI.Requests;
 
 namespace TaskTimeManage.Api.Controllers.Authentications;
 
-public partial class AuthenticationController
+public partial class AuthenticationController //NOSONAR
 {
-	[HttpPost("CreateUser")]
-	[AllowAnonymous]
-	public async Task<ActionResult> CreateUserAsync([FromBody] UserRegistrantsRequest reqest, CancellationToken cancellationToken = default)
-	{
-		try
-		{
-			_ = Guard.Against.Null(reqest);
-			_ = Guard.Against.NullOrWhiteSpace(reqest.Username);
-			_ = Guard.Against.NullOrWhiteSpace(reqest.Password);
-			_ = Guard.Against.NullOrWhiteSpace(reqest.RepeatPassword);
+  [HttpPost("CreateUser")]
+  [AllowAnonymous]
+  public async Task<ActionResult> CreateUserAsync([FromBody] UserRegistrantsRequest reqest, CancellationToken cancellationToken)
+  {
+    try
+    {
+      _ = Guard.Against.Null(reqest);
+      _ = Guard.Against.NullOrWhiteSpace(reqest.Username);
+      _ = Guard.Against.NullOrWhiteSpace(reqest.Password);
+      _ = Guard.Against.NullOrWhiteSpace(reqest.RepeatPassword);
 
-			if (reqest.Password != reqest.RepeatPassword)
-			{
-				throw new PasswordNotSameException();
-			}
+      if (reqest.Password != reqest.RepeatPassword)
+      {
+        throw new PasswordNotSameException();
+      }
 
-			User user = await mediator.Send(new RegistrateUserCommand(reqest.Username, reqest.Password), cancellationToken);
-			if (user is not null && user.Id != 0)
-			{
-				return Created("", true);
-			}
-			else
-			{
-				return Problem(statusCode: 500);
-			}
-		}
-		catch (Exception ex)
-		{
-			if (ex is PasswordNotSameException or UserAlreadyExistsException)
-			{
-				return Problem(title: ex.Message, detail: ex.Message, statusCode: 400);
-			}
-			return Problem(title: ex.Message, detail: ex.Message, statusCode: 500);
-		}
-	}
+      User user = await mediator.Send(new RegistrateUserCommand(reqest.Username, reqest.Password), cancellationToken);
+      if (user is not null && user.Id != 0)
+      {
+        return Created("", true);
+      }
+      else
+      {
+        return Problem(statusCode: 500);
+      }
+    }
+    catch (Exception ex)
+    {
+      if (ex is PasswordNotSameException or UserAlreadyExistsException)
+      {
+        return Problem(title: ex.Message, detail: ex.Message, statusCode: 400);
+      }
+      return Problem(title: ex.Message, detail: ex.Message, statusCode: 500);
+    }
+  }
 }

@@ -138,7 +138,7 @@ csharp_style_expression_bodied_accessors = true:silent
 csharp_style_expression_bodied_lambdas = true:suggestion
 
 [*.{cs,vb}]
-indent_style= tab
+indent_style= space
 tab_width= 2
 indent_size= 2
 end_of_line = crlf

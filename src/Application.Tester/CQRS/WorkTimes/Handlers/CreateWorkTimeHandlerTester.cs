@@ -11,37 +11,37 @@ using Moq;
 namespace Application.CQRS.WorkTimes.Handlers;
 public class CreateWorkTimeHandlerTester
 {
-	[Fact]
-	public async Task I_Can_Create_A_New_WorkTime()
-	{
-		//Arrange 
-		Fixture fixture = new();
-		fixture.Customizations.Add(new RandomDateTimeSequenceGenerator(DateTime.Now.AddYears(-2), DateTime.Now));
+  [Fact]
+  public async Task I_Can_Create_A_New_WorkTime()
+  {
+    //Arrange 
+    Fixture fixture = new();
+    fixture.Customizations.Add(new RandomDateTimeSequenceGenerator(DateTime.Now.AddYears(-2), DateTime.Now));
 
-		string name = fixture.Create<string>();
-		DateTime time = fixture.Create<DateTime>().ToUniversalTime();
-
-
-		using IApplicationDbContext dataAccess = await SetupHelper.CreateDataAccess();
+    string name = fixture.Create<string>();
+    DateTime time = fixture.Create<DateTime>().ToUniversalTime();
 
 
-		SetupHelper helper = new(dataAccess);
-		WorkItem workItem = await helper.SetupWorkItemAsync(name);
+    using IApplicationDbContext dataAccess = await SetupHelper.CreateDataAccess();
 
-		Mock<IMediator>? mediatorMoq = new();
-		_ = mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(workItem.PublicId),
-		It.IsAny<CancellationToken>())).ReturnsAsync(workItem);
 
-		CreateWorkTimeHandler sut = new(dataAccess, mediatorMoq.Object);
-		CreateWorkTimeCommand request = new(time, workItem.PublicId);
+    SetupHelper helper = new(dataAccess);
+    WorkItem workItem = await helper.SetupWorkItemAsync(name);
 
-		//Act
-		WorkTime? results = await sut.Handle(request, CancellationToken.None);
+    Mock<IMediator>? mediatorMoq = new();
+    _ = mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(workItem.PublicId),
+    It.IsAny<CancellationToken>())).ReturnsAsync(workItem);
 
-		//Assert
-		_ = results.Should().NotBeNull();
-		_ = results.Id.Should().NotBe(0);
-		_ = results.PublicId.Should().NotBeEmpty();
-		_ = results.Time.Should().Be(time);
-	}
+    CreateWorkTimeHandler sut = new(dataAccess, mediatorMoq.Object);
+    CreateWorkTimeCommand request = new(time, workItem.PublicId);
+
+    //Act
+    WorkTime? results = await sut.Handle(request, CancellationToken.None);
+
+    //Assert
+    _ = results.Should().NotBeNull();
+    _ = results.Id.Should().NotBe(0);
+    _ = results.PublicId.Should().NotBeEmpty();
+    _ = results.Time.Should().Be(time);
+  }
 }
