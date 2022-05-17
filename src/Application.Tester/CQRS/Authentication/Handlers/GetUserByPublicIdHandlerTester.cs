@@ -1,9 +1,9 @@
 ﻿using Application.Common.Interfaces;
 using Application.CQRS.Authentication.Queries;
-
 using Domain.Aggregates.UserAggregate;
 
 namespace Application.CQRS.Authentication.Handlers;
+
 public class GetUserByPublicIdHandlerTester
 {
   [Fact]

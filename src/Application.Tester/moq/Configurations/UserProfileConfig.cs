@@ -1,9 +1,9 @@
 ﻿using Domain.Aggregates.UserAggregate;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Application.moq.Configurations;
+
 internal class UserProfileConfig : IEntityTypeConfiguration<UserProfile>
 {
   public void Configure(EntityTypeBuilder<UserProfile> builder)

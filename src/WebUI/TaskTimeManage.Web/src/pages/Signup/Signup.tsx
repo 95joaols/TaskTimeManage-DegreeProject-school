@@ -1,14 +1,14 @@
-import { Flex, Grid, Heading, Stack, Text } from "@chakra-ui/layout";
-import { useToast } from "@chakra-ui/react";
-import { Form, Formik } from "formik";
-import { InputControl, SubmitButton } from "formik-chakra-ui";
-import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {Flex, Grid, Heading, Stack, Text} from "@chakra-ui/layout";
+import {useToast} from "@chakra-ui/react";
+import {Form, Formik} from "formik";
+import {InputControl, SubmitButton} from "formik-chakra-ui";
+import React, {useEffect} from "react";
+import {Link, useNavigate} from "react-router-dom";
 import * as Yup from "yup";
-import { useCreateUserMutation } from "../../store/api/authApi";
+import {useCreateUserMutation} from "../../store/api/authApi";
 
 const Signup = () => {
-    const [createUser, { data, isLoading, error, isError }] = useCreateUserMutation();
+    const [createUser, {data, isLoading, error, isError}] = useCreateUserMutation();
     const toast = useToast();
     const navigate = useNavigate();
 
@@ -36,10 +36,10 @@ const Signup = () => {
 
     return (
         <Formik
-            initialValues={{ username: "", password: "", repeatPassword: "" }}
+            initialValues={{username: "", password: "", repeatPassword: ""}}
             validationSchema={SignupSchema}
             onSubmit={(values) => {
-                const form = { ...values };
+                const form = {...values};
 
                 if (form.password === form.repeatPassword) {
                     createUser(form);

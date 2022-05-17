@@ -1,14 +1,12 @@
 ﻿using Application.Common.Interfaces;
 using Application.CQRS.WorkItems.Queries;
 using Application.CQRS.WorkTimes.Commands;
-
 using Domain.Aggregates.WorkAggregate;
-
 using MediatR;
-
 using Moq;
 
 namespace Application.CQRS.WorkTimes.Handlers;
+
 public class CreateWorkTimeHandlerTester
 {
   [Fact]
@@ -16,7 +14,8 @@ public class CreateWorkTimeHandlerTester
   {
     //Arrange 
     Fixture fixture = new();
-    fixture.Customizations.Add(new RandomDateTimeSequenceGenerator(DateTimeOffset.Now.AddYears(-2).DateTime, DateTimeOffset.Now.DateTime));
+    fixture.Customizations.Add(new RandomDateTimeSequenceGenerator(DateTimeOffset.Now.AddYears(-2).DateTime,
+      DateTimeOffset.Now.DateTime));
 
     string name = fixture.Create<string>();
     DateTimeOffset time = fixture.Create<DateTimeOffset>();
@@ -30,7 +29,7 @@ public class CreateWorkTimeHandlerTester
 
     Mock<IMediator>? mediatorMoq = new();
     _ = mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(workItem.PublicId),
-    It.IsAny<CancellationToken>())).ReturnsAsync(workItem);
+      It.IsAny<CancellationToken>())).ReturnsAsync(workItem);
 
     CreateWorkTimeHandler sut = new(dataAccess, mediatorMoq.Object);
     CreateWorkTimeCommand request = new(time, workItem.PublicId);

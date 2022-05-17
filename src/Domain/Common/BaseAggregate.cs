@@ -2,26 +2,10 @@
 
 public class BaseAggregate
 {
-  protected BaseAggregate()
-  {
-  }
+  protected BaseAggregate() {}
 
-  public int Id
-  {
-    get; protected set;
-  }
-
-  public Guid PublicId
-  {
-    get; protected set;
-  }
-  public DateTimeOffset CreatedAt
-  {
-    get; protected set;
-  }
-  public DateTimeOffset UpdatedAt
-  {
-    get; protected set;
-  }
-
+  public int Id{ get; protected set; }
+  public Guid PublicId{ get; protected set; }
+  public DateTimeOffset CreatedAt{ get; protected set; }
+  public DateTimeOffset UpdatedAt{ get; protected set; }
 }

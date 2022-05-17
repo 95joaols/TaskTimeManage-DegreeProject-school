@@ -1,9 +1,9 @@
 ﻿using Domain.Aggregates.WorkAggregate;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations;
+
 internal class WorkItemConfig : IEntityTypeConfiguration<WorkItem>
 {
   public void Configure(EntityTypeBuilder<WorkItem> builder)
@@ -21,6 +21,5 @@ internal class WorkItemConfig : IEntityTypeConfiguration<WorkItem>
     builder.HasOne(x => x.User)
       .WithMany(x => x.WorkItems)
       .IsRequired();
-
   }
 }

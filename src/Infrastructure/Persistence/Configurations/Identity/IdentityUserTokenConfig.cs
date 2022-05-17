@@ -3,10 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations.Identity;
+
 internal class IdentityUserTokenConfig : IEntityTypeConfiguration<IdentityUserToken<string>>
 {
-  public void Configure(EntityTypeBuilder<IdentityUserToken<string>> builder)
-  {
-    builder.HasNoKey();
-  }
+  public void Configure(EntityTypeBuilder<IdentityUserToken<string>> builder) => builder.HasNoKey();
 }

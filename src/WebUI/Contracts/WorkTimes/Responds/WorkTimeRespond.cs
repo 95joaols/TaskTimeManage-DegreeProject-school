@@ -2,12 +2,7 @@
 
 public class WorkTimeRespond
 {
-  public Guid PublicId
-  {
-    get; set;
-  }
-  public DateTimeOffset Time
-  {
-    get; set;
-  }
+  public Guid PublicId{ get; set; }
+
+  public DateTimeOffset Time{ get; set; }
 }

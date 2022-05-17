@@ -1,9 +1,9 @@
 ﻿using Application.Common.Interfaces;
 using Application.CQRS.WorkTimes.Commands;
-
 using Domain.Aggregates.WorkAggregate;
 
 namespace Application.CQRS.WorkTimes.Handlers;
+
 public class UpdateWorkTimesHandlerTester
 {
   [Theory]
@@ -16,7 +16,8 @@ public class UpdateWorkTimesHandlerTester
   {
     //Arrange 
     Fixture fixture = new();
-    fixture.Customizations.Add(new RandomDateTimeSequenceGenerator(DateTimeOffset.Now.AddYears(-2).DateTime, DateTimeOffset.Now.DateTime));
+    fixture.Customizations.Add(new RandomDateTimeSequenceGenerator(DateTimeOffset.Now.AddYears(-2).DateTime,
+      DateTimeOffset.Now.DateTime));
 
     string name = fixture.Create<string>();
     IEnumerable<DateTimeOffset> times = fixture.CreateMany<DateTimeOffset>(count);
@@ -25,16 +26,17 @@ public class UpdateWorkTimesHandlerTester
 
     SetupHelper helper = new(dataAccess);
     WorkItem workItem = await helper.SetupWorkItemAsync(name);
-    List<WorkTime> WorkTimes = new();
+    List<WorkTime> workTimes = new();
 
     foreach (DateTimeOffset time in times)
     {
-      WorkTimes.Add(await helper.SetupWorkTimeAsync(time, workItem));
+      workTimes.Add(await helper.SetupWorkTimeAsync(time, workItem));
     }
+
     List<WorkTime> toUpdate = new();
-    foreach (WorkTime? WorkTime in WorkTimes)
+    foreach (WorkTime? workTime in workTimes)
     {
-      toUpdate.Add(WorkTime.CreateWorkTime(WorkTime.PublicId, fixture.Create<DateTime>(), workItem));
+      toUpdate.Add(WorkTime.CreateWorkTime(workTime.PublicId, fixture.Create<DateTime>(), workItem));
     }
 
 

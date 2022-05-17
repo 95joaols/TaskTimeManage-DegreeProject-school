@@ -1,5 +1,4 @@
 ﻿using MediatR;
-
 using Microsoft.AspNetCore.Mvc;
 
 namespace TaskTimeManage.Api.Controllers.Authentications;
@@ -8,12 +7,12 @@ namespace TaskTimeManage.Api.Controllers.Authentications;
 [ApiController]
 public partial class AuthenticationController : ControllerBase //NOSONAR
 {
-  private readonly IMediator mediator;
-  private readonly IConfiguration configuration;
+  private readonly IConfiguration _configuration;
+  private readonly IMediator _mediator;
 
   public AuthenticationController(IMediator mediator, IConfiguration configuration)
   {
-    this.mediator = mediator;
-    this.configuration = configuration;
+    _mediator = mediator;
+    _configuration = configuration;
   }
 }

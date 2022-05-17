@@ -1,9 +1,9 @@
 ﻿using Application.Common.Interfaces;
 using Application.CQRS.WorkTimes.Queries;
-
 using Domain.Aggregates.WorkAggregate;
 
 namespace Application.CQRS.WorkTimes.Handlers;
+
 public class GetWorkTimesByWorkItemPublicIdHandlerTester
 {
   [Theory]
@@ -16,7 +16,8 @@ public class GetWorkTimesByWorkItemPublicIdHandlerTester
   {
     //Arrange 
     Fixture fixture = new();
-    fixture.Customizations.Add(new RandomDateTimeSequenceGenerator(DateTimeOffset.Now.AddYears(-2).DateTime, DateTimeOffset.Now.DateTime));
+    fixture.Customizations.Add(new RandomDateTimeSequenceGenerator(DateTimeOffset.Now.AddYears(-2).DateTime,
+      DateTimeOffset.Now.DateTime));
     string name = fixture.Create<string>();
     IEnumerable<DateTime> times = fixture.CreateMany<DateTime>(count);
 
@@ -24,11 +25,11 @@ public class GetWorkTimesByWorkItemPublicIdHandlerTester
 
     SetupHelper helper = new(dataAccess);
     WorkItem workItem = await helper.SetupWorkItemAsync(name);
-    List<WorkTime> WorkTimes = new();
+    List<WorkTime> workTimes = new();
 
     foreach (DateTime time in times)
     {
-      WorkTimes.Add(await helper.SetupWorkTimeAsync(time, workItem));
+      workTimes.Add(await helper.SetupWorkTimeAsync(time, workItem));
     }
 
 
@@ -41,7 +42,7 @@ public class GetWorkTimesByWorkItemPublicIdHandlerTester
     //Assert
     _ = results.Should().NotBeNullOrEmpty();
     _ = results.Should().HaveCount(count);
-    _ = results.ToList().Should().BeEquivalentTo(WorkTimes, options =>
-    options.ExcludingNestedObjects());
+    _ = results.ToList().Should().BeEquivalentTo(workTimes, options =>
+      options.ExcludingNestedObjects());
   }
 }

@@ -7,9 +7,9 @@ import {
     ModalHeader,
     ModalOverlay,
 } from "@chakra-ui/modal";
-import { Button, Text, useToast } from "@chakra-ui/react";
-import React, { useEffect } from "react";
-import { useDeleteWorkItemMutation } from "../../store/api/WorkApi";
+import {Button, Text, useToast} from "@chakra-ui/react";
+import React, {useEffect} from "react";
+import {useDeleteWorkItemMutation} from "../../store/api/WorkApi";
 
 type Props = {
     onClose: () => void;
@@ -19,8 +19,8 @@ type Props = {
     activeWorkItem: string;
 };
 
-function RemoveWorkItemMode({ onClose, onDeleted, isOpen, activeWorkItem }: Props) {
-    const [Delete, { data, isLoading, error, isError: createUserError }] = useDeleteWorkItemMutation();
+function RemoveWorkItemMode({onClose, onDeleted, isOpen, activeWorkItem}: Props) {
+    const [Delete, {data, isLoading, error, isError: createUserError}] = useDeleteWorkItemMutation();
     const toast = useToast();
 
     useEffect(() => {
@@ -48,10 +48,10 @@ function RemoveWorkItemMode({ onClose, onDeleted, isOpen, activeWorkItem }: Prop
     return (
         <>
             <Modal isCentered onClose={onClose} isOpen={isOpen} motionPreset="slideInBottom">
-                <ModalOverlay />
+                <ModalOverlay/>
                 <ModalContent>
                     <ModalHeader>confirm</ModalHeader>
-                    <ModalCloseButton />
+                    <ModalCloseButton/>
                     <ModalBody>
                         <Text>confirm delete Work Item</Text>
                     </ModalBody>

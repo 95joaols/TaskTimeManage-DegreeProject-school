@@ -2,12 +2,7 @@
 
 public class WorkTimeLightRespond
 {
-  public Guid PublicId
-  {
-    get; set;
-  }
-  public DateTimeOffset Time
-  {
-    get; set;
-  }
+  public Guid PublicId{ get; set; }
+
+  public DateTimeOffset Time{ get; set; }
 }

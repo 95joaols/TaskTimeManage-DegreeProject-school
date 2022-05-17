@@ -2,16 +2,9 @@
 
 public class WorkItemRespond
 {
-  public Guid PublicId
-  {
-    get; set;
-  }
-  public string Name
-  {
-    get; set;
-  }
-  public IEnumerable<WorkTimeLightRespond> workTimes
-  {
-    get; set;
-  }
+  public Guid PublicId{ get; set; }
+
+  public string Name{ get; set; }
+
+  public IEnumerable<WorkTimeLightRespond> WorkTimes{ get; set; }
 }

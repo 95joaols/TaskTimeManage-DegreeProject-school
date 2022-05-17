@@ -1,4 +1,4 @@
-import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-control";
+import {FormControl, FormErrorMessage, FormLabel} from "@chakra-ui/form-control";
 import {
     Modal,
     ModalBody,
@@ -8,12 +8,12 @@ import {
     ModalHeader,
     ModalOverlay,
 } from "@chakra-ui/modal";
-import { Button, Input, useToast } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
-import { useCreateWorkItemMutation } from "../../store/api/WorkApi";
-import { useAppSelector } from "../../store/hook";
-import { selectLoginUser } from "../../store/state/authSlice";
-import { WorkItem } from "../../Types/WorkItem";
+import {Button, Input, useToast} from "@chakra-ui/react";
+import React, {useEffect, useRef, useState} from "react";
+import {useCreateWorkItemMutation} from "../../store/api/WorkApi";
+import {useAppSelector} from "../../store/hook";
+import {selectLoginUser} from "../../store/state/authSlice";
+import {WorkItem} from "../../Types/WorkItem";
 
 type Props = {
     createWorkItem: (workItem: WorkItem) => void;
@@ -21,14 +21,14 @@ type Props = {
     isOpen: boolean;
 };
 
-function CreateWorkItemModel({ onClose, isOpen, createWorkItem }: Props) {
+function CreateWorkItemModel({onClose, isOpen, createWorkItem}: Props) {
     const user = useAppSelector(selectLoginUser);
     const firstUpdate = useRef(true);
     const [name, setName] = useState("");
     const [isError, setIsError] = useState(false);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleInputChange = (e: any) => setName(e.target.value);
-    const [createWorkItemApi, { data, isLoading, error, isError: createUserError }] = useCreateWorkItemMutation();
+    const [createWorkItemApi, {data, isLoading, error, isError: createUserError}] = useCreateWorkItemMutation();
     const toast = useToast();
 
     useEffect(() => {
@@ -66,7 +66,7 @@ function CreateWorkItemModel({ onClose, isOpen, createWorkItem }: Props) {
 
     const CreateWorkItem = () => {
         if (name && user.id) {
-            createWorkItemApi({ name, UserPublicId: user.id });
+            createWorkItemApi({name, UserPublicId: user.id});
         } else {
             setIsError(true);
         }
@@ -74,14 +74,14 @@ function CreateWorkItemModel({ onClose, isOpen, createWorkItem }: Props) {
 
     return (
         <Modal isCentered onClose={CustomOnClose} isOpen={isOpen} motionPreset="slideInBottom">
-            <ModalOverlay />
+            <ModalOverlay/>
             <ModalContent>
                 <ModalHeader>Create WorkItem</ModalHeader>
-                <ModalCloseButton />
+                <ModalCloseButton/>
                 <ModalBody>
                     <FormControl isInvalid={isError} isRequired>
                         <FormLabel htmlFor="Name">Name</FormLabel>
-                        <Input id="Name" type="text" value={name} onChange={handleInputChange} />
+                        <Input id="Name" type="text" value={name} onChange={handleInputChange}/>
                         {isError && <FormErrorMessage>Name is required.</FormErrorMessage>}
                     </FormControl>
                 </ModalBody>

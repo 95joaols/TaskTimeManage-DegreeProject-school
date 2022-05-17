@@ -8,21 +8,18 @@ using Application.CQRS.WorkItems.Queries;
 using Application.CQRS.WorkTimes.Commands;
 using Application.CQRS.WorkTimes.Handlers;
 using Application.moq;
-
 using Domain.Aggregates.UserAggregate;
 using Domain.Aggregates.WorkAggregate;
-
 using MediatR;
-
 using Microsoft.EntityFrameworkCore;
-
 using Moq;
 
 namespace Application;
+
 internal class SetupHelper
 {
-  private readonly IApplicationDbContext dataAccess;
-  public SetupHelper(IApplicationDbContext data) => dataAccess = data;
+  private readonly IApplicationDbContext _dataAccess;
+  public SetupHelper(IApplicationDbContext data) => _dataAccess = data;
 
   public async static Task<IApplicationDbContext> CreateDataAccess()
   {
@@ -35,7 +32,7 @@ internal class SetupHelper
 
   public async Task<UserProfile> SetupUserAsync(string username, string password)
   {
-    RegistrateUserHandler registrateUserHandler = new(dataAccess);
+    RegistrateUserHandler registrateUserHandler = new(_dataAccess);
     RegistrateUserCommand request = new(username, password);
 
     return await registrateUserHandler.Handle(request, CancellationToken.None);
@@ -48,57 +45,59 @@ internal class SetupHelper
     string password = fixture.Create<string>();
 
 
-    UserProfile User = await SetupUserAsync(username, password);
+    UserProfile user = await SetupUserAsync(username, password);
 
     Mock<IMediator>? mediatorMoq = new();
-    _ = mediatorMoq.Setup(x => x.Send(new GetUserByPublicIdQuery(User.PublicId),
-    It.IsAny<CancellationToken>())).ReturnsAsync(User);
+    _ = mediatorMoq.Setup(x => x.Send(new GetUserByPublicIdQuery(user.PublicId),
+      It.IsAny<CancellationToken>())).ReturnsAsync(user);
 
-    CreateNewWorkItemHandler createNewWorkItemHandler = new(dataAccess, mediatorMoq.Object);
-    CreateNewWorkItemCommand request = new(name, User.PublicId);
+    CreateNewWorkItemHandler createNewWorkItemHandler = new(_dataAccess, mediatorMoq.Object);
+    CreateNewWorkItemCommand request = new(name, user.PublicId);
 
     return await createNewWorkItemHandler.Handle(request, CancellationToken.None);
   }
-  public async Task<WorkItem> SetupWorkItemAsync(string name, UserProfile User)
+
+  public async Task<WorkItem> SetupWorkItemAsync(string name, UserProfile user)
   {
     Fixture fixture = new();
 
     Mock<IMediator>? mediatorMoq = new();
-    _ = mediatorMoq.Setup(x => x.Send(new GetUserByPublicIdQuery(User.PublicId),
-    It.IsAny<CancellationToken>())).ReturnsAsync(User);
+    _ = mediatorMoq.Setup(x => x.Send(new GetUserByPublicIdQuery(user.PublicId),
+      It.IsAny<CancellationToken>())).ReturnsAsync(user);
 
-    CreateNewWorkItemHandler createNewWorkItemHandler = new(dataAccess, mediatorMoq.Object);
-    CreateNewWorkItemCommand request = new(name, User.PublicId);
+    CreateNewWorkItemHandler createNewWorkItemHandler = new(_dataAccess, mediatorMoq.Object);
+    CreateNewWorkItemCommand request = new(name, user.PublicId);
 
     return await createNewWorkItemHandler.Handle(request, CancellationToken.None);
   }
+
   public async Task<WorkTime> SetupWorkTimeAsync(DateTimeOffset time)
   {
     Fixture fixture = new();
     string name = fixture.Create<string>();
 
-    WorkItem WorkItem = await SetupWorkItemAsync(name);
+    WorkItem workItem = await SetupWorkItemAsync(name);
     Mock<IMediator>? mediatorMoq = new();
-    _ = mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(WorkItem.PublicId),
-    It.IsAny<CancellationToken>())).ReturnsAsync(WorkItem);
+    _ = mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(workItem.PublicId),
+      It.IsAny<CancellationToken>())).ReturnsAsync(workItem);
 
-    CreateWorkTimeHandler createWorkTimeHandler = new(dataAccess, mediatorMoq.Object);
-    CreateWorkTimeCommand request = new(time, WorkItem.PublicId);
+    CreateWorkTimeHandler createWorkTimeHandler = new(_dataAccess, mediatorMoq.Object);
+    CreateWorkTimeCommand request = new(time, workItem.PublicId);
 
     return await createWorkTimeHandler.Handle(request, CancellationToken.None);
   }
-  public async Task<WorkTime> SetupWorkTimeAsync(DateTimeOffset time, WorkItem WorkItem)
+
+  public async Task<WorkTime> SetupWorkTimeAsync(DateTimeOffset time, WorkItem workItem)
   {
     Fixture fixture = new();
 
     Mock<IMediator>? mediatorMoq = new();
-    _ = mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(WorkItem.PublicId),
-    It.IsAny<CancellationToken>())).ReturnsAsync(WorkItem);
+    _ = mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(workItem.PublicId),
+      It.IsAny<CancellationToken>())).ReturnsAsync(workItem);
 
-    CreateWorkTimeHandler createWorkTimeHandler = new(dataAccess, mediatorMoq.Object);
-    CreateWorkTimeCommand request = new(time, WorkItem.PublicId);
+    CreateWorkTimeHandler createWorkTimeHandler = new(_dataAccess, mediatorMoq.Object);
+    CreateWorkTimeCommand request = new(time, workItem.PublicId);
 
     return await createWorkTimeHandler.Handle(request, CancellationToken.None);
   }
-
 }

@@ -7,10 +7,10 @@ import {
     ModalHeader,
     ModalOverlay,
 } from "@chakra-ui/modal";
-import { Button, Text, useToast } from "@chakra-ui/react";
-import React, { useEffect } from "react";
-import { useDeleteWorkTimeMutation } from "../../store/api/WorkApi";
-import { WorkTime } from "../../Types/WorkTime";
+import {Button, Text, useToast} from "@chakra-ui/react";
+import React, {useEffect} from "react";
+import {useDeleteWorkTimeMutation} from "../../store/api/WorkApi";
+import {WorkTime} from "../../Types/WorkTime";
 
 type Props = {
     onClose: () => void;
@@ -18,8 +18,8 @@ type Props = {
     workTime: WorkTime;
 };
 
-function RemoveWorkTimeModel({ onClose, isOpen, workTime }: Props) {
-    const [Delete, { data, isLoading, error, isError: createUserError }] = useDeleteWorkTimeMutation();
+function RemoveWorkTimeModel({onClose, isOpen, workTime}: Props) {
+    const [Delete, {data, isLoading, error, isError: createUserError}] = useDeleteWorkTimeMutation();
     const toast = useToast();
 
     useEffect(() => {
@@ -46,10 +46,10 @@ function RemoveWorkTimeModel({ onClose, isOpen, workTime }: Props) {
     return (
         <>
             <Modal isCentered onClose={onClose} isOpen={isOpen} motionPreset="slideInBottom">
-                <ModalOverlay />
+                <ModalOverlay/>
                 <ModalContent>
                     <ModalHeader>confirm</ModalHeader>
-                    <ModalCloseButton />
+                    <ModalCloseButton/>
                     <ModalBody>
                         <Text>confirm delete Work Time</Text>
                     </ModalBody>

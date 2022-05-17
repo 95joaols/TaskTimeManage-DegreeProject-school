@@ -14,9 +14,9 @@ services:
       - react
       - WebUI
     networks:
-      - TTM 
-      
-
+      - TTM
+  
+  
   react:
     image: tasktimemanageweb:dev
     container_name: tasktimemanage.web
@@ -27,8 +27,8 @@ services:
       - "80"
     stdin_open: true
     networks:
-      - TTM  
-
+      - TTM
+  
   WebUI:
     image: tasktimemanageapi:dev
     container_name: Tasktimemanage.WebUI
@@ -40,9 +40,9 @@ services:
     depends_on:
       - postgres
     networks:
-      - TTM  
-      - db 
-      
+      - TTM
+      - db
+  
   postgres:
     image: postgres:latest
     container_name: tasktimemanage.db
@@ -51,16 +51,16 @@ services:
       - POSTGRES_DB=Tasktimemanage
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=fdGKhtr6dGJKG6byd5rFKuKJHGyvtfuhb6dFJKcr6utvygbhh76fu
-    volumes: 
+    volumes:
       - db:/var/lib/postgresql/data
     networks:
-      - db  
+      - db
 
 networks:
   TTM:
     driver: bridge
   db:
-    driver: bridge   
+    driver: bridge
 volumes:
   db:
     driver: local 

@@ -1,5 +1,4 @@
 ﻿using Application.CQRS.WorkItems.Commands;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,15 +12,12 @@ public partial class WorkItemController //NOSONAR
   {
     try
     {
-      if (await mediator.Send(new DeleteWorkItemCommand(publicId), cancellationToken))
+      if (await _mediator.Send(new DeleteWorkItemCommand(publicId), cancellationToken))
       {
-
         return Ok(true);
       }
-      else
-      {
-        return Problem(title: "");
-      }
+
+      return Problem(title: "");
     }
     catch (Exception ex)
     {

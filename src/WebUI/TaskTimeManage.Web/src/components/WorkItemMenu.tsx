@@ -1,9 +1,9 @@
-import { AddIcon } from "@chakra-ui/icons";
-import { Box, Button, Stack, Text } from "@chakra-ui/react";
+import {AddIcon} from "@chakra-ui/icons";
+import {Box, Button, Stack, Text} from "@chakra-ui/react";
 import React from "react";
-import { useGetWorkItemForUserQuery } from "../store/api/WorkApi";
-import { useAppSelector } from "../store/hook";
-import { selectLoginUser } from "../store/state/authSlice";
+import {useGetWorkItemForUserQuery} from "../store/api/WorkApi";
+import {useAppSelector} from "../store/hook";
+import {selectLoginUser} from "../store/state/authSlice";
 import WorkItemBox from "./WorkItemBox";
 
 type Props = {
@@ -12,17 +12,17 @@ type Props = {
     onWorkItemPress: (id: string) => void;
 };
 
-function WorkItemMenu({ AddWorkItemPress, onWorkItemPress, activeWorkItem }: Props) {
+function WorkItemMenu({AddWorkItemPress, onWorkItemPress, activeWorkItem}: Props) {
     const user = useAppSelector(selectLoginUser);
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const { data: WorkItemList, isLoading } = useGetWorkItemForUserQuery(user.id!);
+    const {data: WorkItemList, isLoading} = useGetWorkItemForUserQuery(user.id!);
 
     return (
         <Box>
             <Stack p="4" boxShadow="xl" borderRadius="md">
                 <Button size="xs" borderRadius="md" mt={2} mb={4} colorScheme="purple" onClick={AddWorkItemPress}>
                     Add New
-                    <AddIcon ml="2" />
+                    <AddIcon ml="2"/>
                 </Button>
 
                 {WorkItemList &&

@@ -1,15 +1,13 @@
 ﻿using Application.Common.Interfaces;
 using Application.CQRS.Authentication.Queries;
 using Application.CQRS.WorkItems.Commands;
-
 using Domain.Aggregates.UserAggregate;
 using Domain.Aggregates.WorkAggregate;
-
 using MediatR;
-
 using Moq;
 
 namespace Application.CQRS.WorkItems.Handlers;
+
 public class CreateNewWorkItemHandlerTester
 {
   [Fact]
@@ -29,7 +27,7 @@ public class CreateNewWorkItemHandlerTester
 
     Mock<IMediator>? mediatorMoq = new();
     _ = mediatorMoq.Setup(x => x.Send(new GetUserByPublicIdQuery(user.PublicId),
-    It.IsAny<CancellationToken>())).ReturnsAsync(user);
+      It.IsAny<CancellationToken>())).ReturnsAsync(user);
 
     CreateNewWorkItemHandler sut = new(dataAccess, mediatorMoq.Object);
     CreateNewWorkItemCommand request = new(name, user.PublicId);

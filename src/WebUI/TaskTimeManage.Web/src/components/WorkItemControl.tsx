@@ -1,7 +1,7 @@
-import { EditIcon } from "@chakra-ui/icons";
-import { Box, Button, Center, Flex, Heading, IconButton, Text, useDisclosure } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { useCreateWorkTimeMutation, useLazyGetWorkItemQuery } from "../store/api/WorkApi";
+import {EditIcon} from "@chakra-ui/icons";
+import {Box, Button, Center, Flex, Heading, IconButton, Text, useDisclosure} from "@chakra-ui/react";
+import React, {useEffect, useState} from "react";
+import {useCreateWorkTimeMutation, useLazyGetWorkItemQuery} from "../store/api/WorkApi";
 import CalculateTime from "./CalculateTime";
 import EditWorkItemModel from "./Models/EditWorkItemModel";
 import WorkTimeList from "./WorkTimeList";
@@ -11,14 +11,14 @@ type Props = {
     onReset: () => void;
 };
 
-function WorkItemControl({ activeWorkItem, onReset }: Props) {
-    const { isOpen: isOpenEditModel, onOpen: onOpenEditModel, onClose: onCloseEditModel } = useDisclosure();
+function WorkItemControl({activeWorkItem, onReset}: Props) {
+    const {isOpen: isOpenEditModel, onOpen: onOpenEditModel, onClose: onCloseEditModel} = useDisclosure();
 
     const [LastActive, setLastActive] = useState<string>();
     const [workTimesCount, setWorkTimesCount] = useState(0);
 
     const [trigger, WorkItemResult] = useLazyGetWorkItemQuery();
-    const [createWorkTimeApi, { isLoading }] = useCreateWorkTimeMutation();
+    const [createWorkTimeApi, {isLoading}] = useCreateWorkTimeMutation();
 
     useEffect(() => {
         setWorkTimesCount(WorkItemResult.data?.workTimes?.length ?? 0);
@@ -29,7 +29,7 @@ function WorkItemControl({ activeWorkItem, onReset }: Props) {
             if (!LastActive || activeWorkItem !== LastActive) {
                 if (workTimesCount % 2 === 1) {
                     if (LastActive) {
-                        createWorkTimeApi({ time: new Date(), workItemPublicId: LastActive });
+                        createWorkTimeApi({time: new Date(), workItemPublicId: LastActive});
                     }
                 }
                 setLastActive(activeWorkItem);
@@ -39,7 +39,7 @@ function WorkItemControl({ activeWorkItem, onReset }: Props) {
     }, [activeWorkItem]);
 
     const onPress = () => {
-        createWorkTimeApi({ time: new Date(), workItemPublicId: activeWorkItem });
+        createWorkTimeApi({time: new Date(), workItemPublicId: activeWorkItem});
     };
     return (
         <Box>
@@ -58,9 +58,9 @@ function WorkItemControl({ activeWorkItem, onReset }: Props) {
                     {workTimesCount % 2 === 1 ? "Stop" : "Start"}
                 </Button>
                 <Center m="3">
-                    <CalculateTime WorkTimes={WorkItemResult.data?.workTimes} />
+                    <CalculateTime WorkTimes={WorkItemResult.data?.workTimes}/>
                 </Center>
-                <IconButton aria-label="Edit" icon={<EditIcon />} colorScheme={"blue"} onClick={onOpenEditModel} />
+                <IconButton aria-label="Edit" icon={<EditIcon/>} colorScheme={"blue"} onClick={onOpenEditModel}/>
                 {WorkItemResult.data && (
                     <EditWorkItemModel
                         isOpen={isOpenEditModel}
@@ -71,7 +71,7 @@ function WorkItemControl({ activeWorkItem, onReset }: Props) {
                 )}
             </Flex>
             <Flex gap={5}>
-                <WorkTimeList workTimes={WorkItemResult.data?.workTimes} />
+                <WorkTimeList workTimes={WorkItemResult.data?.workTimes}/>
             </Flex>
         </Box>
     );

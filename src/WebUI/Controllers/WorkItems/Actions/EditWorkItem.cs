@@ -1,11 +1,8 @@
 ﻿using Application.CQRS.WorkItems.Commands;
 using Application.CQRS.WorkTimes.Commands;
-
 using Domain.Aggregates.WorkAggregate;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
 using WebUI.Contracts.WorkItems.Requests;
 using WebUI.Contracts.WorkItems.Responds;
 
@@ -15,14 +12,16 @@ public partial class WorkItemController //NOSONAR
 {
   [HttpPut]
   [Authorize]
-  public async Task<ActionResult<WorkItemRespond>> EditWorkItemAsync([FromBody] EditWorkItemRequest reqest, CancellationToken cancellationToken)
+  public async Task<ActionResult<WorkItemRespond>> EditWorkItemAsync([FromBody] EditWorkItemRequest reqest,
+    CancellationToken cancellationToken)
   {
     try
     {
-      WorkItem workItem = await mediator.Send(new UpdateWorkItemCommand(reqest.PublicId, reqest.Name), cancellationToken);
+      WorkItem workItem =
+        await _mediator.Send(new UpdateWorkItemCommand(reqest.PublicId, reqest.Name), cancellationToken);
       if (reqest.WorkTimes.Any())
       {
-        _ = await mediator.Send(
+        _ = await _mediator.Send(
           new UpdateWorkTimesCommand(
             reqest.WorkTimes.Select(x => WorkTime.CreateWorkTime(x.PublicId, x.Time, workItem))),
           cancellationToken);
@@ -30,12 +29,10 @@ public partial class WorkItemController //NOSONAR
 
       if (workItem != null)
       {
-        return Ok(mapper.Map<WorkItemRespond>(workItem));
+        return Ok(_mapper.Map<WorkItemRespond>(workItem));
       }
-      else
-      {
-        return Problem(title: "Error");
-      }
+
+      return Problem(title: "Error");
     }
     catch (Exception ex)
     {

@@ -1,11 +1,10 @@
 ﻿using Application.Common.Interfaces;
 using Application.CQRS.WorkTimes.Commands;
-
 using Domain.Aggregates.WorkAggregate;
-
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.WorkTimes.Handlers;
+
 public class DeleteAllWorkTimesByWorkItemIdHandlerTester
 {
   [Theory]
@@ -18,7 +17,8 @@ public class DeleteAllWorkTimesByWorkItemIdHandlerTester
   {
     //Arrange 
     Fixture fixture = new();
-    fixture.Customizations.Add(new RandomDateTimeSequenceGenerator(DateTimeOffset.Now.AddYears(-2).DateTime, DateTimeOffset.Now.DateTime));
+    fixture.Customizations.Add(new RandomDateTimeSequenceGenerator(DateTimeOffset.Now.AddYears(-2).DateTime,
+      DateTimeOffset.Now.DateTime));
 
     string name = fixture.Create<string>();
     IEnumerable<DateTimeOffset> times = fixture.CreateMany<DateTimeOffset>(count);

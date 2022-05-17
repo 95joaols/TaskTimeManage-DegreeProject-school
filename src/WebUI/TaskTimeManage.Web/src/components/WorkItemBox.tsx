@@ -1,6 +1,6 @@
-import { Box, Text } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { WorkItem } from "../Types/WorkItem";
+import {Box, Text} from "@chakra-ui/react";
+import React, {useEffect, useState} from "react";
+import {WorkItem} from "../Types/WorkItem";
 
 type Props = {
     onPress: (id: string) => void;
@@ -8,7 +8,7 @@ type Props = {
     activeWorkItem: string | undefined;
 };
 
-function WorkItemBox({ workItem, onPress, activeWorkItem }: Props) {
+function WorkItemBox({workItem, onPress, activeWorkItem}: Props) {
     const [Color, setColor] = useState("green");
 
     useEffect(() => {

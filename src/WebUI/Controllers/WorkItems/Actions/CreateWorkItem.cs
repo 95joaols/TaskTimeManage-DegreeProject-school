@@ -1,10 +1,7 @@
 ﻿using Application.CQRS.WorkItems.Commands;
-
 using Domain.Aggregates.WorkAggregate;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
 using WebUI.Contracts.WorkItems.Requests;
 using WebUI.Contracts.WorkItems.Responds;
 
@@ -14,20 +11,20 @@ public partial class WorkItemController //NOSONAR
 {
   [HttpPost]
   [Authorize]
-  public async Task<ActionResult<WorkItemRespond>> CreateWorkItemAsync([FromBody] CreateWorkItemRequest reqest, CancellationToken cancellationToken)
+  public async Task<ActionResult<WorkItemRespond>> CreateWorkItemAsync([FromBody] CreateWorkItemRequest reqest,
+    CancellationToken cancellationToken)
   {
     try
     {
-      WorkItem workItem = await mediator.Send(new CreateNewWorkItemCommand(reqest.Name, reqest.UserPublicId), cancellationToken);
+      WorkItem workItem = await _mediator.Send(new CreateNewWorkItemCommand(reqest.Name, reqest.UserPublicId),
+        cancellationToken);
 
       if (workItem != null)
       {
-        return Created("", mapper.Map<WorkItemRespond>(workItem));
+        return Created("", _mapper.Map<WorkItemRespond>(workItem));
       }
-      else
-      {
-        return Problem(title: "Error");
-      }
+
+      return Problem(title: "Error");
     }
     catch (Exception ex)
     {

@@ -1,10 +1,8 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Settings;
 using Application.CQRS.Authentication.Queries;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
 using WebUI.Contracts.Authentications.Requests;
 
 namespace TaskTimeManage.Api.Controllers.Authentications;
@@ -19,30 +17,29 @@ public partial class AuthenticationController //NOSONAR
     {
       return BadRequest();
     }
+
     try
     {
-      IConfigurationSection? appSettingsSection = configuration.GetSection("ApplicationSecuritySettings");
+      IConfigurationSection? appSettingsSection = _configuration.GetSection("ApplicationSecuritySettings");
       ApplicationSecuritySettings? applicationSecuritySettings = appSettingsSection.Get<ApplicationSecuritySettings>();
 
-      string token = await mediator.Send(new LoginQuery(reqest.Username, reqest.Password, applicationSecuritySettings.Secret), cancellationToken);
+      string token =
+        await _mediator.Send(new LoginQuery(reqest.Username, reqest.Password, applicationSecuritySettings.Secret),
+          cancellationToken);
       if (string.IsNullOrWhiteSpace(token))
       {
         return Problem(statusCode: 500);
       }
-      else
-      {
-        return Ok(token);
-      }
+
+      return Ok(token);
     }
     catch (LogInWrongException e)
     {
       return Problem(title: e.Message, detail: e.Message, statusCode: 400);
-
     }
     catch (Exception e)
     {
-
-      return Problem(detail: e.Message, statusCode: 500);
+      return Problem(e.Message, statusCode: 500);
     }
   }
 }
