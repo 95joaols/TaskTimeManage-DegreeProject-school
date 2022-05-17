@@ -8,7 +8,7 @@ using Domain.Aggregates.UserAggregate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using WebUI.Requests;
+using WebUI.Contracts.Authentications.Requests;
 
 namespace TaskTimeManage.Api.Controllers.Authentications;
 

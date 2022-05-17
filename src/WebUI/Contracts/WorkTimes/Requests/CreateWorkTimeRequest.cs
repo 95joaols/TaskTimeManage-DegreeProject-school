@@ -1,4 +1,4 @@
-﻿namespace WebUI.Requests;
+﻿namespace WebUI.Contracts.WorkTimes.Requests;
 
 public class CreateWorkTimeRequest
 {

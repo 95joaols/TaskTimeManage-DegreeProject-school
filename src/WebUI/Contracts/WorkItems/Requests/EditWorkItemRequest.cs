@@ -1,6 +1,6 @@
 ﻿using Application.Common.Models.Generated;
 
-namespace WebUI.Requests;
+namespace WebUI.Contracts.WorkItems.Requests;
 
 public class EditWorkItemRequest
 {

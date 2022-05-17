@@ -6,7 +6,7 @@ using Domain.Aggregates.WorkAggregate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using WebUI.Requests;
+using WebUI.Contracts.WorkTimes.Requests;
 
 namespace TaskTimeManage.Api.Controllers.WorkTimes;
 

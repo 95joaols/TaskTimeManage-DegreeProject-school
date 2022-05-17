@@ -1,4 +1,5 @@
 using Application;
+using Application.Common.Mappings;
 
 using Infrastructure;
 using Infrastructure.Persistence;
@@ -30,6 +31,7 @@ builder.Services.AddSwaggerGen(options => {
   options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 
 
