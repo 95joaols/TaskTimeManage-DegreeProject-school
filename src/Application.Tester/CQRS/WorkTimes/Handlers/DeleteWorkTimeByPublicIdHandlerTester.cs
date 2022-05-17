@@ -13,14 +13,14 @@ public class DeleteWorkTimeByPublicIdHandlerTester
   {
     //Arrange 
     Fixture fixture = new();
-    fixture.Customizations.Add(new RandomDateTimeSequenceGenerator(DateTime.Now.AddYears(-2), DateTime.Now));
+    fixture.Customizations.Add(new RandomDateTimeSequenceGenerator(DateTimeOffset.Now.AddYears(-2).DateTime, DateTimeOffset.Now.DateTime));
     string name = fixture.Create<string>();
     DateTime time = fixture.Create<DateTime>();
 
     using IApplicationDbContext dataAccess = await SetupHelper.CreateDataAccess();
 
     SetupHelper helper = new(dataAccess);
-    WorkTime workTime = await helper.SetupWorkTimeAsync(time.ToUniversalTime());
+    WorkTime workTime = await helper.SetupWorkTimeAsync(time);
 
 
     DeleteWorkTimeByPublicIdHandler sut = new(dataAccess);

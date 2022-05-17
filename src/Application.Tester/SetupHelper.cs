@@ -72,7 +72,7 @@ internal class SetupHelper
 
     return await createNewWorkItemHandler.Handle(request, CancellationToken.None);
   }
-  public async Task<WorkTime> SetupWorkTimeAsync(DateTime time)
+  public async Task<WorkTime> SetupWorkTimeAsync(DateTimeOffset time)
   {
     Fixture fixture = new();
     string name = fixture.Create<string>();
@@ -87,7 +87,7 @@ internal class SetupHelper
 
     return await createWorkTimeHandler.Handle(request, CancellationToken.None);
   }
-  public async Task<WorkTime> SetupWorkTimeAsync(DateTime time, WorkItem WorkItem)
+  public async Task<WorkTime> SetupWorkTimeAsync(DateTimeOffset time, WorkItem WorkItem)
   {
     Fixture fixture = new();
 

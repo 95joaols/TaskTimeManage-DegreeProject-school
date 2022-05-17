@@ -16,10 +16,10 @@ public class CreateWorkTimeHandlerTester
   {
     //Arrange 
     Fixture fixture = new();
-    fixture.Customizations.Add(new RandomDateTimeSequenceGenerator(DateTime.Now.AddYears(-2), DateTime.Now));
+    fixture.Customizations.Add(new RandomDateTimeSequenceGenerator(DateTimeOffset.Now.AddYears(-2).DateTime, DateTimeOffset.Now.DateTime));
 
     string name = fixture.Create<string>();
-    DateTime time = fixture.Create<DateTime>().ToUniversalTime();
+    DateTimeOffset time = fixture.Create<DateTimeOffset>();
 
 
     using IApplicationDbContext dataAccess = await SetupHelper.CreateDataAccess();

@@ -18,18 +18,18 @@ public class DeleteAllWorkTimesByWorkItemIdHandlerTester
   {
     //Arrange 
     Fixture fixture = new();
-    fixture.Customizations.Add(new RandomDateTimeSequenceGenerator(DateTime.Now.AddYears(-2), DateTime.Now));
+    fixture.Customizations.Add(new RandomDateTimeSequenceGenerator(DateTimeOffset.Now.AddYears(-2).DateTime, DateTimeOffset.Now.DateTime));
 
     string name = fixture.Create<string>();
-    IEnumerable<DateTime> times = fixture.CreateMany<DateTime>(count);
+    IEnumerable<DateTimeOffset> times = fixture.CreateMany<DateTimeOffset>(count);
 
     using IApplicationDbContext dataAccess = await SetupHelper.CreateDataAccess();
 
     SetupHelper helper = new(dataAccess);
     WorkItem workItem = await helper.SetupWorkItemAsync(name);
-    foreach (DateTime time in times)
+    foreach (DateTimeOffset time in times)
     {
-      _ = await helper.SetupWorkTimeAsync(time.ToUniversalTime(), workItem);
+      _ = await helper.SetupWorkTimeAsync(time, workItem);
     }
 
     DeleteAllWorkTimesByWorkItemIdHandler sut = new(dataAccess);

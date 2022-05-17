@@ -16,7 +16,7 @@ public class GetWorkTimesByWorkItemPublicIdHandlerTester
   {
     //Arrange 
     Fixture fixture = new();
-    fixture.Customizations.Add(new RandomDateTimeSequenceGenerator(DateTime.Now.AddYears(-2), DateTime.Now));
+    fixture.Customizations.Add(new RandomDateTimeSequenceGenerator(DateTimeOffset.Now.AddYears(-2).DateTime, DateTimeOffset.Now.DateTime));
     string name = fixture.Create<string>();
     IEnumerable<DateTime> times = fixture.CreateMany<DateTime>(count);
 
@@ -28,7 +28,7 @@ public class GetWorkTimesByWorkItemPublicIdHandlerTester
 
     foreach (DateTime time in times)
     {
-      WorkTimes.Add(await helper.SetupWorkTimeAsync(time.ToUniversalTime(), workItem));
+      WorkTimes.Add(await helper.SetupWorkTimeAsync(time, workItem));
     }
 
 

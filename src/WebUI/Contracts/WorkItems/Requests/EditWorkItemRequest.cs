@@ -2,19 +2,5 @@
 
 namespace WebUI.Contracts.WorkItems.Requests;
 
-public class EditWorkItemRequest
-{
-  public Guid PublicId
-  {
-    get; set;
-  }
-  public string Name
-  {
-    get; set;
-  }
-  public IEnumerable<WorkTimeDto>? WorkTimes
-  {
-    get; set;
-  }
-}
+public record EditWorkItemRequest(Guid PublicId, string Name, IEnumerable<WorkTimeDto>? WorkTimes);
 

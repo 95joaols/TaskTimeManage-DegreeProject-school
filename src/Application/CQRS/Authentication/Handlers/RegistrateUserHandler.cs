@@ -40,8 +40,7 @@ public class RegistrateUserHandler : IRequestHandler<RegistrateUserCommand, User
   {
     string salt = Cryptography.CreatSalt();
     string hashedPassword = Cryptography.Encrypt(Cryptography.Hash(Cryptography.Encrypt(request.Password.Trim(), salt), salt), salt);
-    // UserProfile createdUser = UserProfile.CreateUser(request.Username, hashedPassword, salt);
-    throw new NotImplementedException();
-    //return createdUser;
+    UserProfile createdUser = UserProfile.CreateUser(request.Username,Guid.NewGuid().ToString(), hashedPassword, salt);
+    return createdUser;
   }
 }
