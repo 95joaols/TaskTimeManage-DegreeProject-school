@@ -1,5 +1,4 @@
 ﻿using Application.Common.Interfaces;
-using Application.Common.Models.Generated;
 using Application.CQRS.WorkTimes.Commands;
 
 using Domain.Aggregates.WorkAggregate;
@@ -32,14 +31,10 @@ public class UpdateWorkTimesHandlerTester
     {
       WorkTimes.Add(await helper.SetupWorkTimeAsync(time, workItem));
     }
-    List<WorkTimeDto> toUpdate = new();
+    List<WorkTime> toUpdate = new();
     foreach (WorkTime? WorkTime in WorkTimes)
     {
-      toUpdate.Add(new() {
-        PublicId = WorkTime.PublicId,
-        Time = fixture.Create<DateTime>()
-
-      });
+      toUpdate.Add(WorkTime.CreateWorkTime(WorkTime.PublicId, fixture.Create<DateTime>(), workItem));
     }
 
 

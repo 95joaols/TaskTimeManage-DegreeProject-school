@@ -1,5 +1,4 @@
 using Application;
-using Application.Common.Mappings;
 
 using Infrastructure;
 using Infrastructure.Persistence;
@@ -9,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 using Swashbuckle.AspNetCore.Filters;
+
+using WebUI.Mappings;
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +33,6 @@ builder.Services.AddSwaggerGen(options => {
 });
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
-
 
 
 WebApplication? app = builder.Build();

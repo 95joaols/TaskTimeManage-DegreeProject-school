@@ -1,10 +1,11 @@
-﻿using Application.Common.Models.Generated;
-using Application.CQRS.WorkItems.Queries;
+﻿using Application.CQRS.WorkItems.Queries;
 
 using Domain.Aggregates.WorkAggregate;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+using WebUI.Contracts.WorkItems.Responds;
 
 namespace TaskTimeManage.Api.Controllers.WorkItems;
 
@@ -12,7 +13,7 @@ public partial class WorkItemController //NOSONAR
 {
   [HttpGet("{PublicId}")]
   [Authorize]
-  public async Task<ActionResult<WorkItemDto>> GetWorkItemAsync(Guid PublicId, CancellationToken cancellationToken)
+  public async Task<ActionResult<WorkItemRespond>> GetWorkItemAsync(Guid PublicId, CancellationToken cancellationToken)
   {
     try
     {
@@ -20,9 +21,9 @@ public partial class WorkItemController //NOSONAR
 
       if (workItem != null)
       {
-        WorkItemDto retunValue = mapper.Map<WorkItemDto>(workItem);
+        WorkItemRespond retunValue = mapper.Map<WorkItemRespond>(workItem);
         retunValue.workTimes = retunValue.workTimes.OrderBy(o => o.Time).ToList();
-        return Ok(mapper.Map<WorkItemDto>(workItem));
+        return Ok(retunValue);
       }
       else
       {

@@ -1,5 +1,4 @@
-﻿using Application.Common.Models.Generated;
-using Application.CQRS.WorkItems.Commands;
+﻿using Application.CQRS.WorkItems.Commands;
 
 using Domain.Aggregates.WorkAggregate;
 
@@ -7,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using WebUI.Contracts.WorkItems.Requests;
+using WebUI.Contracts.WorkItems.Responds;
 
 namespace TaskTimeManage.Api.Controllers.WorkItems;
 
@@ -14,7 +14,7 @@ public partial class WorkItemController //NOSONAR
 {
   [HttpPost]
   [Authorize]
-  public async Task<ActionResult<WorkItemDto>> CreateWorkItemAsync([FromBody] CreateWorkItemRequest reqest, CancellationToken cancellationToken)
+  public async Task<ActionResult<WorkItemRespond>> CreateWorkItemAsync([FromBody] CreateWorkItemRequest reqest, CancellationToken cancellationToken)
   {
     try
     {
@@ -22,7 +22,7 @@ public partial class WorkItemController //NOSONAR
 
       if (workItem != null)
       {
-        return Created("", mapper.Map<WorkItemDto>(workItem));
+        return Created("", mapper.Map<WorkItemRespond>(workItem));
       }
       else
       {

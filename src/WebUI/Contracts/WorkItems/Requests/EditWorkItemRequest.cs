@@ -1,6 +1,6 @@
-﻿using Application.Common.Models.Generated;
+﻿using Domain.Aggregates.WorkAggregate;
 
 namespace WebUI.Contracts.WorkItems.Requests;
 
-public record EditWorkItemRequest(Guid PublicId, string Name, IEnumerable<WorkTimeDto>? WorkTimes);
+public record EditWorkItemRequest(Guid PublicId, string Name, IEnumerable<WorkTimeLightRequest>? WorkTimes);
 

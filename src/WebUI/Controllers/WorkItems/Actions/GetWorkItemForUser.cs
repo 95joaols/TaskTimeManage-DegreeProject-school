@@ -1,10 +1,11 @@
-﻿using Application.Common.Models.Generated;
-using Application.CQRS.WorkItems.Queries;
+﻿using Application.CQRS.WorkItems.Queries;
 
 using Domain.Aggregates.WorkAggregate;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+using WebUI.Contracts.WorkItems.Responds;
 
 namespace TaskTimeManage.Api.Controllers.WorkItems;
 
@@ -12,7 +13,7 @@ public partial class WorkItemController //NOSONAR
 {
   [HttpGet("UserId/{UserId}")]
   [Authorize]
-  public async Task<ActionResult<IEnumerable<WorkItemDto>>> GetWorkItemForUserAsync(Guid userId, CancellationToken cancellationToken)
+  public async Task<ActionResult<IEnumerable<WorkItemRespond>>> GetWorkItemForUserAsync(Guid userId, CancellationToken cancellationToken)
   {
     try
     {
@@ -20,7 +21,7 @@ public partial class WorkItemController //NOSONAR
 
       if (WorkItems.Any())
       {
-        return Ok(mapper.Map<IEnumerable<WorkItemDto>>(WorkItems.OrderByDescending(o => o.Id).ToList()));
+        return Ok(mapper.Map<IEnumerable<WorkItemRespond>>(WorkItems.OrderByDescending(o => o.Id).ToList()));
       }
       else
       {

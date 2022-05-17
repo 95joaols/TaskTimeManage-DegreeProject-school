@@ -1,5 +1,4 @@
-﻿using Application.Common.Models.Generated;
-using Application.CQRS.WorkTimes.Commands;
+﻿using Application.CQRS.WorkTimes.Commands;
 
 using Domain.Aggregates.WorkAggregate;
 
@@ -7,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using WebUI.Contracts.WorkTimes.Requests;
+using WebUI.Contracts.WorkTimes.Responds;
 
 namespace TaskTimeManage.Api.Controllers.WorkTimes;
 
@@ -15,7 +15,7 @@ public partial class WorkTimeController //NOSONAR
 
   [HttpPost]
   [Authorize]
-  public async Task<ActionResult<WorkTimeDto>> CreateWorkTimeAsync([FromBody] CreateWorkTimeRequest request, CancellationToken cancellationToken)
+  public async Task<ActionResult<WorkTimeRespond>> CreateWorkTimeAsync([FromBody] CreateWorkTimeRequest request, CancellationToken cancellationToken)
   {
     try
     {
@@ -25,7 +25,7 @@ public partial class WorkTimeController //NOSONAR
         return BadRequest();
       }
 
-      return Created("", mapper.Map<WorkTimeDto>(workItem));
+      return Created("", mapper.Map<WorkTimeRespond>(workItem));
     }
     catch (Exception ex)
     {
