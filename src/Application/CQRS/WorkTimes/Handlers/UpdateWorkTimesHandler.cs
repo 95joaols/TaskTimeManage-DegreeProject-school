@@ -23,7 +23,11 @@ public class UpdateWorkTimesHandler : IRequestHandler<UpdateWorkTimesCommand, IE
 
     foreach (WorkTime? workTime in WorkTimes)
     {
-      workTime.UpdateTime(workTime.Time);
+      DateTimeOffset? time = request.WorkTimes.FirstOrDefault(wt => wt.PublicId == workTime.PublicId)?.Time;
+      if (time.HasValue)
+      {
+        workTime.UpdateTime(time.Value);
+      }
     }
     _ = await data.SaveChangesAsync(cancellationToken);
     return WorkTimes;
