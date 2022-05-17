@@ -3,7 +3,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Entities;
-public sealed class WorkTime : BaseEntity<int>
+public sealed class WorkTime : BaseEntity
 {
   [Required]
   public DateTimeOffset Time

@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Common;
 
-public class BaseEntity<TKey>
+public class BaseEntity
 {
   protected BaseEntity()
   {
   }
 
   [Key]
-  public TKey Id
+  public int Id
   {
     get; set;
   }

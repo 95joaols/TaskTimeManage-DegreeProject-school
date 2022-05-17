@@ -3,7 +3,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Entities;
-public sealed class WorkItem : BaseEntity<int>
+public sealed class WorkItem : BaseEntity
 {
   [Required]
   public string Name
@@ -20,8 +20,8 @@ public sealed class WorkItem : BaseEntity<int>
   {
     get; set;
   }
-  public List<WorkTime> WorkTimes
+  public IEnumerable<WorkTime> WorkTimes
   {
     get; set;
-  } = new();
+  }
 }

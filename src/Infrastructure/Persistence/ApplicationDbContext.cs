@@ -53,7 +53,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
 
   public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken)
   {
-    foreach (Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry? entry in ChangeTracker.Entries().Where(x => x.Entity is BaseEntity<int> or BaseEntity<string> or BaseEntity<Guid>))
+    foreach (Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry? entry in ChangeTracker.Entries().Where(x => x.Entity is BaseEntity))
     {
       if (entry.State == EntityState.Added)
       {
