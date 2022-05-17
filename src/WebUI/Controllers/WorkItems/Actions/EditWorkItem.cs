@@ -1,13 +1,10 @@
-﻿using Application.Common.Models.Generated;
-using Application.CQRS.WorkItems.Commands;
+﻿using Application.CQRS.WorkItems.Commands;
 using Application.CQRS.WorkTimes.Commands;
-
-using Domain.Entities;
-
+using Domain.Aggregates.WorkAggregate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-using WebUI.Requests;
+using WebUI.Contracts.WorkItems.Requests;
+using WebUI.Contracts.WorkItems.Responds;
 
 namespace TaskTimeManage.Api.Controllers.WorkItems;
 
@@ -15,24 +12,27 @@ public partial class WorkItemController //NOSONAR
 {
   [HttpPut]
   [Authorize]
-  public async Task<ActionResult<WorkItemDto>> EditWorkItemAsync([FromBody] EditWorkItemRequest reqest, CancellationToken cancellationToken)
+  public async Task<ActionResult<WorkItemRespond>> EditWorkItemAsync([FromBody] EditWorkItemRequest reqest,
+    CancellationToken cancellationToken)
   {
     try
     {
-      WorkItem workItem = await mediator.Send(new UpdateWorkItemCommand(reqest.PublicId, reqest.Name), cancellationToken);
+      WorkItem workItem =
+        await _mediator.Send(new UpdateWorkItemCommand(reqest.PublicId, reqest.Name), cancellationToken);
       if (reqest.WorkTimes.Any())
       {
-        _ = await mediator.Send(new UpdateWorkTimesCommand(reqest.WorkTimes), cancellationToken);
+        _ = await _mediator.Send(
+          new UpdateWorkTimesCommand(
+            reqest.WorkTimes.Select(x => WorkTime.CreateWorkTime(x.PublicId, x.Time, workItem))),
+          cancellationToken);
       }
 
       if (workItem != null)
       {
-        return Ok(mapper.Map<WorkItemDto>(workItem));
+        return Ok(_mapper.Map<WorkItemRespond>(workItem));
       }
-      else
-      {
-        return Problem(title: "Error");
-      }
+
+      return Problem(title: "Error");
     }
     catch (Exception ex)
     {

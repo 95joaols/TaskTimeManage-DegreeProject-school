@@ -1,10 +1,10 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.CQRS.Authentication.Commands;
-
-using Domain.Entities;
+using Domain.Aggregates.UserAggregate;
 
 namespace Application.CQRS.Authentication.Handlers;
+
 public class RegistrateUserHandlerTester
 {
   [Theory]
@@ -15,7 +15,6 @@ public class RegistrateUserHandlerTester
   [InlineData("test", "test")]
   [InlineData("tdryntry5edynt", "hdtrydnnund5gb&35")]
   [InlineData("fgfdtygr", "dghffgbhdrt774e779j&35")]
-
   public async Task I_Can_Registrate_A_New_User(string username, string password)
   {
     //Arrange 
@@ -24,14 +23,13 @@ public class RegistrateUserHandlerTester
     RegistrateUserHandler sut = new(dataAccess);
     RegistrateUserCommand request = new(username, password);
     //Act 
-    User? user = await sut.Handle(request, CancellationToken.None);
+    UserProfile? user = await sut.Handle(request, CancellationToken.None);
     //Assert 
     _ = user.Should().NotBeNull();
     _ = user.Id.Should().NotBe(0);
     _ = user.PublicId.Should().NotBeEmpty();
     _ = user.UserName.Should().Be(username);
-    _ = user.Password.Should().NotBe(password);
-
+    _ = user.HashedPassword.Should().NotBe(password);
   }
 
   [Fact]
@@ -47,7 +45,7 @@ public class RegistrateUserHandlerTester
 
     //Act
     //Assert
-    _ = await sut.Invoking(s => s.Handle(request, CancellationToken.None)).Should().ThrowAsync<UserAlreadyExistsException>();
-
+    _ = await sut.Invoking(s => s.Handle(request, CancellationToken.None)).Should()
+      .ThrowAsync<UserAlreadyExistsException>();
   }
 }

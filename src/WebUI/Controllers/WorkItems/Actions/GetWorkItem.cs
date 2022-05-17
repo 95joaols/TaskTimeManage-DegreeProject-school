@@ -1,37 +1,34 @@
-﻿using Application.Common.Models.Generated;
-using Application.CQRS.WorkItems.Queries;
-
-using Domain.Entities;
-
+﻿using Application.CQRS.WorkItems.Queries;
+using Domain.Aggregates.WorkAggregate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebUI.Contracts.WorkItems.Responds;
 
 namespace TaskTimeManage.Api.Controllers.WorkItems;
 
 public partial class WorkItemController //NOSONAR
 {
-  [HttpGet("{PublicId}")]
+  [HttpGet("{publicId}")]
   [Authorize]
-  public async Task<ActionResult<WorkItemDto>> GetWorkItemAsync(Guid PublicId, CancellationToken cancellationToken)
+  public async Task<ActionResult<WorkItemRespond>> GetWorkItemAsync(Guid publicId, CancellationToken cancellationToken)
   {
     try
     {
-      WorkItem? workItem = await mediator.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(PublicId), cancellationToken);
+      WorkItem? workItem =
+        await _mediator.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(publicId), cancellationToken);
 
       if (workItem != null)
       {
-        workItem.WorkTimes = workItem.WorkTimes.OrderBy(o => o.Time).ToList();
-        return Ok(mapper.Map<WorkItemDto>(workItem));
+        WorkItemRespond retunValue = _mapper.Map<WorkItemRespond>(workItem);
+        retunValue.WorkTimes = retunValue.WorkTimes.OrderBy(o => o.Time).ToList();
+        return Ok(retunValue);
       }
-      else
-      {
-        return NoContent();
-      }
+
+      return NoContent();
     }
     catch (Exception ex)
     {
       return Problem(title: ex.Message, statusCode: 500);
     }
-
   }
 }

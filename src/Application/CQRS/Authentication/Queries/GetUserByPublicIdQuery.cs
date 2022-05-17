@@ -1,7 +1,6 @@
-﻿using Domain.Entities;
-
+﻿using Domain.Aggregates.UserAggregate;
 using MediatR;
 
 namespace Application.CQRS.Authentication.Queries;
-public record GetUserByPublicIdQuery(Guid UserPublicId) : IRequest<User?>;
 
+public record GetUserByPublicIdQuery(Guid UserPublicId) : IRequest<UserProfile?>;

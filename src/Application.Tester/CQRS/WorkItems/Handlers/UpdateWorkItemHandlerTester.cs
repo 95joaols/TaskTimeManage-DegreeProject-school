@@ -1,9 +1,9 @@
 ﻿using Application.Common.Interfaces;
 using Application.CQRS.WorkItems.Commands;
-
-using Domain.Entities;
+using Domain.Aggregates.WorkAggregate;
 
 namespace Application.CQRS.WorkItems.Handlers;
+
 public class UpdateWorkItemHandlerTester
 {
   [Theory]
@@ -13,7 +13,6 @@ public class UpdateWorkItemHandlerTester
   [InlineData("vbnr6hr7n", "fdhxfh f")]
   [InlineData("xghntntt67", "nht tr65")]
   [InlineData("tfdynd", "gfxhtryr6 t")]
-
   public async Task I_Can_Edit_The_Name_On_WorkItem(string oldName, string newName)
   {
     //Arrange 

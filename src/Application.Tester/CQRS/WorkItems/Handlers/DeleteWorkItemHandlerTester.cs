@@ -1,16 +1,13 @@
 ﻿using Application.Common.Interfaces;
 using Application.CQRS.WorkItems.Commands;
 using Application.CQRS.WorkTimes.Commands;
-
-using Domain.Entities;
-
+using Domain.Aggregates.WorkAggregate;
 using MediatR;
-
 using Microsoft.EntityFrameworkCore;
-
 using Moq;
 
 namespace Application.CQRS.WorkItems.Handlers;
+
 public class DeleteWorkItemHandlerTester
 {
   [Fact]
@@ -27,7 +24,7 @@ public class DeleteWorkItemHandlerTester
 
     Mock<IMediator>? mediatorMoq = new();
     _ = mediatorMoq.Setup(x => x.Send(new DeleteAllWorkTimesByWorkItemIdCommand(workItem.Id),
-    It.IsAny<CancellationToken>())).ReturnsAsync(true);
+      It.IsAny<CancellationToken>())).ReturnsAsync(true);
 
     DeleteWorkItemHandler sut = new(dataAccess, mediatorMoq.Object);
     DeleteWorkItemCommand request = new(workItem.PublicId);
@@ -38,8 +35,8 @@ public class DeleteWorkItemHandlerTester
     //Assert
     _ = results.Should().BeTrue();
     _ = (await dataAccess.WorkItem.AnyAsync(x => x.Id == workItem.Id)).Should().BeFalse();
-
   }
+
   [Fact]
   public async Task It_Will_Stopp_If_It_Resive_False()
   {
@@ -50,18 +47,17 @@ public class DeleteWorkItemHandlerTester
     using IApplicationDbContext dataAccess = await SetupHelper.CreateDataAccess();
 
     SetupHelper helper = new(dataAccess);
-    WorkItem WorkItem = await helper.SetupWorkItemAsync(name);
+    WorkItem workItem = await helper.SetupWorkItemAsync(name);
 
     Mock<IMediator>? mediatorMoq = new();
-    _ = mediatorMoq.Setup(x => x.Send(new DeleteAllWorkTimesByWorkItemIdCommand(WorkItem.Id),
-    It.IsAny<CancellationToken>())).ReturnsAsync(false);
+    _ = mediatorMoq.Setup(x => x.Send(new DeleteAllWorkTimesByWorkItemIdCommand(workItem.Id),
+      It.IsAny<CancellationToken>())).ReturnsAsync(false);
 
     DeleteWorkItemHandler sut = new(dataAccess, mediatorMoq.Object);
-    DeleteWorkItemCommand request = new(WorkItem.PublicId);
+    DeleteWorkItemCommand request = new(workItem.PublicId);
 
     //Act
     //Assert
     _ = await sut.Invoking(s => s.Handle(request, CancellationToken.None)).Should().ThrowAsync<Exception>();
   }
-
 }

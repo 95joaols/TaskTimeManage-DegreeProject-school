@@ -1,52 +1,29 @@
 ﻿using Application.Common.Interfaces;
-
+using Application.moq.Configurations;
+using Application.moq.Configurations.Identity;
+using Domain.Aggregates.UserAggregate;
+using Domain.Aggregates.WorkAggregate;
 using Domain.Common;
-using Domain.Entities;
-
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 
 namespace Application.moq;
 
-public class ApplicationDbContextMoq : DbContext, IApplicationDbContext
+public class ApplicationDbContextMoq : IdentityDbContext, IApplicationDbContext
 {
-  public DbSet<User> User
-  {
-    get; set;
-  }
-  public DbSet<WorkItem> WorkItem
-  {
-    get; set;
-  }
-  public DbSet<WorkTime> WorkTime
-  {
-    get; set;
-  }
+  public ApplicationDbContextMoq(DbContextOptions options) : base(options) {}
 
+  public DbSet<UserProfile> UserProfile{ get; set; }
 
+  public DbSet<WorkItem> WorkItem{ get; set; }
 
-  public ApplicationDbContextMoq(DbContextOptions options) : base(options)
-  {
-  }
-
-  protected override void OnModelCreating(ModelBuilder builder)
-  {
-
-    _ = builder.Entity<User>()
-        .HasIndex(u => u.UserName)
-        .IsUnique();
-
-    _ = builder.Entity<WorkItem>().HasIndex(x => x.PublicId).IsUnique();
-
-    _ = builder.Entity<User>().HasIndex(x => x.PublicId).IsUnique();
-
-    _ = builder.Entity<WorkTime>().HasIndex(x => x.PublicId).IsUnique();
-
-  }
+  public DbSet<WorkTime> WorkTime{ get; set; }
 
   public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken)
   {
-    foreach (Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry? entry in ChangeTracker.Entries().Where(x => x.Entity is BaseEntity<int> or BaseEntity<string> or BaseEntity<Guid>))
+    foreach (EntityEntry? entry in ChangeTracker.Entries().Where(x => x.Entity is BaseAggregate))
     {
       if (entry.State == EntityState.Added)
       {
@@ -65,5 +42,17 @@ public class ApplicationDbContextMoq : DbContext, IApplicationDbContext
     return result;
   }
 
-  protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => _ = optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
+  protected override void OnModelCreating(ModelBuilder builder)
+  {
+    builder.ApplyConfiguration(new UserProfileConfig());
+    builder.ApplyConfiguration(new WorkItemConfig());
+    builder.ApplyConfiguration(new WorkTimeConfig());
+
+    builder.ApplyConfiguration(new IdentityUserLoginConfig());
+    builder.ApplyConfiguration(new IdentityUserRoleConfig());
+    builder.ApplyConfiguration(new IdentityUserTokenConfig());
+  }
+
+  protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
+    _ = optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
 }

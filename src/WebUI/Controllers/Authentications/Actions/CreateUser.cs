@@ -1,14 +1,10 @@
 ﻿using Application.Common.Exceptions;
 using Application.CQRS.Authentication.Commands;
-
 using Ardalis.GuardClauses;
-
-using Domain.Entities;
-
+using Domain.Aggregates.UserAggregate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-using WebUI.Requests;
+using WebUI.Contracts.Authentications.Requests;
 
 namespace TaskTimeManage.Api.Controllers.Authentications;
 
@@ -16,7 +12,8 @@ public partial class AuthenticationController //NOSONAR
 {
   [HttpPost("CreateUser")]
   [AllowAnonymous]
-  public async Task<ActionResult> CreateUserAsync([FromBody] UserRegistrantsRequest reqest, CancellationToken cancellationToken)
+  public async Task<ActionResult> CreateUserAsync([FromBody] UserRegistrantsRequest reqest,
+    CancellationToken cancellationToken)
   {
     try
     {
@@ -30,15 +27,14 @@ public partial class AuthenticationController //NOSONAR
         throw new PasswordNotSameException();
       }
 
-      User user = await mediator.Send(new RegistrateUserCommand(reqest.Username, reqest.Password), cancellationToken);
+      UserProfile user =
+        await _mediator.Send(new RegistrateUserCommand(reqest.Username, reqest.Password), cancellationToken);
       if (user is not null && user.Id != 0)
       {
         return Created("", true);
       }
-      else
-      {
-        return Problem(statusCode: 500);
-      }
+
+      return Problem(statusCode: 500);
     }
     catch (Exception ex)
     {
@@ -46,6 +42,7 @@ public partial class AuthenticationController //NOSONAR
       {
         return Problem(title: ex.Message, detail: ex.Message, statusCode: 400);
       }
+
       return Problem(title: ex.Message, detail: ex.Message, statusCode: 500);
     }
   }

@@ -3,6 +3,7 @@ import authReducer from "./state/authSlice";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { authApi } from "./api/authApi";
 import { workApi } from "./api/WorkApi";
+
 export const store = configureStore({
     reducer: {
         auth: authReducer,

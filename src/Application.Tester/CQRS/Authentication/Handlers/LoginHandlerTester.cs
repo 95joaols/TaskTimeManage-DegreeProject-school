@@ -1,9 +1,9 @@
 ﻿using Application.Common.Interfaces;
 using Application.CQRS.Authentication.Queries;
-
 using Microsoft.Extensions.Configuration;
 
 namespace Application.CQRS.Authentication.Handlers;
+
 public class LoginHandlerTester
 {
   [Fact]
@@ -13,9 +13,9 @@ public class LoginHandlerTester
     using IApplicationDbContext dataAccess = await SetupHelper.CreateDataAccess();
 
     IConfigurationRoot? config = new ConfigurationBuilder()
-    .SetBasePath(AppContext.BaseDirectory)
-    .AddJsonFile("appsettings.json", false, true)
-    .Build();
+      .SetBasePath(AppContext.BaseDirectory)
+      .AddJsonFile("appsettings.json", false, true)
+      .Build();
 
     Fixture fixture = new();
     string username = fixture.Create<string>();

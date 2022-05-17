@@ -1,9 +1,9 @@
 ﻿using Application.Common.Interfaces;
 using Application.CQRS.Authentication.Queries;
-
-using Domain.Entities;
+using Domain.Aggregates.UserAggregate;
 
 namespace Application.CQRS.Authentication.Handlers;
+
 public class GetUserByPublicIdHandlerTester
 {
   [Fact]
@@ -13,13 +13,13 @@ public class GetUserByPublicIdHandlerTester
     using IApplicationDbContext dataAccess = await SetupHelper.CreateDataAccess();
 
     SetupHelper helper = new(dataAccess);
-    User user = await helper.SetupUserAsync("Test", "Test");
+    UserProfile user = await helper.SetupUserAsync("Test", "Test");
 
     GetUserByPublicIdHandler sut = new(dataAccess);
     GetUserByPublicIdQuery request = new(user.PublicId);
 
     //Act 
-    User? results = await sut.Handle(request, CancellationToken.None);
+    UserProfile? results = await sut.Handle(request, CancellationToken.None);
 
     //Assert
     _ = results.Should().NotBeNull();

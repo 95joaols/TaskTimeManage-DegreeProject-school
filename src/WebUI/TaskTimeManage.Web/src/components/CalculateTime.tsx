@@ -6,6 +6,7 @@ import { WorkTime } from "../Types/WorkTime";
 type Props = {
     WorkTimes: WorkTime[] | undefined;
 };
+
 function CalculateTime({ WorkTimes }: Props) {
     const [time, setTime] = useState(0);
     const [timeText, setTimeText] = useState("0:00");
