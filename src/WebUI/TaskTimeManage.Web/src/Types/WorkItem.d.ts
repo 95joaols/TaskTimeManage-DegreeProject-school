@@ -1,4 +1,4 @@
-import type {WorkTime} from "WorkTime";
+import type { WorkTime } from "WorkTime";
 
 export declare interface WorkItem {
     publicId: string;

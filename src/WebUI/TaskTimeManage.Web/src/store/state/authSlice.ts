@@ -1,5 +1,5 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {RootState} from "..";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "..";
 
 export interface AuthState {
     id: string | null;
@@ -31,7 +31,7 @@ export const authSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const {setUser, defaultState} = authSlice.actions;
+export const { setUser, defaultState } = authSlice.actions;
 export const selectLoginUser = (state: RootState) => state.auth;
 
 export default authSlice.reducer;

@@ -1,10 +1,10 @@
-import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import {WorkItem} from "../../Types/WorkItem";
-import {RootState} from "..";
-import {CreateWorkItemRequest} from "../../Types/Requests/CreateWorkItemRequest";
-import {EditWorkItemRequest} from "../../Types/Requests/EditWorkItemRequest";
-import {WorkTime} from "../../Types/WorkTime";
-import {CreateWorkTimeRequest} from "../../Types/Requests/CreateWorkTimeRequest";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { WorkItem } from "../../Types/WorkItem";
+import { RootState } from "..";
+import { CreateWorkItemRequest } from "../../Types/Requests/CreateWorkItemRequest";
+import { EditWorkItemRequest } from "../../Types/Requests/EditWorkItemRequest";
+import { WorkTime } from "../../Types/WorkTime";
+import { CreateWorkTimeRequest } from "../../Types/Requests/CreateWorkTimeRequest";
 
 // Define a service using a base URL and expected endpoints
 export const workApi = createApi({
@@ -13,7 +13,7 @@ export const workApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: "/api/",
 
-        prepareHeaders: (headers, {getState}) => {
+        prepareHeaders: (headers, { getState }) => {
             // By default, if we have a token in the store, let's use that for authenticated requests
             const token = (getState() as RootState).auth.token;
             if (token) {

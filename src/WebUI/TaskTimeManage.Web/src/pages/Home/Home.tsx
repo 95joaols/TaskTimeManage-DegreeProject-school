@@ -1,18 +1,18 @@
-import {Box, Flex, useDisclosure} from "@chakra-ui/react";
-import React, {useState} from "react";
+import { Box, Flex, useDisclosure } from "@chakra-ui/react";
+import React, { useState } from "react";
 import CreateWorkItemModel from "../../components/Models/CreateWorkItemModel";
 import UserInfo from "../../components/UserInfo";
 import WorkItemControl from "../../components/WorkItemControl";
 import WorkItemMenu from "../../components/WorkItemMenu";
 
 const Home = () => {
-    const {isOpen, onOpen, onClose} = useDisclosure();
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const [ActiveWorkItem, setActiveWorkItem] = useState<string>();
 
     return (
         <Flex>
             <Flex direction="column">
-                <UserInfo/>
+                <UserInfo />
                 <WorkItemMenu
                     AddWorkItemPress={onOpen}
                     onWorkItemPress={setActiveWorkItem}

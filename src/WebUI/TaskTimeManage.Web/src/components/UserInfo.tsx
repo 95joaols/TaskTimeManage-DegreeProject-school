@@ -1,10 +1,10 @@
-import {Box, Stack} from "@chakra-ui/layout";
-import {Button, Heading} from "@chakra-ui/react";
+import { Box, Stack } from "@chakra-ui/layout";
+import { Button, Heading } from "@chakra-ui/react";
 import React from "react";
-import {useDispatch} from "react-redux";
-import {useNavigate} from "react-router-dom";
-import {useAppSelector} from "../store/hook";
-import {defaultState, selectLoginUser} from "../store/state/authSlice";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../store/hook";
+import { defaultState, selectLoginUser } from "../store/state/authSlice";
 
 function UserInfo() {
     const user = useAppSelector(selectLoginUser);
