@@ -1,7 +1,7 @@
 ﻿using Application.Common.Models.Generated;
 using Application.CQRS.WorkItems.Queries;
 
-using Domain.Entities;
+using Domain.Aggregates.WorkAggregate;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

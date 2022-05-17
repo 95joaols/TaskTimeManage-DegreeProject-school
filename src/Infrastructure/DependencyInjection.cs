@@ -17,8 +17,8 @@ public static class DependencyInjection
   public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
   {
     _ = services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("TaskTimeManagePostgres"),
-                    b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName))
-                .EnableSensitiveDataLogging());
+                    b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+ 
     _ = services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
 
     IConfigurationSection? appSettingsSection = configuration.GetSection("ApplicationSecuritySettings");

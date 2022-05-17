@@ -1,7 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using Application.CQRS.WorkTimes.Commands;
 
-using Domain.Entities;
+using Domain.Aggregates.WorkAggregate;
 
 using Microsoft.EntityFrameworkCore;
 

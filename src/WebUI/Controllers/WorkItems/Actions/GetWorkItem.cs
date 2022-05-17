@@ -1,7 +1,7 @@
 ﻿using Application.Common.Models.Generated;
 using Application.CQRS.WorkItems.Queries;
 
-using Domain.Entities;
+using Domain.Aggregates.WorkAggregate;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +20,8 @@ public partial class WorkItemController //NOSONAR
 
       if (workItem != null)
       {
-        workItem.WorkTimes = workItem.WorkTimes.OrderBy(o => o.Time).ToList();
+        WorkItemDto retunValue = mapper.Map<WorkItemDto>(workItem);
+        retunValue.workTimes = retunValue.workTimes.OrderBy(o => o.Time).ToList();
         return Ok(mapper.Map<WorkItemDto>(workItem));
       }
       else

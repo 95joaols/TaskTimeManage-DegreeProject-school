@@ -2,7 +2,7 @@
 using Application.Common.Interfaces;
 using Application.CQRS.Authentication.Commands;
 
-using Domain.Entities;
+using Domain.Aggregates.UserAggregate;
 
 namespace Application.CQRS.Authentication.Handlers;
 public class RegistrateUserHandlerTester
@@ -24,13 +24,13 @@ public class RegistrateUserHandlerTester
     RegistrateUserHandler sut = new(dataAccess);
     RegistrateUserCommand request = new(username, password);
     //Act 
-    User? user = await sut.Handle(request, CancellationToken.None);
+    UserProfile? user = await sut.Handle(request, CancellationToken.None);
     //Assert 
     _ = user.Should().NotBeNull();
     _ = user.Id.Should().NotBe(0);
     _ = user.PublicId.Should().NotBeEmpty();
     _ = user.UserName.Should().Be(username);
-    _ = user.Password.Should().NotBe(password);
+    _ = user.HashedPassword.Should().NotBe(password);
 
   }
 

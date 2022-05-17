@@ -2,7 +2,7 @@
 using Application.CQRS.WorkItems.Commands;
 using Application.CQRS.WorkTimes.Commands;
 
-using Domain.Entities;
+using Domain.Aggregates.WorkAggregate;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

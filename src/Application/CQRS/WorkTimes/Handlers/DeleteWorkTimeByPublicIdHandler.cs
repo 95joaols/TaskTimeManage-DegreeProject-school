@@ -3,7 +3,7 @@ using Application.CQRS.WorkTimes.Commands;
 
 using Ardalis.GuardClauses;
 
-using Domain.Entities;
+using Domain.Aggregates.WorkAggregate;
 
 using MediatR;
 

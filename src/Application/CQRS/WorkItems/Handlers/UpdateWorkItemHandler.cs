@@ -3,7 +3,7 @@ using Application.CQRS.WorkItems.Commands;
 
 using Ardalis.GuardClauses;
 
-using Domain.Entities;
+using Domain.Aggregates.WorkAggregate;
 
 using MediatR;
 
@@ -27,8 +27,7 @@ public class UpdateWorkItemHandler : IRequestHandler<UpdateWorkItemCommand, Work
 
     _ = Guard.Against.Null(workItem);
 
-
-    workItem.Name = request.Name.Trim();
+    workItem.UpdateName(request.Name);
     _ = await data.SaveChangesAsync(cancellationToken);
     return workItem;
   }

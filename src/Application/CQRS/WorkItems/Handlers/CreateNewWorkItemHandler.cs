@@ -4,7 +4,8 @@ using Application.CQRS.WorkItems.Commands;
 
 using Ardalis.GuardClauses;
 
-using Domain.Entities;
+using Domain.Aggregates.UserAggregate;
+using Domain.Aggregates.WorkAggregate;
 
 using MediatR;
 
@@ -25,16 +26,14 @@ public class CreateNewWorkItemHandler : IRequestHandler<CreateNewWorkItemCommand
     _ = Guard.Against.NullOrWhiteSpace(request.Name);
     _ = Guard.Against.Default(request.UserPublicId);
 
-    User? User = await mediator.Send(new GetUserByPublicIdQuery(request.UserPublicId), cancellationToken);
+    UserProfile? User = await mediator.Send(new GetUserByPublicIdQuery(request.UserPublicId), cancellationToken);
     if (User == null)
     {
       throw new ArgumentException(nameof(request.UserPublicId));
     }
 
-    WorkItem workItem = new() {
-      Name = request.Name.Trim(),
-      User = User,
-    };
+    WorkItem workItem = WorkItem.CreateWorkItem(request.Name, User);
+
     _ = await data.WorkItem.AddAsync(workItem, cancellationToken);
     _ = await data.SaveChangesAsync(cancellationToken);
 

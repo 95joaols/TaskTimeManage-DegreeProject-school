@@ -3,7 +3,7 @@ using Application.CQRS.Authentication.Commands;
 
 using Ardalis.GuardClauses;
 
-using Domain.Entities;
+using Domain.Aggregates.UserAggregate;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +30,7 @@ public partial class AuthenticationController //NOSONAR
         throw new PasswordNotSameException();
       }
 
-      User user = await mediator.Send(new RegistrateUserCommand(reqest.Username, reqest.Password), cancellationToken);
+      UserProfile user = await mediator.Send(new RegistrateUserCommand(reqest.Username, reqest.Password), cancellationToken);
       if (user is not null && user.Id != 0)
       {
         return Created("", true);

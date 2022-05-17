@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using Domain.Aggregates.WorkAggregate;
 
 using MediatR;
 

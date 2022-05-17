@@ -2,7 +2,8 @@
 using Application.CQRS.Authentication.Queries;
 using Application.CQRS.WorkItems.Commands;
 
-using Domain.Entities;
+using Domain.Aggregates.UserAggregate;
+using Domain.Aggregates.WorkAggregate;
 
 using MediatR;
 
@@ -24,7 +25,7 @@ public class CreateNewWorkItemHandlerTester
 
 
     SetupHelper helper = new(dataAccess);
-    User user = await helper.SetupUserAsync(username, password);
+    UserProfile user = await helper.SetupUserAsync(username, password);
 
     Mock<IMediator>? mediatorMoq = new();
     _ = mediatorMoq.Setup(x => x.Send(new GetUserByPublicIdQuery(user.PublicId),

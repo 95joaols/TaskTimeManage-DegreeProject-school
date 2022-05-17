@@ -2,7 +2,7 @@
 using Application.CQRS.WorkItems.Queries;
 using Application.CQRS.WorkTimes.Commands;
 
-using Domain.Entities;
+using Domain.Aggregates.WorkAggregate;
 
 using MediatR;
 

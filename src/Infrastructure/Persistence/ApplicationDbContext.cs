@@ -1,16 +1,21 @@
 ﻿using Application.Common.Interfaces;
 
+using Domain.Aggregates.UserAggregate;
+using Domain.Aggregates.WorkAggregate;
 using Domain.Common;
-using Domain.Entities;
 
+using Infrastructure.Persistence.Configurations;
+using Infrastructure.Persistence.Configurations.Identity;
+
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.Persistence;
 
-public class ApplicationDbContext : DbContext, IApplicationDbContext
+public class ApplicationDbContext : IdentityDbContext, IApplicationDbContext
 {
-  public DbSet<User> User
+  public DbSet<UserProfile> UserProfile
   {
     get; set;
   }
@@ -34,26 +39,19 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     // Addd the Postgres Extension for UUID generation
     _ = builder.HasPostgresExtension("uuid-ossp");
 
-    _ = builder.Entity<User>()
-        .HasIndex(u => u.UserName)
-        .IsUnique();
+    builder.ApplyConfiguration(new UserProfileConfig());
+    builder.ApplyConfiguration(new WorkItemConfig());
+    builder.ApplyConfiguration(new WorkTimeConfig());
 
-    _ = builder.Entity<WorkItem>().Property(x => x.PublicId).HasDefaultValueSql("uuid_generate_v4()");
-    _ = builder.Entity<WorkItem>().HasIndex(x => x.PublicId).IsUnique();
-
-    _ = builder.Entity<User>().Property(x => x.PublicId).HasDefaultValueSql("uuid_generate_v4()");
-    _ = builder.Entity<User>().HasIndex(x => x.PublicId).IsUnique();
-
-    _ = builder.Entity<WorkTime>().Property(x => x.PublicId).HasDefaultValueSql("uuid_generate_v4()");
-    _ = builder.Entity<WorkTime>().HasIndex(x => x.PublicId).IsUnique();
-
-
+    builder.ApplyConfiguration(new IdentityUserLoginConfig());
+    builder.ApplyConfiguration(new IdentityUserRoleConfig());
+    builder.ApplyConfiguration(new IdentityUserTokenConfig());
 
   }
 
   public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken)
   {
-    foreach (Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry? entry in ChangeTracker.Entries().Where(x => x.Entity is BaseEntity))
+    foreach (Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry? entry in ChangeTracker.Entries().Where(x => x.Entity is BaseAggregate))
     {
       if (entry.State == EntityState.Added)
       {

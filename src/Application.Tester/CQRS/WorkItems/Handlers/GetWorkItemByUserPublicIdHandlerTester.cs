@@ -1,7 +1,8 @@
 ﻿using Application.Common.Interfaces;
 using Application.CQRS.WorkItems.Queries;
 
-using Domain.Entities;
+using Domain.Aggregates.UserAggregate;
+using Domain.Aggregates.WorkAggregate;
 
 namespace Application.CQRS.WorkItems.Handlers;
 public class GetWorkItemByUserPublicIdHandlerTester
@@ -25,7 +26,7 @@ public class GetWorkItemByUserPublicIdHandlerTester
 
 
     SetupHelper helper = new(dataAccess);
-    User user = await helper.SetupUserAsync(username, password);
+    UserProfile user = await helper.SetupUserAsync(username, password);
     foreach (string? name in names)
     {
       workItems.Add(await helper.SetupWorkItemAsync(name, user));

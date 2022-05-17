@@ -4,7 +4,7 @@ using Application.CQRS.WorkTimes.Commands;
 
 using Ardalis.GuardClauses;
 
-using Domain.Entities;
+using Domain.Aggregates.WorkAggregate;
 
 using MediatR;
 
@@ -28,13 +28,11 @@ public class CreateWorkTimeHandler : IRequestHandler<CreateWorkTimeCommand, Work
     _ = Guard.Against.Null(WorkItem);
 
 
-    WorkTime WorkTime = new() {
-      Time = request.Time,
-      WorkItem = WorkItem
-    };
-    _ = data.WorkTime.Add(WorkTime);
+    WorkTime workTime = WorkTime.CreateWorkTime(request.Time, WorkItem);
+
+    _ = data.WorkTime.Add(workTime);
     _ = await data.SaveChangesAsync(cancellationToken);
 
-    return WorkTime;
+    return workTime;
   }
 }

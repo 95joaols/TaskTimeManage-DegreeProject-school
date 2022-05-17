@@ -3,7 +3,7 @@ using Application.CQRS.WorkTimes.Commands;
 
 using Ardalis.GuardClauses;
 
-using Domain.Entities;
+using Domain.Aggregates.WorkAggregate;
 
 using MediatR;
 
@@ -23,8 +23,7 @@ public class UpdateWorkTimesHandler : IRequestHandler<UpdateWorkTimesCommand, IE
 
     foreach (WorkTime? workTime in WorkTimes)
     {
-      workTime.Time = request.WorkTimes.FirstOrDefault(wt => wt.PublicId == workTime.PublicId).Time;
-      workTime.Time = workTime.Time > DateTime.UtcNow ? DateTime.UtcNow : workTime.Time;
+      workTime.UpdateTime(workTime.Time);
     }
     _ = await data.SaveChangesAsync(cancellationToken);
     return WorkTimes;

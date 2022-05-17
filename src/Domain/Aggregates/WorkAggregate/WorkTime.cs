@@ -9,7 +9,6 @@ public class WorkTime : BaseAggregate
   {
   }
 
-
   public DateTimeOffset Time
   {
     get; private set;
@@ -25,11 +24,11 @@ public class WorkTime : BaseAggregate
     get; private set;
   }
 
-
   public static WorkTime CreateWorkTime(DateTimeOffset time, WorkItem workItem)
   {
     Guard.Against.Default(time);
     Guard.Against.Null(workItem);
+
     if (time > DateTimeOffset.Now)
       time = DateTimeOffset.Now;
 
@@ -42,6 +41,8 @@ public class WorkTime : BaseAggregate
   }
   public void UpdateTime(DateTimeOffset time)
   {
+    Guard.Against.Default(time);
+
     Time = time;
     UpdatedAt = DateTimeOffset.Now;
   }

@@ -1,7 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using Application.CQRS.WorkItems.Queries;
 
-using Domain.Entities;
+using Domain.Aggregates.WorkAggregate;
 
 namespace Application.CQRS.WorkItems.Handlers;
 public class GetWorkItemByPublicIdHandlerTester

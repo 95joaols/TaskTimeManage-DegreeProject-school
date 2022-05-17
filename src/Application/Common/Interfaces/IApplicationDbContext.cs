@@ -1,11 +1,13 @@
-﻿using Domain.Entities;
+﻿
+using Domain.Aggregates.UserAggregate;
+using Domain.Aggregates.WorkAggregate;
 
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Common.Interfaces;
 public interface IApplicationDbContext : IDisposable
 {
-  DbSet<User> User
+  DbSet<UserProfile> UserProfile
   {
     get;
     set;

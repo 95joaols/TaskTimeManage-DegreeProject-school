@@ -5,7 +5,7 @@ using Application.CQRS.Authentication.Queries;
 
 using Ardalis.GuardClauses;
 
-using Domain.Entities;
+using Domain.Aggregates.UserAggregate;
 
 using MediatR;
 
@@ -23,7 +23,7 @@ public class LoginHandler : IRequestHandler<LoginQuery, string>
     _ = Guard.Against.NullOrWhiteSpace(request.Username);
     _ = Guard.Against.NullOrWhiteSpace(request.Password);
 
-    User? user = await data.User.FirstOrDefaultAsync(u => u.UserName.ToLower() == request.Username.Trim().ToLower(), cancellationToken);
+    UserProfile? user = await data.UserProfile.FirstOrDefaultAsync(u => u.UserName.ToLower() == request.Username.Trim().ToLower(), cancellationToken);
 
     if (user == null)
     {
@@ -31,7 +31,7 @@ public class LoginHandler : IRequestHandler<LoginQuery, string>
     }
 
     string hashedPassword = Cryptography.Encrypt(Cryptography.Hash(Cryptography.Encrypt(request.Password.Trim(), user.Salt), user.Salt), user.Salt);
-    if (hashedPassword != user.Password)
+    if (hashedPassword != user.HashedPassword)
     {
       throw new LogInWrongException();
     }

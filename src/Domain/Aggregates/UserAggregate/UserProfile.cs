@@ -4,11 +4,11 @@ using Domain.Aggregates.WorkAggregate;
 using Domain.Common;
 
 namespace Domain.Aggregates.UserAggregate;
-public class User : BaseAggregate
+public class UserProfile : BaseAggregate
 {
   private readonly List<WorkItem> workItems;
 
-  private User()
+  private UserProfile()
   {
     workItems = new List<WorkItem>();
   }
@@ -17,7 +17,11 @@ public class User : BaseAggregate
   {
     get; private set;
   }
-  public string Password
+  public string IdentityId
+  {
+    get; private set;
+  }
+  public string HashedPassword
   {
     get; private set;
   }
@@ -30,16 +34,18 @@ public class User : BaseAggregate
     get => workItems;
   }
 
-  public static User CreateUser(string userName, string password, string salt)
+  public static UserProfile CreateUser(string userName,string UserIdentityId, string hashedPassword, string salt)
   {
     Guard.Against.NullOrWhiteSpace(userName);
-    Guard.Against.NullOrWhiteSpace(password);
-    Guard.Against.NullOrWhiteSpace(salt);
+    Guard.Against.NullOrWhiteSpace(UserIdentityId);
+    Guard.Against.NullOrWhiteSpace(hashedPassword);
+    Guard.Against.NullOrWhiteSpace(userName);
 
-    return new User {
-      UserName = userName,
-      Password = password,
-      Salt = salt,
+    return new UserProfile {
+      UserName = userName.Trim(),
+      IdentityId = UserIdentityId,
+      HashedPassword = hashedPassword.Trim(),
+      Salt = salt.Trim(),
       CreatedAt = DateTimeOffset.Now,
       UpdatedAt = DateTimeOffset.Now,
     };

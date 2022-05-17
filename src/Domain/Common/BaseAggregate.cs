@@ -9,13 +9,11 @@ public class BaseAggregate
   {
   }
 
-  [Key]
   public int Id
   {
     get; protected set;
   }
 
-  [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
   public Guid PublicId
   {
     get; protected set;

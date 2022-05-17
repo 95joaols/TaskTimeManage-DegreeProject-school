@@ -2,7 +2,7 @@
 
 using AutoMapper;
 
-using Domain.Entities;
+using Domain.Aggregates.WorkAggregate;
 
 namespace Application.Common.Mappings;
 

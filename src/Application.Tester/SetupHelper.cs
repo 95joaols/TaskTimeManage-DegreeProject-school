@@ -9,7 +9,8 @@ using Application.CQRS.WorkTimes.Commands;
 using Application.CQRS.WorkTimes.Handlers;
 using Application.moq;
 
-using Domain.Entities;
+using Domain.Aggregates.UserAggregate;
+using Domain.Aggregates.WorkAggregate;
 
 using MediatR;
 
@@ -32,7 +33,7 @@ internal class SetupHelper
   }
 
 
-  public async Task<User> SetupUserAsync(string username, string password)
+  public async Task<UserProfile> SetupUserAsync(string username, string password)
   {
     RegistrateUserHandler registrateUserHandler = new(dataAccess);
     RegistrateUserCommand request = new(username, password);
@@ -47,7 +48,7 @@ internal class SetupHelper
     string password = fixture.Create<string>();
 
 
-    User User = await SetupUserAsync(username, password);
+    UserProfile User = await SetupUserAsync(username, password);
 
     Mock<IMediator>? mediatorMoq = new();
     _ = mediatorMoq.Setup(x => x.Send(new GetUserByPublicIdQuery(User.PublicId),
@@ -58,7 +59,7 @@ internal class SetupHelper
 
     return await createNewWorkItemHandler.Handle(request, CancellationToken.None);
   }
-  public async Task<WorkItem> SetupWorkItemAsync(string name, User User)
+  public async Task<WorkItem> SetupWorkItemAsync(string name, UserProfile User)
   {
     Fixture fixture = new();
 

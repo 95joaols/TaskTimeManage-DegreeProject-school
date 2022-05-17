@@ -2,7 +2,7 @@
 using Application.Common.Models.Generated;
 using Application.CQRS.WorkTimes.Commands;
 
-using Domain.Entities;
+using Domain.Aggregates.WorkAggregate;
 
 namespace Application.CQRS.WorkTimes.Handlers;
 public class UpdateWorkTimesHandlerTester

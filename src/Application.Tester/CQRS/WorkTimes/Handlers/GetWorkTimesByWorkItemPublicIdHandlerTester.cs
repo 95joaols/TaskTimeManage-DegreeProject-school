@@ -1,7 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using Application.CQRS.WorkTimes.Queries;
 
-using Domain.Entities;
+using Domain.Aggregates.WorkAggregate;
 
 namespace Application.CQRS.WorkTimes.Handlers;
 public class GetWorkTimesByWorkItemPublicIdHandlerTester

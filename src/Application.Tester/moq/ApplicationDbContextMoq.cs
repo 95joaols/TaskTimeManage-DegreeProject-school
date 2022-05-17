@@ -1,16 +1,20 @@
 ﻿using Application.Common.Interfaces;
+using Application.moq.Configurations;
+using Application.moq.Configurations.Identity;
 
+using Domain.Aggregates.UserAggregate;
+using Domain.Aggregates.WorkAggregate;
 using Domain.Common;
-using Domain.Entities;
 
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Application.moq;
 
-public class ApplicationDbContextMoq : DbContext, IApplicationDbContext
+public class ApplicationDbContextMoq : IdentityDbContext, IApplicationDbContext
 {
-  public DbSet<User> User
+  public DbSet<UserProfile> UserProfile
   {
     get; set;
   }
@@ -32,21 +36,19 @@ public class ApplicationDbContextMoq : DbContext, IApplicationDbContext
   protected override void OnModelCreating(ModelBuilder builder)
   {
 
-    _ = builder.Entity<User>()
-        .HasIndex(u => u.UserName)
-        .IsUnique();
+    builder.ApplyConfiguration(new UserProfileConfig());
+    builder.ApplyConfiguration(new WorkItemConfig());
+    builder.ApplyConfiguration(new WorkTimeConfig());
 
-    _ = builder.Entity<WorkItem>().HasIndex(x => x.PublicId).IsUnique();
-
-    _ = builder.Entity<User>().HasIndex(x => x.PublicId).IsUnique();
-
-    _ = builder.Entity<WorkTime>().HasIndex(x => x.PublicId).IsUnique();
+    builder.ApplyConfiguration(new IdentityUserLoginConfig());
+    builder.ApplyConfiguration(new IdentityUserRoleConfig());
+    builder.ApplyConfiguration(new IdentityUserTokenConfig());
 
   }
 
   public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken)
   {
-    foreach (Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry? entry in ChangeTracker.Entries().Where(x => x.Entity is BaseEntity))
+    foreach (Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry? entry in ChangeTracker.Entries().Where(x => x.Entity is BaseAggregate))
     {
       if (entry.State == EntityState.Added)
       {

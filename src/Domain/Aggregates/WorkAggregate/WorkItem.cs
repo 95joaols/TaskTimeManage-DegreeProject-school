@@ -21,20 +21,20 @@ public class WorkItem : BaseAggregate
   {
     get; private set;
   }
-  public User User
+  public UserProfile User
   {
     get; private set;
   }
   public IEnumerable<WorkTime> WorkTimes => workTimes;
 
-  public static WorkItem CreateUser(string name, User user)
+  public static WorkItem CreateWorkItem(string name, UserProfile user)
   {
     Guard.Against.NullOrWhiteSpace(name);
     Guard.Against.Null(user);
 
 
     return new WorkItem {
-      Name = name,
+      Name = name.Trim(),
       User = user,
       UserId = user.Id,
       CreatedAt = DateTimeOffset.Now,
@@ -43,17 +43,23 @@ public class WorkItem : BaseAggregate
   }
 
   public void AddWorkTime(WorkTime workItem)
-  {
+{
+    Guard.Against.Null(workItem);
+
     workTimes.Add(workItem);
   }
   public void RemoveWorkTime(WorkTime workItem)
   {
+    Guard.Against.Null(workItem);
+
     workTimes.Remove(workItem);
   }
 
   public void UpdateName(string name)
   {
-    Name = name;
+    Guard.Against.NullOrWhiteSpace(name);
+
+    Name = name.Trim();
     UpdatedAt = DateTimeOffset.Now;
   }
 }

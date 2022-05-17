@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using Domain.Aggregates.UserAggregate;
 
 using Microsoft.IdentityModel.Tokens;
 
@@ -9,7 +9,7 @@ namespace Application.Common.Security;
 
 public static class Token
 {
-  public static string GenerateToken(User user, string tokenkey)
+  public static string GenerateToken(UserProfile user, string tokenkey)
   {
     SymmetricSecurityKey? key = new(System.Text.Encoding.UTF8.GetBytes(
                 tokenkey));
