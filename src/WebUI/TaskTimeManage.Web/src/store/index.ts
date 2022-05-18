@@ -3,7 +3,6 @@ import authReducer from "./state/authSlice";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { authApi } from "./api/authApi";
 import { workApi } from "./api/WorkApi";
-import { rtkQueryErrorLogger } from "../Middleware/rtkQueryErrorLogger";
 
 export const store = configureStore({
     reducer: {
@@ -11,8 +10,7 @@ export const store = configureStore({
         [authApi.reducerPath]: authApi.reducer,
         [workApi.reducerPath]: workApi.reducer,
     },
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(authApi.middleware).concat(workApi.middleware).concat(rtkQueryErrorLogger),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(authApi.middleware).concat(workApi.middleware),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

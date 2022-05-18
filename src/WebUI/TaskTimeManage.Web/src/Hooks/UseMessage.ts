@@ -24,11 +24,7 @@ const UseMessage = () => {
     const toast = useToast();
 
     const Message = ({ errorOrMessage, type, objectType: manual }: Message) => {
-        console.log("errorOrMessage", errorOrMessage);
-
         const fetchBaseQueryError = errorOrMessage as FetchBaseQueryError;
-        console.log("fetchBaseQueryError", fetchBaseQueryError);
-
         const message = errorOrMessage as string;
         if (manual === "text") {
             if (message) {
@@ -46,9 +42,12 @@ const UseMessage = () => {
             switch (fetchBaseQueryError.status) {
                 case 400:
                 case 500:
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     if ((fetchBaseQueryError.data as any).title) {
                         toast({
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             title: (fetchBaseQueryError.data as any).title,
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             description: (fetchBaseQueryError.data as any).detail,
                             status: type,
                             duration: 5000,
