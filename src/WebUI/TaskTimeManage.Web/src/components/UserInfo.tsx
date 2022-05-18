@@ -17,7 +17,7 @@ function UserInfo() {
         localStorage.removeItem("token");
         dispatch(defaultState());
 
-        message({ errorOrMessage: "Create", type: "success", objectType: "text" });
+        message({ errorOrMessage: "Goodbye", type: "success", objectType: "text" });
 
         navigate("/login");
     };
