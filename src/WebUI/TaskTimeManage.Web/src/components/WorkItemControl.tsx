@@ -1,6 +1,7 @@
 import { EditIcon } from "@chakra-ui/icons";
 import { Box, Button, Center, Flex, Heading, IconButton, Text, useDisclosure } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
+import UseMessage from "../Hooks/UseMessage";
 import { useCreateWorkTimeMutation, useLazyGetWorkItemQuery } from "../store/api/WorkApi";
 import CalculateTime from "./CalculateTime";
 import EditWorkItemModel from "./Models/EditWorkItemModel";
@@ -18,11 +19,30 @@ function WorkItemControl({ activeWorkItem, onReset }: Props) {
     const [workTimesCount, setWorkTimesCount] = useState(0);
 
     const [trigger, WorkItemResult] = useLazyGetWorkItemQuery();
-    const [createWorkTimeApi, { isLoading }] = useCreateWorkTimeMutation();
+    const [createWorkTimeApi, { isSuccess, isLoading, error: CreateWorkTimeError }] = useCreateWorkTimeMutation();
+
+    const message = UseMessage();
 
     useEffect(() => {
         setWorkTimesCount(WorkItemResult.data?.workTimes?.length ?? 0);
     }, [WorkItemResult]);
+
+    useEffect(() => {
+        if (WorkItemResult.isError && WorkItemResult.error) {
+            message({ errorOrMessage: WorkItemResult.error, type: "error", objectType: "object" });
+        }
+    }, [WorkItemResult.error, WorkItemResult.isError]);
+    useEffect(() => {
+        if (isSuccess) {
+            message({ errorOrMessage: "Create", type: "success", objectType: "text" });
+        }
+    }, [isSuccess]);
+
+    useEffect(() => {
+        if (CreateWorkTimeError) {
+            message({ errorOrMessage: CreateWorkTimeError, type: "error", objectType: "object" });
+        }
+    }, [CreateWorkTimeError]);
 
     useEffect(() => {
         if (activeWorkItem) {

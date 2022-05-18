@@ -3,6 +3,7 @@ import { Button, Heading } from "@chakra-ui/react";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import UseMessage from "../Hooks/UseMessage";
 import { useAppSelector } from "../store/hook";
 import { defaultState, selectLoginUser } from "../store/state/authSlice";
 
@@ -10,10 +11,14 @@ function UserInfo() {
     const user = useAppSelector(selectLoginUser);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const message = UseMessage();
 
     const signout = () => {
         localStorage.removeItem("token");
         dispatch(defaultState());
+
+        message({ errorOrMessage: "Create", type: "success", objectType: "text" });
+
         navigate("/login");
     };
     return (

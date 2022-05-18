@@ -1,6 +1,7 @@
 import { AddIcon } from "@chakra-ui/icons";
 import { Box, Button, Stack, Text } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
+import UseMessage from "../Hooks/UseMessage";
 import { useGetWorkItemForUserQuery } from "../store/api/WorkApi";
 import { useAppSelector } from "../store/hook";
 import { selectLoginUser } from "../store/state/authSlice";
@@ -15,7 +16,14 @@ type Props = {
 function WorkItemMenu({ AddWorkItemPress, onWorkItemPress, activeWorkItem }: Props) {
     const user = useAppSelector(selectLoginUser);
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const { data: WorkItemList, isLoading } = useGetWorkItemForUserQuery(user.id!);
+    const { data: WorkItemList, isLoading, error } = useGetWorkItemForUserQuery(user.id!);
+    const message = UseMessage();
+
+    useEffect(() => {
+        if (error) {
+            message({ errorOrMessage: error, type: "error", objectType: "object" });
+        }
+    }, [error]);
 
     return (
         <Box>

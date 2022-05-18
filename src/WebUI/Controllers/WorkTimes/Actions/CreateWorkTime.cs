@@ -27,7 +27,7 @@ public partial class WorkTimeController //NOSONAR
     }
     catch (Exception ex)
     {
-      return Problem(title: ex.Message, statusCode: 500);
+      return Problem(title: "Error Creating WorkTime", detail: ex.Message, statusCode: 500);
     }
   }
 }

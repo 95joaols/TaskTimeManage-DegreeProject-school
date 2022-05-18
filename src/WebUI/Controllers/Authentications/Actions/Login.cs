@@ -35,11 +35,11 @@ public partial class AuthenticationController //NOSONAR
     }
     catch (LogInWrongException e)
     {
-      return Problem(title: e.Message, detail: e.Message, statusCode: 400);
+      return Problem(title: "LogIn Error", detail: e.Message, statusCode: 400);
     }
     catch (Exception e)
     {
-      return Problem(e.Message, statusCode: 500);
+      return Problem(title: "LogIn Error", detail: e.Message, statusCode: 500);
     }
   }
 }

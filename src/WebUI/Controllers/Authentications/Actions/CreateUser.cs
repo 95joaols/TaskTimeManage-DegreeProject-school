@@ -40,10 +40,10 @@ public partial class AuthenticationController //NOSONAR
     {
       if (ex is PasswordNotSameException or UserAlreadyExistsException)
       {
-        return Problem(title: ex.Message, detail: ex.Message, statusCode: 400);
+        return Problem(title: "Error Create User", detail: ex.Message, statusCode: 400);
       }
 
-      return Problem(title: ex.Message, detail: ex.Message, statusCode: 500);
+      return Problem(title: "Error Create User", detail: ex.Message, statusCode: 500);
     }
   }
 }

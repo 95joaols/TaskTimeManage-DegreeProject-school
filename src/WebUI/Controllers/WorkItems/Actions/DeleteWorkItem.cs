@@ -17,11 +17,12 @@ public partial class WorkItemController //NOSONAR
         return Ok(true);
       }
 
-      return Problem(title: "");
+      return Problem(title: "Error Delete WorkItem", detail: "Did not Delete WorkItem", statusCode: 500);
+
     }
     catch (Exception ex)
     {
-      return Problem(title: ex.Message, statusCode: 500);
+      return Problem(title: "Error Delete WorkItem", detail: ex.Message, statusCode: 500);
     }
   }
 }
