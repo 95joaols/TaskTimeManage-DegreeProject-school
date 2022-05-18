@@ -32,11 +32,12 @@ public partial class WorkItemController //NOSONAR
         return Ok(_mapper.Map<WorkItemRespond>(workItem));
       }
 
-      return Problem(title: "Error");
+      return Problem(title: "Error Edit WorkItem", detail: "Did not Edit the WorkItem", statusCode: 500);
+
     }
     catch (Exception ex)
     {
-      return Problem(title: ex.Message, statusCode: 500);
+      return Problem(title: "Error Edit WorkItem", detail: ex.Message, statusCode: 500);
     }
   }
 }

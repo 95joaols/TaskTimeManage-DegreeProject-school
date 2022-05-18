@@ -17,10 +17,12 @@ import {
     IconButton,
     Input,
     Spacer,
+    toast,
     useDisclosure,
     useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
+import UseMessage from "../../Hooks/UseMessage";
 import { useEditWorkItemMutation } from "../../store/api/WorkApi";
 import { WorkItem } from "../../Types/WorkItem";
 import { WorkTime } from "../../Types/WorkTime";
@@ -49,7 +51,7 @@ function EditWorkItemModel({ onClose, isOpen, workItem, onReset }: Props) {
     const [name, SetName] = useState(workItem.name);
     const [workTimes, SetWorkTimes] = useState(workItem.workTimes);
 
-    const toast = useToast();
+    const message = UseMessage();
 
     useEffect(() => {
         SetName(workItem.name);
@@ -58,33 +60,9 @@ function EditWorkItemModel({ onClose, isOpen, workItem, onReset }: Props) {
 
     useEffect(() => {
         if (dataEdit && !isError) {
-            toast({
-                title: "Save",
-                status: "success",
-                duration: 5000,
-            });
+            message({ errorOrMessage: "Save", type: "success", objectType: "text" });
         } else if (isError && error) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            if ((error as any)?.data) {
-                toast({
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    title: (error as any).data.title,
-                    status: "error",
-                    duration: 5000,
-                });
-            } else {
-                toast({
-                    title: "error",
-                    status: "error",
-                    duration: 5000,
-                });
-            }
-        } else if (isError) {
-            toast({
-                title: "error",
-                status: "error",
-                duration: 5000,
-            });
+            message({ errorOrMessage: error, type: "error", objectType: "object" });
         }
     }, [error, isError, dataEdit]);
 

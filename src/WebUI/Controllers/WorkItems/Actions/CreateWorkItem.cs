@@ -24,11 +24,12 @@ public partial class WorkItemController //NOSONAR
         return Created("", _mapper.Map<WorkItemRespond>(workItem));
       }
 
-      return Problem(title: "Error");
+      return Problem(title: "Error Create WorkItem", detail: "Did not create WorkItem", statusCode: 500);
+
     }
     catch (Exception ex)
     {
-      return Problem(title: ex.Message, statusCode: 500);
+      return Problem(title: "Error Create WorkItem", detail: ex.Message, statusCode: 500);
     }
   }
 }

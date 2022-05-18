@@ -1,35 +1,25 @@
 import { Flex, Grid, Heading, Stack, Text } from "@chakra-ui/layout";
-import { useToast } from "@chakra-ui/react";
+import { toast } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { InputControl, SubmitButton } from "formik-chakra-ui";
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import UseMessage from "../../Hooks/UseMessage";
 import { useCreateUserMutation } from "../../store/api/authApi";
 
 const Signup = () => {
     const [createUser, { data, isLoading, error, isError }] = useCreateUserMutation();
-    const toast = useToast();
+    const message = UseMessage();
     const navigate = useNavigate();
 
     useEffect(() => {
         if (isError && error) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            if ((error as any)?.data) {
-                toast({
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    title: (error as any).data.title,
-                    status: "error",
-                    duration: 5000,
-                });
-            }
+            message({ errorOrMessage: error, type: "error", objectType: "object" });
         }
         if (data) {
-            toast({
-                title: "Created",
-                status: "success",
-                duration: 5000,
-            });
+            message({ errorOrMessage: "Created", type: "success", objectType: "text" });
+
             navigate("/Login");
         }
     }, [error, data, isError]);
@@ -44,10 +34,10 @@ const Signup = () => {
                 if (form.password === form.repeatPassword) {
                     createUser(form);
                 } else {
-                    toast({
-                        title: "The password and Repeat Password are not the same",
-                        status: "error",
-                        duration: 5000,
+                    message({
+                        errorOrMessage: "The password and Repeat Password are not the same",
+                        type: "error",
+                        objectType: "text",
                     });
                 }
             }}

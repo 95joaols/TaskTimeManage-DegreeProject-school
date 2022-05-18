@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/modal";
 import { Button, Input, useToast } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
+import UseMessage from "../../Hooks/UseMessage";
 import { useCreateWorkItemMutation } from "../../store/api/WorkApi";
 import { useAppSelector } from "../../store/hook";
 import { selectLoginUser } from "../../store/state/authSlice";
@@ -29,7 +30,7 @@ function CreateWorkItemModel({ onClose, isOpen, createWorkItem }: Props) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleInputChange = (e: any) => setName(e.target.value);
     const [createWorkItemApi, { data, isLoading, error, isError: createUserError }] = useCreateWorkItemMutation();
-    const toast = useToast();
+    const message = UseMessage();
 
     useEffect(() => {
         if (firstUpdate.current) {
@@ -41,19 +42,15 @@ function CreateWorkItemModel({ onClose, isOpen, createWorkItem }: Props) {
 
     useEffect(() => {
         if (data) {
+            message({ errorOrMessage: "Create", type: "success", objectType: "text" });
             createWorkItem(data);
             CustomOnClose();
         }
     }, [data]);
 
     useEffect(() => {
-        if (createUserError) {
-            toast({
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                title: (error as any).data.title,
-                status: "error",
-                duration: 5000,
-            });
+        if (createUserError && error) {
+            message({ errorOrMessage: error, type: "error", objectType: "object" });
         }
     }, [createUserError, error]);
 

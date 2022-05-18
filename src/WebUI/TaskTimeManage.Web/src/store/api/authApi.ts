@@ -14,7 +14,10 @@ export const authApi = createApi({
                     method: "post",
                     body,
                     responseHandler: (response) => {
-                        return response.text();
+                        if (response.ok) {
+                            return response.text();
+                        }
+                        return response.json();
                     },
                 };
             },
@@ -25,9 +28,6 @@ export const authApi = createApi({
                     url: "CreateUser",
                     method: "post",
                     body,
-                    responseHandler: (response) => {
-                        return response.json();
-                    },
                 };
             },
         }),

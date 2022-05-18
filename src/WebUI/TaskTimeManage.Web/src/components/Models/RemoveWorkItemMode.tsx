@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/modal";
 import { Button, Text, useToast } from "@chakra-ui/react";
 import React, { useEffect } from "react";
+import UseMessage from "../../Hooks/UseMessage";
 import { useDeleteWorkItemMutation } from "../../store/api/WorkApi";
 
 type Props = {
@@ -21,21 +22,17 @@ type Props = {
 
 function RemoveWorkItemMode({ onClose, onDeleted, isOpen, activeWorkItem }: Props) {
     const [Delete, { data, isLoading, error, isError: createUserError }] = useDeleteWorkItemMutation();
-    const toast = useToast();
+    const message = UseMessage();
 
     useEffect(() => {
         if (createUserError) {
-            toast({
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                title: (error as any).data.title,
-                status: "error",
-                duration: 5000,
-            });
+            message({ errorOrMessage: error, type: "error", objectType: "object" });
         }
     }, [createUserError, error]);
 
     useEffect(() => {
         if (data) {
+            message({ errorOrMessage: "Deleted", type: "success", objectType: "text" });
             onClose();
             onDeleted();
         }

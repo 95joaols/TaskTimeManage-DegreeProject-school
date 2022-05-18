@@ -28,7 +28,7 @@ public partial class WorkItemController //NOSONAR
     }
     catch (Exception ex)
     {
-      return Problem(title: ex.Message, statusCode: 500);
+      return Problem(title: "Error Geting WorkItem", detail: ex.Message, statusCode: 500);
     }
   }
 }

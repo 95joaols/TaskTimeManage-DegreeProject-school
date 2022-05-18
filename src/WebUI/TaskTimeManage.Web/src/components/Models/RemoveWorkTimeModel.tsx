@@ -7,8 +7,9 @@ import {
     ModalHeader,
     ModalOverlay,
 } from "@chakra-ui/modal";
-import { Button, Text, useToast } from "@chakra-ui/react";
+import { Button, Text } from "@chakra-ui/react";
 import React, { useEffect } from "react";
+import UseMessage from "../../Hooks/UseMessage";
 import { useDeleteWorkTimeMutation } from "../../store/api/WorkApi";
 import { WorkTime } from "../../Types/WorkTime";
 
@@ -20,21 +21,17 @@ type Props = {
 
 function RemoveWorkTimeModel({ onClose, isOpen, workTime }: Props) {
     const [Delete, { data, isLoading, error, isError: createUserError }] = useDeleteWorkTimeMutation();
-    const toast = useToast();
+    const message = UseMessage();
 
     useEffect(() => {
         if (createUserError) {
-            toast({
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                title: (error as any).data.title,
-                status: "error",
-                duration: 5000,
-            });
+            message({ errorOrMessage: error, type: "error", objectType: "object" });
         }
     }, [createUserError, error]);
 
     useEffect(() => {
         if (data) {
+            message({ errorOrMessage: "Deleted", type: "success", objectType: "text" });
             onClose();
         }
     }, [data]);
