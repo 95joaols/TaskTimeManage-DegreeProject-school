@@ -20,11 +20,10 @@ public partial class AuthenticationController //NOSONAR
 
     try
     {
-      IConfigurationSection? appSettingsSection = _configuration.GetSection("ApplicationSecuritySettings");
-      ApplicationSecuritySettings? applicationSecuritySettings = appSettingsSection.Get<ApplicationSecuritySettings>();
+      JwtSettings? jwtSettings = _configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>();
 
       string token =
-        await _mediator.Send(new LoginQuery(reqest.Username, reqest.Password, applicationSecuritySettings.Secret),
+        await _mediator.Send(new LoginQuery(reqest.Username, reqest.Password, jwtSettings.SiningKey, jwtSettings.Issuer),
           cancellationToken);
       if (string.IsNullOrWhiteSpace(token))
       {

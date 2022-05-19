@@ -1,7 +1,10 @@
-﻿using MediatR;
+﻿using Application.Common.Settings;
+
+using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using System.Text;
 
 namespace Application;
 

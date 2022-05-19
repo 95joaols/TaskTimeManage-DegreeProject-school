@@ -37,6 +37,6 @@ public class LoginHandler : IRequestHandler<LoginQuery, string>
       throw new LogInWrongException();
     }
 
-    return Token.GenerateToken(user, request.TokenKey);
+    return Token.GenerateToken(user, request.SiningKey, request.Issuer);
   }
 }

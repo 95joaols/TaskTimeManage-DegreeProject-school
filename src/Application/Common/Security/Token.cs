@@ -8,7 +8,7 @@ namespace Application.Common.Security;
 
 public static class Token
 {
-  public static string GenerateToken(UserProfile user, string tokenKey)
+  public static string GenerateToken(UserProfile user, string tokenKey,string issuer)
   {
     SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(
       tokenKey));
@@ -21,7 +21,8 @@ public static class Token
           new Claim(ClaimTypes.NameIdentifier, user.PublicId.ToString()), new Claim(ClaimTypes.Name, user.UserName)
         }),
       Expires = DateTime.Now.AddDays(1),
-      SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature)
+      SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature),
+      Issuer = issuer
     };
 
     SecurityToken? securityToken = tokenHandler.CreateToken(tokenDescriptor);

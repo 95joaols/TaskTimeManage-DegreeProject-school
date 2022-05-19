@@ -1,10 +1,19 @@
 using Application;
+using Application.Common.Settings;
+
 using Infrastructure;
 using Infrastructure.Persistence;
+
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+
 using Swashbuckle.AspNetCore.Filters;
+
+using System.Text;
+
 using WebUI.Mappings;
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
@@ -28,6 +37,30 @@ builder.Services.AddSwaggerGen(options => {
 
   options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
+
+var jwtSettings = new JwtSettings();
+builder.Configuration.Bind(nameof(JwtSettings), jwtSettings);
+
+var jwtSetting = builder.Configuration.GetSection(nameof(JwtSettings));
+builder.Services.Configure<JwtSettings>(jwtSetting);
+
+_ = builder.Services.AddAuthentication(a => {
+  a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+  a.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+  a.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+  .AddJwtBearer(jwt => {
+    jwt.SaveToken = true;
+    jwt.TokenValidationParameters = new TokenValidationParameters {
+      ValidateIssuerSigningKey = true,
+      IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.SiningKey)),
+      ValidateIssuer = true,
+      ValidIssuer = jwtSettings.Issuer,
+      ValidateAudience = false,
+      ValidateLifetime = true,
+    };
+    jwt.ClaimsIssuer = jwtSettings.Issuer;
+  });
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 

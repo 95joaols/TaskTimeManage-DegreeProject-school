@@ -20,23 +20,6 @@ public static class DependencyInjection
 
     _ = services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
 
-    IConfigurationSection? appSettingsSection = configuration.GetSection("ApplicationSecuritySettings");
-    ApplicationSecuritySettings? applicationSecuritySettings = appSettingsSection.Get<ApplicationSecuritySettings>();
-    byte[]? key = Encoding.ASCII.GetBytes(applicationSecuritySettings.Secret);
-    _ = services.AddAuthentication(x => {
-        x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-      })
-      .AddJwtBearer(x => {
-        x.RequireHttpsMetadata = false;
-        x.SaveToken = true;
-        x.TokenValidationParameters = new TokenValidationParameters {
-          ValidateIssuerSigningKey = true,
-          IssuerSigningKey = new SymmetricSecurityKey(key),
-          ValidateIssuer = false,
-          ValidateAudience = false
-        };
-      });
     _ = services.AddRouting(x => x.LowercaseUrls = true);
 
     return services;
