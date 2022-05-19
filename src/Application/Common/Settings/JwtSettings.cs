@@ -2,7 +2,7 @@
 
 public class JwtSettings
 {
-  public string SiningKey{ get; set; }
+  public string SigningKey{ get; set; }
   public string Issuer { get; set; }
 
 }

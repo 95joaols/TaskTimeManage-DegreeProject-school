@@ -23,7 +23,7 @@ public partial class AuthenticationController //NOSONAR
       JwtSettings? jwtSettings = _configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>();
 
       string token =
-        await _mediator.Send(new LoginQuery(reqest.Username, reqest.Password, jwtSettings.SiningKey, jwtSettings.Issuer),
+        await _mediator.Send(new LoginQuery(reqest.Username, reqest.Password, jwtSettings.SigningKey, jwtSettings.Issuer),
           cancellationToken);
       if (string.IsNullOrWhiteSpace(token))
       {

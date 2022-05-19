@@ -1,8 +1,5 @@
-﻿namespace WebUI.Contracts.Authentications.Requests;
+﻿using System.ComponentModel.DataAnnotations;
 
-public class UserRequest
-{
-  public string Username{ get; set; }
+namespace WebUI.Contracts.Authentications.Requests;
 
-  public string Password{ get; set; }
-}
+public record UserRequest(string Username, string Password);

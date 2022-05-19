@@ -7,11 +7,12 @@ using Infrastructure.Persistence.Configurations.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.Persistence;
 
-public class ApplicationDbContext : IdentityDbContext, IApplicationDbContext
+public class ApplicationDbContext : IdentityDbContext, IApplicationDbContext, IApplicationDbContextWithTransaction
 {
   public ApplicationDbContext(DbContextOptions options) : base(options) {}
 

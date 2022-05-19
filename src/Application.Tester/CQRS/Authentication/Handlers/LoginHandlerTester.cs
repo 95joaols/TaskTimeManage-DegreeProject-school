@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Settings;
 using Application.CQRS.Authentication.Queries;
+
 using Microsoft.Extensions.Configuration;
 
 namespace Application.CQRS.Authentication.Handlers;
@@ -21,14 +22,16 @@ public class LoginHandlerTester
     Fixture fixture = new();
     string username = fixture.Create<string>();
     string password = fixture.Create<string>();
-    JwtSettings? jwtSettings = config.GetSection(nameof(JwtSettings)).Get<JwtSettings>();
+    JwtSettings jwtSettings = new();
+    jwtSettings.Issuer = config.GetSection("JwtSettings:Issuer").Value;
+    jwtSettings.SigningKey = config.GetSection("JwtSettings:SigningKey").Value;
 
 
     SetupHelper helper = new(dataAccess);
     await helper.SetupUserAsync(username, password);
 
     LoginHandler sut = new(dataAccess);
-    LoginQuery request = new(username, password, jwtSettings.SiningKey, jwtSettings.Issuer);
+    LoginQuery request = new(username, password, jwtSettings.SigningKey, jwtSettings.Issuer);
 
     //Act 
     string? results = await sut.Handle(request, CancellationToken.None);
