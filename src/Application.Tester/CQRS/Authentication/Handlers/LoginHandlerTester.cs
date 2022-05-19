@@ -1,8 +1,13 @@
-﻿using Application.Common.Interfaces;
-using Application.Common.Settings;
+﻿using Application.Common.Settings;
 using Application.CQRS.Authentication.Queries;
+using Application.moq;
+using Application.Common.Service;
 
+
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+
+using Moq;
 
 namespace Application.CQRS.Authentication.Handlers;
 
@@ -12,7 +17,7 @@ public class LoginHandlerTester
   public async Task I_Can_Login_And_Get_A_Token()
   {
     //Arrange 
-    using IApplicationDbContext dataAccess = await SetupHelper.CreateDataAccess();
+    using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
 
     IConfigurationRoot? config = new ConfigurationBuilder()
       .SetBasePath(AppContext.BaseDirectory)
@@ -30,7 +35,10 @@ public class LoginHandlerTester
     SetupHelper helper = new(dataAccess);
     await helper.SetupUserAsync(username, password);
 
-    LoginHandler sut = new(dataAccess);
+    Mock<UserManager<IdentityUser>> userManager = SetupHelper.GetMockUserManager(username, password);
+    var IdentityService = new IdentityService(jwtSettings);
+
+    LoginHandler sut = new(dataAccess, userManager.Object, IdentityService);
     LoginQuery request = new(username, password, jwtSettings.SigningKey, jwtSettings.Issuer);
 
     //Act 

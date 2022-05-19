@@ -16,8 +16,6 @@ internal class UserProfileConfig : IEntityTypeConfiguration<UserProfile>
     builder.Property(x => x.UpdatedAt).IsRequired();
 
     builder.Property(x => x.IdentityId).IsRequired();
-    builder.Property(x => x.Salt).IsRequired();
     builder.Property(x => x.UserName).IsRequired();
-    builder.Property(x => x.HashedPassword).IsRequired();
   }
 }

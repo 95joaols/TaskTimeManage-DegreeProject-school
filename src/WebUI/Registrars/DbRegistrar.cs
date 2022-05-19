@@ -5,8 +5,6 @@ using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-using System.Configuration;
-
 namespace WebUI.Registrars;
 
 public class DbRegistrar : IWebApplicationBuilderRegistrar

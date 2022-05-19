@@ -1,4 +1,4 @@
-﻿using Application.Common.Security;
+﻿using Application.Common.Service;
 
 namespace WebUI.Registrars;
 

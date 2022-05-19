@@ -1,7 +1,12 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.CQRS.Authentication.Commands;
+using Application.moq;
+
 using Domain.Aggregates.UserAggregate;
+
+using Microsoft.AspNetCore.Identity;
+using Moq;
 
 namespace Application.CQRS.Authentication.Handlers;
 
@@ -18,9 +23,11 @@ public class RegistrateUserHandlerTester
   public async Task I_Can_Registrate_A_New_User(string username, string password)
   {
     //Arrange 
-    using IApplicationDbContext dataAccess = await SetupHelper.CreateDataAccess();
+    using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
+    Mock<UserManager<IdentityUser>> userManager = SetupHelper.GetMockUserManager(username, password);
 
-    RegistrateUserHandler sut = new(dataAccess);
+
+    RegistrateUserHandler sut = new(dataAccess, userManager.Object);
     RegistrateUserCommand request = new(username, password);
     //Act 
     UserProfile? user = await sut.Handle(request, CancellationToken.None);
@@ -29,16 +36,17 @@ public class RegistrateUserHandlerTester
     _ = user.Id.Should().NotBe(0);
     _ = user.PublicId.Should().NotBeEmpty();
     _ = user.UserName.Should().Be(username);
-    _ = user.HashedPassword.Should().NotBe(password);
   }
 
   [Fact]
   public async Task I_Cant_Create_Multiple_On_Same_Name()
   {
     //Arrange
-    using IApplicationDbContext? dataAccess = await SetupHelper.CreateDataAccess();
+    using ApplicationDbContextMoq? dataAccess = await SetupHelper.CreateDataAccess();
+    Mock<UserManager<IdentityUser>> userManager = SetupHelper.GetMockUserManager("Test", "Test");
 
-    RegistrateUserHandler sut = new(dataAccess);
+
+    RegistrateUserHandler sut = new(dataAccess, userManager.Object);
 
     RegistrateUserCommand request = new("Test", "Test");
     _ = await sut.Handle(request, CancellationToken.None);

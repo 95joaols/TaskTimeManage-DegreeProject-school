@@ -1,5 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using Application.CQRS.WorkTimes.Commands;
+using Application.moq;
+
 using Domain.Aggregates.WorkAggregate;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +19,7 @@ public class DeleteWorkTimeByPublicIdHandlerTester
     string name = fixture.Create<string>();
     DateTime time = fixture.Create<DateTime>();
 
-    using IApplicationDbContext dataAccess = await SetupHelper.CreateDataAccess();
+    using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
 
     SetupHelper helper = new(dataAccess);
     WorkTime workTime = await helper.SetupWorkTimeAsync(time);

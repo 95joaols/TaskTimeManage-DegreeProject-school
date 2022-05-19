@@ -4,10 +4,11 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 using System.IdentityModel.Tokens.Jwt;
+using System.Runtime;
 using System.Security.Claims;
 using System.Text;
 
-namespace Application.Common.Security;
+namespace Application.Common.Service;
 public class IdentityService
 {
   private readonly JwtSettings _jwtSettings;
@@ -16,6 +17,11 @@ public class IdentityService
   public IdentityService(IOptions<JwtSettings> jwtOptions)
   {
     _jwtSettings = jwtOptions.Value;
+    _key = Encoding.ASCII.GetBytes(_jwtSettings.SigningKey);
+}
+  public IdentityService(JwtSettings jwtSettings)
+  {
+    _jwtSettings = jwtSettings;
     _key = Encoding.ASCII.GetBytes(_jwtSettings.SigningKey);
   }
 

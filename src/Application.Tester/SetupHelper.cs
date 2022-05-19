@@ -8,20 +8,25 @@ using Application.CQRS.WorkItems.Queries;
 using Application.CQRS.WorkTimes.Commands;
 using Application.CQRS.WorkTimes.Handlers;
 using Application.moq;
+
 using Domain.Aggregates.UserAggregate;
 using Domain.Aggregates.WorkAggregate;
+
 using MediatR;
+
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
 using Moq;
 
 namespace Application;
 
 internal class SetupHelper
 {
-  private readonly IApplicationDbContext _dataAccess;
-  public SetupHelper(IApplicationDbContext data) => _dataAccess = data;
+  private readonly ApplicationDbContextMoq _dataAccess;
+  public SetupHelper(ApplicationDbContextMoq data) => _dataAccess = data;
 
-  public async static Task<IApplicationDbContext> CreateDataAccess()
+  public async static Task<ApplicationDbContextMoq> CreateDataAccess()
   {
     DbContextOptions<ApplicationDbContextMoq>? options = SqliteInMemory.CreateOptions<ApplicationDbContextMoq>();
     ApplicationDbContextMoq dataAccessMoq = new(options);
@@ -29,14 +34,42 @@ internal class SetupHelper
     return dataAccessMoq;
   }
 
+  public static Mock<UserManager<IdentityUser>> GetMockUserManager(string username, string password)
+  {
+    var userStoreMock = new Mock<IUserStore<IdentityUser>>();
+    var userManager = new Mock<UserManager<IdentityUser>>(
+    userStoreMock.Object, null, null, null, null, null, null, null, null);
+
+    IdentityUser identityUser = new();
+    identityUser.Id = Guid.NewGuid().ToString();
+    identityUser.UserName = username;
+    identityUser.PasswordHash = password;
+
+    userManager.SetupSequence(x => x.FindByNameAsync(It.IsAny<string>())).ReturnsAsync((IdentityUser)null).ReturnsAsync(identityUser);
+
+
+    userManager.Setup(x =>
+    x.CreateAsync(It.IsAny<IdentityUser>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
+
+    userManager.Setup(x =>
+    x.CheckPasswordAsync(It.IsAny<IdentityUser>(), It.IsAny<string>())).ReturnsAsync(true);
+
+    return userManager;
+  }
 
   public async Task<UserProfile> SetupUserAsync(string username, string password)
   {
-    RegistrateUserHandler registrateUserHandler = new(_dataAccess);
+    Mock<UserManager<IdentityUser>> userManager = GetMockUserManager(username, password);
+
+
+
+    RegistrateUserHandler registrateUserHandler = new(_dataAccess, userManager.Object);
     RegistrateUserCommand request = new(username, password);
 
     return await registrateUserHandler.Handle(request, CancellationToken.None);
   }
+
+
 
   public async Task<WorkItem> SetupWorkItemAsync(string name)
   {
