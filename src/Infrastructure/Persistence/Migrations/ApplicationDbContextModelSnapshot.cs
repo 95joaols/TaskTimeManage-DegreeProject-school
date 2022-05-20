@@ -80,7 +80,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("UserId1")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -88,7 +88,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasIndex("PublicId")
                         .IsUnique();
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("WorkItem");
                 });
@@ -296,7 +296,7 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.HasOne("Domain.Aggregates.UserAggregate.UserProfile", "User")
                         .WithMany("WorkItems")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("UserId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
