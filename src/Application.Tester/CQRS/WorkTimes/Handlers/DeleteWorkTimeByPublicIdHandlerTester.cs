@@ -13,7 +13,9 @@ public class DeleteWorkTimeByPublicIdHandlerTester
     //Arrange 
     Fixture fixture = new();
     fixture.Customizations.Add(new RandomDateTimeSequenceGenerator(DateTimeOffset.Now.AddYears(-2).DateTime,
-      DateTimeOffset.Now.DateTime));
+        DateTimeOffset.Now.DateTime
+      )
+    );
     string name = fixture.Create<string>();
     DateTime time = fixture.Create<DateTime>();
 

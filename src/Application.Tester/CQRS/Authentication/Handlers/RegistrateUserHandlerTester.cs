@@ -30,10 +30,12 @@ public class RegistrateUserHandlerTester
 
 
     userManager.Setup(x =>
-      x.CreateAsync(It.IsAny<IdentityUser>(), It.Is<string>(x => x == password))).ReturnsAsync(IdentityResult.Success);
+      x.CreateAsync(It.IsAny<IdentityUser>(), It.Is<string>(x => x == password))
+    ).ReturnsAsync(IdentityResult.Success);
 
     userManager.Setup(x =>
-      x.CheckPasswordAsync(It.IsAny<IdentityUser>(), It.Is<string>(x => x == password))).ReturnsAsync(true);
+      x.CheckPasswordAsync(It.IsAny<IdentityUser>(), It.Is<string>(x => x == password))
+    ).ReturnsAsync(true);
 
     RegistrateUserHandler sut = new(dataAccess, userManager.Object);
     RegistrateUserCommand request = new(username, password);
@@ -66,10 +68,12 @@ public class RegistrateUserHandlerTester
 
 
     userManager.Setup(x =>
-      x.CreateAsync(It.IsAny<IdentityUser>(), It.Is<string>(x => x == password))).ReturnsAsync(IdentityResult.Success);
+      x.CreateAsync(It.IsAny<IdentityUser>(), It.Is<string>(x => x == password))
+    ).ReturnsAsync(IdentityResult.Success);
 
     userManager.Setup(x =>
-      x.CheckPasswordAsync(It.IsAny<IdentityUser>(), It.Is<string>(x => x == password))).ReturnsAsync(true);
+      x.CheckPasswordAsync(It.IsAny<IdentityUser>(), It.Is<string>(x => x == password))
+    ).ReturnsAsync(true);
 
 
     RegistrateUserHandler sut = new(dataAccess, userManager.Object);

@@ -1,11 +1,4 @@
-﻿using Application.CQRS.WorkTimes.Commands;
-using Domain.Aggregates.WorkAggregate;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using WebUI.Contracts.WorkTimes.Requests;
-using WebUI.Contracts.WorkTimes.Responds;
-
-namespace TaskTimeManage.Api.Controllers.WorkTimes;
+﻿namespace TaskTimeManage.Api.Controllers.WorkTimes;
 
 public partial class WorkTimeController //NOSONAR
 {
@@ -17,7 +10,8 @@ public partial class WorkTimeController //NOSONAR
     try
     {
       WorkTime workItem = await _mediator.Send(new CreateWorkTimeCommand(request.Time, request.WorkItemPublicId),
-        cancellationToken);
+        cancellationToken
+      );
       if (workItem == null)
       {
         return BadRequest();

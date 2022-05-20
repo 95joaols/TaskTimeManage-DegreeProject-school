@@ -1,9 +1,4 @@
-﻿using Application.Common.Interfaces;
-using Application.CQRS.WorkTimes.Commands;
-using Ardalis.GuardClauses;
-using MediatR;
-
-namespace Application.CQRS.WorkTimes.Handlers;
+﻿namespace Application.CQRS.WorkTimes.Handlers;
 
 public class DeleteAllWorkTimesByWorkItemIdHandler : IRequestHandler<DeleteAllWorkTimesByWorkItemIdCommand, bool>
 {

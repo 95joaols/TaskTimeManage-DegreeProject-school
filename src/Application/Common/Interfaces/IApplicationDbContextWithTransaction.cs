@@ -1,7 +1,4 @@
-﻿using Domain.Aggregates.UserAggregate;
-using Domain.Aggregates.WorkAggregate;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
+﻿using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Application.Common.Interfaces;
 

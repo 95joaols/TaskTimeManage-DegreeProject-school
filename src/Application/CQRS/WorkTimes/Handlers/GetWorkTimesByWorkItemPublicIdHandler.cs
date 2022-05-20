@@ -1,9 +1,4 @@
-﻿using Application.Common.Interfaces;
-using Application.CQRS.WorkTimes.Queries;
-using Ardalis.GuardClauses;
-using Domain.Aggregates.WorkAggregate;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Application.CQRS.WorkTimes.Queries;
 
 namespace Application.CQRS.WorkTimes.Handlers;
 

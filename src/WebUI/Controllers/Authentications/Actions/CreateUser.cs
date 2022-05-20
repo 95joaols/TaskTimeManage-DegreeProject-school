@@ -1,12 +1,4 @@
-﻿using Application.Common.Exceptions;
-using Application.CQRS.Authentication.Commands;
-using Ardalis.GuardClauses;
-using Domain.Aggregates.UserAggregate;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using WebUI.Contracts.Authentications.Requests;
-
-namespace TaskTimeManage.Api.Controllers.Authentications;
+﻿namespace TaskTimeManage.Api.Controllers.Authentications;
 
 public partial class AuthenticationController //NOSONAR
 {

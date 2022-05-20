@@ -1,12 +1,5 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
-using Application.Common.Service;
-using Application.CQRS.Authentication.Queries;
-using Ardalis.GuardClauses;
-using Domain.Aggregates.UserAggregate;
-using MediatR;
+﻿using Application.Common.Service;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -71,7 +64,8 @@ public class LoginHandler : IRequestHandler<LoginQuery, string>
       new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
       new Claim(JwtRegisteredClaimNames.UniqueName, userProfile.UserName), new Claim("IdentityId", identityUser.Id),
       new Claim(ClaimTypes.NameIdentifier, userProfile.PublicId.ToString())
-    });
+    }
+    );
 
     SecurityToken token = _identityService.CreateSecurityToken(claimsIdentity);
     return _identityService.WriteToken(token);

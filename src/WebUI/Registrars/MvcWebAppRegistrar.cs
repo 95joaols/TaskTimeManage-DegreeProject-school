@@ -1,8 +1,4 @@
-﻿using Infrastructure.Persistence;
-using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.EntityFrameworkCore;
-
-namespace WebUI.Registrars;
+﻿namespace WebUI.Registrars;
 
 public class MvcWebAppRegistrar : IWebApplicationRegistrar
 {
@@ -16,8 +12,9 @@ public class MvcWebAppRegistrar : IWebApplicationRegistrar
     app.UseSwaggerUI();
 
     app.UseForwardedHeaders(new ForwardedHeadersOptions {
-      ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-    });
+        ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+      }
+    );
 
     app.UseHttpsRedirection();
 

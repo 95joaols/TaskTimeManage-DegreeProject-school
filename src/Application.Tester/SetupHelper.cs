@@ -33,7 +33,8 @@ internal class SetupHelper
   {
     Mock<IUserStore<IdentityUser>> userStoreMock = new();
     return new Mock<UserManager<IdentityUser>>(
-      userStoreMock.Object, null, null, null, null, null, null, null, null);
+      userStoreMock.Object, null, null, null, null, null, null, null, null
+    );
   }
 
   public async Task<UserProfile> SetupUserAsync(string username, string password, IdentityUser? identityUser = null)
@@ -49,10 +50,12 @@ internal class SetupHelper
 
 
     userManager.Setup(x =>
-      x.CreateAsync(It.IsAny<IdentityUser>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
+      x.CreateAsync(It.IsAny<IdentityUser>(), It.IsAny<string>())
+    ).ReturnsAsync(IdentityResult.Success);
 
     userManager.Setup(x =>
-      x.CheckPasswordAsync(It.IsAny<IdentityUser>(), It.IsAny<string>())).ReturnsAsync(true);
+      x.CheckPasswordAsync(It.IsAny<IdentityUser>(), It.IsAny<string>())
+    ).ReturnsAsync(true);
 
 
     RegistrateUserHandler registrateUserHandler = new(_dataAccess, userManager.Object);
@@ -73,7 +76,9 @@ internal class SetupHelper
 
     Mock<IMediator>? mediatorMoq = new();
     _ = mediatorMoq.Setup(x => x.Send(new GetUserByPublicIdQuery(user.PublicId),
-      It.IsAny<CancellationToken>())).ReturnsAsync(user);
+        It.IsAny<CancellationToken>()
+      )
+    ).ReturnsAsync(user);
 
     CreateNewWorkItemHandler createNewWorkItemHandler = new(_dataAccess, mediatorMoq.Object);
     CreateNewWorkItemCommand request = new(name, user.PublicId);
@@ -87,7 +92,9 @@ internal class SetupHelper
 
     Mock<IMediator>? mediatorMoq = new();
     _ = mediatorMoq.Setup(x => x.Send(new GetUserByPublicIdQuery(user.PublicId),
-      It.IsAny<CancellationToken>())).ReturnsAsync(user);
+        It.IsAny<CancellationToken>()
+      )
+    ).ReturnsAsync(user);
 
     CreateNewWorkItemHandler createNewWorkItemHandler = new(_dataAccess, mediatorMoq.Object);
     CreateNewWorkItemCommand request = new(name, user.PublicId);
@@ -103,7 +110,9 @@ internal class SetupHelper
     WorkItem workItem = await SetupWorkItemAsync(name);
     Mock<IMediator>? mediatorMoq = new();
     _ = mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(workItem.PublicId),
-      It.IsAny<CancellationToken>())).ReturnsAsync(workItem);
+        It.IsAny<CancellationToken>()
+      )
+    ).ReturnsAsync(workItem);
 
     CreateWorkTimeHandler createWorkTimeHandler = new(_dataAccess, mediatorMoq.Object);
     CreateWorkTimeCommand request = new(time, workItem.PublicId);
@@ -117,7 +126,9 @@ internal class SetupHelper
 
     Mock<IMediator>? mediatorMoq = new();
     _ = mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(workItem.PublicId),
-      It.IsAny<CancellationToken>())).ReturnsAsync(workItem);
+        It.IsAny<CancellationToken>()
+      )
+    ).ReturnsAsync(workItem);
 
     CreateWorkTimeHandler createWorkTimeHandler = new(_dataAccess, mediatorMoq.Object);
     CreateWorkTimeCommand request = new(time, workItem.PublicId);

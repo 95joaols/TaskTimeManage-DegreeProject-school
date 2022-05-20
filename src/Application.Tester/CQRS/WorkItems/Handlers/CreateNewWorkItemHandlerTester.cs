@@ -27,7 +27,9 @@ public class CreateNewWorkItemHandlerTester
 
     Mock<IMediator>? mediatorMoq = new();
     _ = mediatorMoq.Setup(x => x.Send(new GetUserByPublicIdQuery(user.PublicId),
-      It.IsAny<CancellationToken>())).ReturnsAsync(user);
+        It.IsAny<CancellationToken>()
+      )
+    ).ReturnsAsync(user);
 
     CreateNewWorkItemHandler sut = new(dataAccess, mediatorMoq.Object);
     CreateNewWorkItemCommand request = new(name, user.PublicId);

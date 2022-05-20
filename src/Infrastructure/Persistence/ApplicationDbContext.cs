@@ -1,11 +1,8 @@
 ﻿using Application.Common.Interfaces;
-using Domain.Aggregates.UserAggregate;
-using Domain.Aggregates.WorkAggregate;
 using Domain.Common;
 using Infrastructure.Persistence.Configurations;
 using Infrastructure.Persistence.Configurations.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;

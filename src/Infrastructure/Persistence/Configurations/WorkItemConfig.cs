@@ -1,10 +1,6 @@
-﻿using Domain.Aggregates.WorkAggregate;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿namespace Infrastructure.Persistence.Configurations;
 
-namespace Infrastructure.Persistence.Configurations;
-
-internal class WorkItemConfig : IEntityTypeConfiguration<WorkItem>
+public class WorkItemConfig : IEntityTypeConfiguration<WorkItem>
 {
   public void Configure(EntityTypeBuilder<WorkItem> builder)
   {

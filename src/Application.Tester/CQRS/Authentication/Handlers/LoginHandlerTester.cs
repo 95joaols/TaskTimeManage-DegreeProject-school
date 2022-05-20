@@ -41,11 +41,12 @@ public class LoginHandlerTester
     userManager.Setup(x => x.FindByNameAsync(It.Is<string>(x => x == username))).ReturnsAsync(identityUser);
 
     userManager.Setup(x =>
-        x.CheckPasswordAsync(It.Is<IdentityUser>(x => x == identityUser), It.Is<string>(x => x == password)))
+        x.CheckPasswordAsync(It.Is<IdentityUser>(x => x == identityUser), It.Is<string>(x => x == password))
+      )
       .ReturnsAsync(true);
-    IdentityService IdentityService = new(jwtSettings);
+    IdentityService identityService = new(jwtSettings);
 
-    LoginHandler sut = new(dataAccess, userManager.Object, IdentityService);
+    LoginHandler sut = new(dataAccess, userManager.Object, identityService);
     LoginQuery request = new(username, password, jwtSettings.SigningKey, jwtSettings.Issuer);
 
     //Act 

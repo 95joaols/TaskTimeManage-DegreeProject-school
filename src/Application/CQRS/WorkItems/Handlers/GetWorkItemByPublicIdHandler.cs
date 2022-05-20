@@ -1,11 +1,4 @@
-﻿using Application.Common.Interfaces;
-using Application.CQRS.WorkItems.Queries;
-using Ardalis.GuardClauses;
-using Domain.Aggregates.WorkAggregate;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-
-namespace Application.CQRS.WorkItems.Handlers;
+﻿namespace Application.CQRS.WorkItems.Handlers;
 
 public class GetWorkItemByPublicIdHandler : IRequestHandler<GetWorkItemWithWorkTimeByPublicIdQuery, WorkItem?>
 {

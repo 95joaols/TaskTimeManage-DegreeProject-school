@@ -1,10 +1,6 @@
-﻿using Domain.Aggregates.WorkAggregate;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿namespace Infrastructure.Persistence.Configurations;
 
-namespace Infrastructure.Persistence.Configurations;
-
-internal class WorkTimeConfig : IEntityTypeConfiguration<WorkTime>
+public class WorkTimeConfig : IEntityTypeConfiguration<WorkTime>
 {
   public void Configure(EntityTypeBuilder<WorkTime> builder)
   {

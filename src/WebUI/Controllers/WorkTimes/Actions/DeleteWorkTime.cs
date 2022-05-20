@@ -1,8 +1,4 @@
-﻿using Application.CQRS.WorkTimes.Commands;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
-namespace TaskTimeManage.Api.Controllers.WorkTimes;
+﻿namespace TaskTimeManage.Api.Controllers.WorkTimes;
 
 public partial class WorkTimeController //NOSONAR
 {

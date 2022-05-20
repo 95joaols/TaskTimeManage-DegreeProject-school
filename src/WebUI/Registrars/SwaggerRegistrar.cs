@@ -1,6 +1,4 @@
-﻿using WebUI.Options;
-
-namespace WebUI.Registrars;
+﻿namespace WebUI.Registrars;
 
 public class SwaggerRegistrar : IWebApplicationBuilderRegistrar
 {

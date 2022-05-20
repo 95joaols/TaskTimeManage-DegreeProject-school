@@ -41,6 +41,7 @@ public class GetWorkItemByUserPublicIdHandlerTester
     _ = results.Should().NotBeNullOrEmpty();
     _ = results.Should().HaveCount(count);
     _ = results.ToList().Should().BeEquivalentTo(workItems, options =>
-      options.ExcludingNestedObjects());
+      options.ExcludingNestedObjects()
+    );
   }
 }

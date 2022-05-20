@@ -1,12 +1,4 @@
-﻿using Application.Common.Interfaces;
-using Application.CQRS.Authentication.Queries;
-using Application.CQRS.WorkItems.Commands;
-using Ardalis.GuardClauses;
-using Domain.Aggregates.UserAggregate;
-using Domain.Aggregates.WorkAggregate;
-using MediatR;
-
-namespace Application.CQRS.WorkItems.Handlers;
+﻿namespace Application.CQRS.WorkItems.Handlers;
 
 public class CreateNewWorkItemHandler : IRequestHandler<CreateNewWorkItemCommand, WorkItem>
 {

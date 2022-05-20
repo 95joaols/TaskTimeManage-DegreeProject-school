@@ -1,6 +1,4 @@
-﻿using WebUI.Registrars;
-
-namespace WebUI.Extensions;
+﻿namespace WebUI.Extensions;
 
 public static class RegistrarExtensions
 {

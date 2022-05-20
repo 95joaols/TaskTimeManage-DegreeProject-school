@@ -1,9 +1,4 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
-using Application.CQRS.Authentication.Commands;
-using Ardalis.GuardClauses;
-using Domain.Aggregates.UserAggregate;
-using MediatR;
+﻿using Application.CQRS.Authentication.Commands;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Storage;
 

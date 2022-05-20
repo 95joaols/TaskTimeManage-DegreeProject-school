@@ -1,10 +1,4 @@
-﻿using Application.CQRS.WorkItems.Queries;
-using Domain.Aggregates.WorkAggregate;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using WebUI.Contracts.WorkItems.Responds;
-
-namespace TaskTimeManage.Api.Controllers.WorkItems;
+﻿namespace TaskTimeManage.Api.Controllers.WorkItems;
 
 public partial class WorkItemController //NOSONAR
 {

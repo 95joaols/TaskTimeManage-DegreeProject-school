@@ -1,9 +1,4 @@
-﻿using AutoMapper;
-using Domain.Aggregates.WorkAggregate;
-using WebUI.Contracts.WorkItems.Responds;
-using WebUI.Contracts.WorkTimes.Responds;
-
-namespace WebUI.Mappings;
+﻿namespace WebUI.Mappings;
 
 public class WorkProfile : Profile
 {

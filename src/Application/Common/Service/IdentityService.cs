@@ -1,9 +1,6 @@
-﻿using Application.Common.Settings;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 
 namespace Application.Common.Service;
 
@@ -12,7 +9,7 @@ public class IdentityService
   private readonly JwtSettings _jwtSettings;
   private readonly byte[] _key;
 
-  public JwtSecurityTokenHandler TokenHandler = new();
+  private readonly JwtSecurityTokenHandler _tokenHandler = new();
 
   public IdentityService(IOptions<JwtSettings> jwtOptions)
   {
@@ -30,10 +27,10 @@ public class IdentityService
   {
     SecurityTokenDescriptor tokenDescriptor = GetTokenDescriptor(identity);
 
-    return TokenHandler.CreateToken(tokenDescriptor);
+    return _tokenHandler.CreateToken(tokenDescriptor);
   }
 
-  public string WriteToken(SecurityToken token) => TokenHandler.WriteToken(token);
+  public string WriteToken(SecurityToken token) => _tokenHandler.WriteToken(token);
 
   private SecurityTokenDescriptor GetTokenDescriptor(ClaimsIdentity identity) =>
     new() {
@@ -41,6 +38,7 @@ public class IdentityService
       Expires = DateTime.Now.AddDays(1),
       Issuer = _jwtSettings.Issuer,
       SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(_key),
-        SecurityAlgorithms.HmacSha256Signature)
+        SecurityAlgorithms.HmacSha256Signature
+      )
     };
 }

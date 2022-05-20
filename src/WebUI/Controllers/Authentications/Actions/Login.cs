@@ -1,11 +1,4 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Settings;
-using Application.CQRS.Authentication.Queries;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using WebUI.Contracts.Authentications.Requests;
-
-namespace TaskTimeManage.Api.Controllers.Authentications;
+﻿namespace TaskTimeManage.Api.Controllers.Authentications;
 
 public partial class AuthenticationController //NOSONAR
 {
@@ -25,7 +18,8 @@ public partial class AuthenticationController //NOSONAR
       string token =
         await _mediator.Send(
           new LoginQuery(reqest.Username, reqest.Password, jwtSettings.SigningKey, jwtSettings.Issuer),
-          cancellationToken);
+          cancellationToken
+        );
       if (string.IsNullOrWhiteSpace(token))
       {
         return Problem(statusCode: 500);

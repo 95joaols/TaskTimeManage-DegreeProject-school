@@ -24,7 +24,9 @@ public class DeleteWorkItemHandlerTester
 
     Mock<IMediator>? mediatorMoq = new();
     _ = mediatorMoq.Setup(x => x.Send(new DeleteAllWorkTimesByWorkItemIdCommand(workItem.Id),
-      It.IsAny<CancellationToken>())).ReturnsAsync(true);
+        It.IsAny<CancellationToken>()
+      )
+    ).ReturnsAsync(true);
 
     DeleteWorkItemHandler sut = new(dataAccess, mediatorMoq.Object);
     DeleteWorkItemCommand request = new(workItem.PublicId);
@@ -51,7 +53,9 @@ public class DeleteWorkItemHandlerTester
 
     Mock<IMediator>? mediatorMoq = new();
     _ = mediatorMoq.Setup(x => x.Send(new DeleteAllWorkTimesByWorkItemIdCommand(workItem.Id),
-      It.IsAny<CancellationToken>())).ReturnsAsync(false);
+        It.IsAny<CancellationToken>()
+      )
+    ).ReturnsAsync(false);
 
     DeleteWorkItemHandler sut = new(dataAccess, mediatorMoq.Object);
     DeleteWorkItemCommand request = new(workItem.PublicId);

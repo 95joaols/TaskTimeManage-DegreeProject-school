@@ -1,6 +1,4 @@
-﻿using Application.Common.Service;
-
-namespace WebUI.Registrars;
+﻿namespace WebUI.Registrars;
 
 public class ApplicationLayerRegistrar : IWebApplicationBuilderRegistrar
 {

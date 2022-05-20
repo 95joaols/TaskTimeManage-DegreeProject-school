@@ -15,7 +15,9 @@ public class CreateWorkTimeHandlerTester
     //Arrange 
     Fixture fixture = new();
     fixture.Customizations.Add(new RandomDateTimeSequenceGenerator(DateTimeOffset.Now.AddYears(-2).DateTime,
-      DateTimeOffset.Now.DateTime));
+        DateTimeOffset.Now.DateTime
+      )
+    );
 
     string name = fixture.Create<string>();
     DateTimeOffset time = fixture.Create<DateTimeOffset>();
@@ -29,7 +31,9 @@ public class CreateWorkTimeHandlerTester
 
     Mock<IMediator>? mediatorMoq = new();
     _ = mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(workItem.PublicId),
-      It.IsAny<CancellationToken>())).ReturnsAsync(workItem);
+        It.IsAny<CancellationToken>()
+      )
+    ).ReturnsAsync(workItem);
 
     CreateWorkTimeHandler sut = new(dataAccess, mediatorMoq.Object);
     CreateWorkTimeCommand request = new(time, workItem.PublicId);

@@ -1,11 +1,4 @@
-﻿using Application.Common.Interfaces;
-using Application.CQRS.Authentication.Queries;
-using Ardalis.GuardClauses;
-using Domain.Aggregates.UserAggregate;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-
-namespace Application.CQRS.Authentication.Handlers;
+﻿namespace Application.CQRS.Authentication.Handlers;
 
 public class GetUserByPublicIdHandler : IRequestHandler<GetUserByPublicIdQuery, UserProfile?>
 {

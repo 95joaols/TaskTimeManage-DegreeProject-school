@@ -1,7 +1,4 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
-namespace TaskTimeManage.Api.Controllers.Authentications;
+﻿namespace TaskTimeManage.Api.Controllers.Authentications;
 
 [Route("api/[controller]")]
 [ApiController]

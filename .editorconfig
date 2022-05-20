@@ -87,7 +87,7 @@ dotnet_style_require_accessibility_modifiers = for_non_interface_members:suggest
 #Style - Modifier preferences
 
 #when this rule is set to a list of modifiers, prefer the specified ordering.
-csharp_preferred_modifier_order = public, private, protected, async, static, readonly, override:suggestion
+csharp_preferred_modifier_order = private, public, protected, async, readonly, static, override:suggestion
 
 #Style - Pattern matching
 
@@ -138,10 +138,17 @@ csharp_style_expression_bodied_accessors = true:silent
 csharp_style_expression_bodied_lambdas = true:suggestion
 
 # ReSharper properties
+resharper_blank_lines_around_single_line_auto_property = 1
+resharper_blank_lines_before_control_transfer_statements = 1
+resharper_csharp_blank_lines_around_single_line_invocable = 1
+resharper_instance_members_qualify_declared_in =
 resharper_keep_existing_declaration_block_arrangement = false
 resharper_keep_existing_embedded_block_arrangement = false
 resharper_keep_existing_enum_arrangement = false
+resharper_place_expr_method_on_single_line = true
+resharper_place_expr_property_on_single_line = true
 resharper_space_before_singleline_accessorholder = false
+resharper_wrap_object_and_collection_initializer_style = chop_always
 
 [*.{cs,vb}]
 indent_style = space

@@ -17,7 +17,9 @@ public class UpdateWorkTimesHandlerTester
     //Arrange 
     Fixture fixture = new();
     fixture.Customizations.Add(new RandomDateTimeSequenceGenerator(DateTimeOffset.Now.AddYears(-2).DateTime,
-      DateTimeOffset.Now.DateTime));
+        DateTimeOffset.Now.DateTime
+      )
+    );
 
     string name = fixture.Create<string>();
     IEnumerable<DateTimeOffset> times = fixture.CreateMany<DateTimeOffset>(count);

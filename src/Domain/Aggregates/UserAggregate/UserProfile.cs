@@ -1,8 +1,4 @@
-﻿using Ardalis.GuardClauses;
-using Domain.Aggregates.WorkAggregate;
-using Domain.Common;
-
-namespace Domain.Aggregates.UserAggregate;
+﻿namespace Domain.Aggregates.UserAggregate;
 
 public class UserProfile : BaseAggregate
 {
@@ -10,9 +6,9 @@ public class UserProfile : BaseAggregate
 
   private UserProfile() => _workItems = new List<WorkItem>();
 
-  public string UserName{ get; private set; }
+  public string UserName{ get; private init; }
 
-  public Guid IdentityId{ get; private set; }
+  public Guid IdentityId{ get; private init; }
 
 
   public IEnumerable<WorkItem> WorkItems => _workItems;

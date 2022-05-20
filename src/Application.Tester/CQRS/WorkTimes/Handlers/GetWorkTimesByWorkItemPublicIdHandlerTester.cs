@@ -17,7 +17,9 @@ public class GetWorkTimesByWorkItemPublicIdHandlerTester
     //Arrange 
     Fixture fixture = new();
     fixture.Customizations.Add(new RandomDateTimeSequenceGenerator(DateTimeOffset.Now.AddYears(-2).DateTime,
-      DateTimeOffset.Now.DateTime));
+        DateTimeOffset.Now.DateTime
+      )
+    );
     string name = fixture.Create<string>();
     IEnumerable<DateTime> times = fixture.CreateMany<DateTime>(count);
 
@@ -43,6 +45,7 @@ public class GetWorkTimesByWorkItemPublicIdHandlerTester
     _ = results.Should().NotBeNullOrEmpty();
     _ = results.Should().HaveCount(count);
     _ = results.ToList().Should().BeEquivalentTo(workTimes, options =>
-      options.ExcludingNestedObjects());
+      options.ExcludingNestedObjects()
+    );
   }
 }
