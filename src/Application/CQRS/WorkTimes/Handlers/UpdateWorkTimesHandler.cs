@@ -1,11 +1,4 @@
-﻿using Application.Common.Interfaces;
-using Application.CQRS.WorkTimes.Commands;
-using Ardalis.GuardClauses;
-using Domain.Aggregates.WorkAggregate;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-
-namespace Application.CQRS.WorkTimes.Handlers;
+﻿namespace Application.CQRS.WorkTimes.Handlers;
 
 public class UpdateWorkTimesHandler : IRequestHandler<UpdateWorkTimesCommand, IEnumerable<WorkTime>>
 {
@@ -15,12 +8,12 @@ public class UpdateWorkTimesHandler : IRequestHandler<UpdateWorkTimesCommand, IE
 
   public async Task<IEnumerable<WorkTime>> Handle(UpdateWorkTimesCommand request, CancellationToken cancellationToken)
   {
-    _ = Guard.Against.NullOrEmpty(request.WorkTimes);
+    Guard.Against.NullOrEmpty(request.WorkTimes);
 
     IEnumerable<WorkTime> workTimes = await _data.WorkTime
       .Where(wt => request.WorkTimes.Select(x => x.PublicId).Contains(wt.PublicId)).ToListAsync(cancellationToken);
 
-    foreach (WorkTime? workTime in workTimes)
+    foreach (var workTime in workTimes)
     {
       DateTimeOffset? time = request.WorkTimes.FirstOrDefault(wt => wt.PublicId == workTime.PublicId)?.Time;
       if (time.HasValue)
@@ -29,7 +22,8 @@ public class UpdateWorkTimesHandler : IRequestHandler<UpdateWorkTimesCommand, IE
       }
     }
 
-    _ = await _data.SaveChangesAsync(cancellationToken);
+    await _data.SaveChangesAsync(cancellationToken);
+
     return workTimes;
   }
 }

@@ -1,8 +1,3 @@
 ﻿namespace WebUI.Contracts.WorkItems.Responds;
 
-public class WorkTimeLightRespond
-{
-  public Guid PublicId{ get; set; }
-
-  public DateTimeOffset Time{ get; set; }
-}
+public record WorkTimeLightRespond(Guid PublicId, DateTimeOffset Time);

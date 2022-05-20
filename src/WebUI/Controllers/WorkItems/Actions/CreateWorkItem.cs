@@ -1,11 +1,4 @@
-﻿using Application.CQRS.WorkItems.Commands;
-using Domain.Aggregates.WorkAggregate;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using WebUI.Contracts.WorkItems.Requests;
-using WebUI.Contracts.WorkItems.Responds;
-
-namespace TaskTimeManage.Api.Controllers.WorkItems;
+﻿namespace TaskTimeManage.Api.Controllers.WorkItems;
 
 public partial class WorkItemController //NOSONAR
 {
@@ -16,8 +9,9 @@ public partial class WorkItemController //NOSONAR
   {
     try
     {
-      WorkItem workItem = await _mediator.Send(new CreateNewWorkItemCommand(reqest.Name, reqest.UserPublicId),
-        cancellationToken);
+      var workItem = await _mediator.Send(new CreateNewWorkItemCommand(reqest.Name, reqest.UserPublicId),
+        cancellationToken
+      );
 
       if (workItem != null)
       {
@@ -25,7 +19,6 @@ public partial class WorkItemController //NOSONAR
       }
 
       return Problem(title: "Error Create WorkItem", detail: "Did not create WorkItem", statusCode: 500);
-
     }
     catch (Exception ex)
     {

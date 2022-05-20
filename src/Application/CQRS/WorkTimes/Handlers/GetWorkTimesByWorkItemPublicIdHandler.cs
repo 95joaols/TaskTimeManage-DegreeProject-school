@@ -1,9 +1,4 @@
-﻿using Application.Common.Interfaces;
-using Application.CQRS.WorkTimes.Queries;
-using Ardalis.GuardClauses;
-using Domain.Aggregates.WorkAggregate;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Application.CQRS.WorkTimes.Queries;
 
 namespace Application.CQRS.WorkTimes.Handlers;
 
@@ -17,7 +12,7 @@ public class
   public async Task<IEnumerable<WorkTime>> Handle(GetWorkTimesByWorkItemPublicIdQuery request,
     CancellationToken cancellationToken)
   {
-    _ = Guard.Against.Default(request.PublicId);
+    Guard.Against.Default(request.PublicId);
 
     return await _data.WorkTime.Where(wt => wt.WorkItem.PublicId == request.PublicId).ToListAsync(cancellationToken);
   }

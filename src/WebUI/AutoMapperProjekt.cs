@@ -1,5 +1,3 @@
 ﻿namespace WebUI;
 
-public class AutoMapperProjekt
-{
-}
+public class AutoMapperProjekt {}

@@ -1,6 +1,4 @@
-﻿using Ardalis.GuardClauses;
-using Domain.Aggregates.UserAggregate;
-using Domain.Common;
+﻿using Domain.Aggregates.UserAggregate;
 
 namespace Domain.Aggregates.WorkAggregate;
 
@@ -12,9 +10,9 @@ public class WorkItem : BaseAggregate
 
   public string Name{ get; private set; }
 
-  public int UserId{ get; private set; }
+  private int UserId{ get; init; }
 
-  public UserProfile User{ get; private set; }
+  public UserProfile User{ get; private init; }
 
   public IEnumerable<WorkTime> WorkTimes => _workTimes;
 
@@ -32,21 +30,6 @@ public class WorkItem : BaseAggregate
       UpdatedAt = DateTimeOffset.Now
     };
   }
-
-  public void AddWorkTime(WorkTime workItem)
-  {
-    Guard.Against.Null(workItem);
-
-    _workTimes.Add(workItem);
-  }
-
-  public void RemoveWorkTime(WorkTime workItem)
-  {
-    Guard.Against.Null(workItem);
-
-    _workTimes.Remove(workItem);
-  }
-
   public void UpdateName(string name)
   {
     Guard.Against.NullOrWhiteSpace(name);

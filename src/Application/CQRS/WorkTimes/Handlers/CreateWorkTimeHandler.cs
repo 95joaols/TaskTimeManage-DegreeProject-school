@@ -1,11 +1,4 @@
-﻿using Application.Common.Interfaces;
-using Application.CQRS.WorkItems.Queries;
-using Application.CQRS.WorkTimes.Commands;
-using Ardalis.GuardClauses;
-using Domain.Aggregates.WorkAggregate;
-using MediatR;
-
-namespace Application.CQRS.WorkTimes.Handlers;
+﻿namespace Application.CQRS.WorkTimes.Handlers;
 
 public class CreateWorkTimeHandler : IRequestHandler<CreateWorkTimeCommand, WorkTime>
 {
@@ -20,17 +13,18 @@ public class CreateWorkTimeHandler : IRequestHandler<CreateWorkTimeCommand, Work
 
   public async Task<WorkTime> Handle(CreateWorkTimeCommand request, CancellationToken cancellationToken)
   {
-    _ = Guard.Against.Default(request.WorkItemPublicId);
+    Guard.Against.Default(request.WorkItemPublicId);
 
-    WorkItem? workItem = await _mediator.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(request.WorkItemPublicId),
-      cancellationToken);
-    _ = Guard.Against.Null(workItem);
+    var workItem = await _mediator.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(request.WorkItemPublicId),
+      cancellationToken
+    );
+    Guard.Against.Null(workItem);
 
 
-    WorkTime workTime = WorkTime.CreateWorkTime(request.Time, workItem);
+    var workTime = WorkTime.CreateWorkTime(request.Time, workItem);
 
-    _ = _data.WorkTime.Add(workTime);
-    _ = await _data.SaveChangesAsync(cancellationToken);
+    _data.WorkTime.Add(workTime);
+    await _data.SaveChangesAsync(cancellationToken);
 
     return workTime;
   }

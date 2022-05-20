@@ -1,7 +1,4 @@
-﻿using Ardalis.GuardClauses;
-using Domain.Common;
-
-namespace Domain.Aggregates.WorkAggregate;
+﻿namespace Domain.Aggregates.WorkAggregate;
 
 public class WorkTime : BaseAggregate
 {
@@ -11,7 +8,7 @@ public class WorkTime : BaseAggregate
 
   public int WorkItemId{ get; private set; }
 
-  public WorkItem WorkItem{ get; private set; }
+  public WorkItem WorkItem{ get; private init; }
 
   public static WorkTime CreateWorkTime(DateTimeOffset time, WorkItem workItem)
   {
@@ -24,7 +21,10 @@ public class WorkTime : BaseAggregate
     }
 
     return new WorkTime {
-      Time = time, WorkItem = workItem, CreatedAt = DateTimeOffset.Now, UpdatedAt = DateTimeOffset.Now
+      Time = time,
+      WorkItem = workItem,
+      CreatedAt = DateTimeOffset.Now,
+      UpdatedAt = DateTimeOffset.Now
     };
   }
 

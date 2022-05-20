@@ -1,9 +1,5 @@
-﻿using Application.Common.Interfaces;
-using Application.CQRS.WorkItems.Commands;
+﻿using Application.CQRS.WorkItems.Commands;
 using Application.CQRS.WorkTimes.Commands;
-using Application.moq;
-
-using Domain.Aggregates.WorkAggregate;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -19,14 +15,16 @@ public class DeleteWorkItemHandlerTester
     Fixture fixture = new();
     string name = fixture.Create<string>();
 
-    using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
+    await using var dataAccess = await SetupHelper.CreateDataAccess();
 
     SetupHelper helper = new(dataAccess);
-    WorkItem workItem = await helper.SetupWorkItemAsync(name);
+    var workItem = await helper.SetupWorkItemAsync(name);
 
-    Mock<IMediator>? mediatorMoq = new();
-    _ = mediatorMoq.Setup(x => x.Send(new DeleteAllWorkTimesByWorkItemIdCommand(workItem.Id),
-      It.IsAny<CancellationToken>())).ReturnsAsync(true);
+    Mock<IMediator> mediatorMoq = new();
+    mediatorMoq.Setup(x => x.Send(new DeleteAllWorkTimesByWorkItemIdCommand(workItem.Id),
+        It.IsAny<CancellationToken>()
+      )
+    ).ReturnsAsync(true);
 
     DeleteWorkItemHandler sut = new(dataAccess, mediatorMoq.Object);
     DeleteWorkItemCommand request = new(workItem.PublicId);
@@ -35,8 +33,8 @@ public class DeleteWorkItemHandlerTester
     bool results = await sut.Handle(request, CancellationToken.None);
 
     //Assert
-    _ = results.Should().BeTrue();
-    _ = (await dataAccess.WorkItem.AnyAsync(x => x.Id == workItem.Id)).Should().BeFalse();
+    results.Should().BeTrue();
+    (await dataAccess.WorkItem.AnyAsync(x => x.Id == workItem.Id)).Should().BeFalse();
   }
 
   [Fact]
@@ -46,20 +44,22 @@ public class DeleteWorkItemHandlerTester
     Fixture fixture = new();
     string name = fixture.Create<string>();
 
-    using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
+    await using var dataAccess = await SetupHelper.CreateDataAccess();
 
     SetupHelper helper = new(dataAccess);
-    WorkItem workItem = await helper.SetupWorkItemAsync(name);
+    var workItem = await helper.SetupWorkItemAsync(name);
 
-    Mock<IMediator>? mediatorMoq = new();
-    _ = mediatorMoq.Setup(x => x.Send(new DeleteAllWorkTimesByWorkItemIdCommand(workItem.Id),
-      It.IsAny<CancellationToken>())).ReturnsAsync(false);
+    Mock<IMediator> mediatorMoq = new();
+    mediatorMoq.Setup(x => x.Send(new DeleteAllWorkTimesByWorkItemIdCommand(workItem.Id),
+        It.IsAny<CancellationToken>()
+      )
+    ).ReturnsAsync(false);
 
     DeleteWorkItemHandler sut = new(dataAccess, mediatorMoq.Object);
     DeleteWorkItemCommand request = new(workItem.PublicId);
 
     //Act
     //Assert
-    _ = await sut.Invoking(s => s.Handle(request, CancellationToken.None)).Should().ThrowAsync<Exception>();
+    await sut.Invoking(s => s.Handle(request, CancellationToken.None)).Should().ThrowAsync<Exception>();
   }
 }

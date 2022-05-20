@@ -1,12 +1,4 @@
-﻿using Application.Common.Interfaces;
-using Application.CQRS.Authentication.Queries;
-using Application.CQRS.WorkItems.Commands;
-using Ardalis.GuardClauses;
-using Domain.Aggregates.UserAggregate;
-using Domain.Aggregates.WorkAggregate;
-using MediatR;
-
-namespace Application.CQRS.WorkItems.Handlers;
+﻿namespace Application.CQRS.WorkItems.Handlers;
 
 public class CreateNewWorkItemHandler : IRequestHandler<CreateNewWorkItemCommand, WorkItem>
 {
@@ -21,19 +13,19 @@ public class CreateNewWorkItemHandler : IRequestHandler<CreateNewWorkItemCommand
 
   public async Task<WorkItem> Handle(CreateNewWorkItemCommand request, CancellationToken cancellationToken)
   {
-    _ = Guard.Against.NullOrWhiteSpace(request.Name);
-    _ = Guard.Against.Default(request.UserPublicId);
+    Guard.Against.NullOrWhiteSpace(request.Name);
+    Guard.Against.Default(request.UserPublicId);
 
-    UserProfile? user = await _mediator.Send(new GetUserByPublicIdQuery(request.UserPublicId), cancellationToken);
+    var user = await _mediator.Send(new GetUserByPublicIdQuery(request.UserPublicId), cancellationToken);
     if (user == null)
     {
       throw new ArgumentException(nameof(request.UserPublicId));
     }
 
-    WorkItem workItem = WorkItem.CreateWorkItem(request.Name, user);
+    var workItem = WorkItem.CreateWorkItem(request.Name, user);
 
-    _ = await _data.WorkItem.AddAsync(workItem, cancellationToken);
-    _ = await _data.SaveChangesAsync(cancellationToken);
+    await _data.WorkItem.AddAsync(workItem, cancellationToken);
+    await _data.SaveChangesAsync(cancellationToken);
 
 
     return workItem;

@@ -1,0 +1,36 @@
+﻿// Global using directives
+
+global using Application;
+global using Application.Common.Exceptions;
+global using Application.Common.Interfaces;
+global using Application.Common.Service;
+global using Application.CQRS.Authentication.Commands;
+global using Ardalis.GuardClauses;
+global using Domain.Aggregates.UserAggregate;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Mvc;
+global using WebUI.Contracts.Authentications.Requests;
+global using Application.Common.Settings;
+global using Application.CQRS.Authentication.Queries;
+global using Application.CQRS.WorkItems.Commands;
+global using Application.CQRS.WorkItems.Queries;
+global using Application.CQRS.WorkTimes.Commands;
+global using AutoMapper;
+global using Domain.Aggregates.WorkAggregate;
+global using Infrastructure.Persistence;
+global using MediatR;
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.AspNetCore.HttpOverrides;
+global using Microsoft.AspNetCore.Identity;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.Options;
+global using Microsoft.IdentityModel.Tokens;
+global using Microsoft.OpenApi.Models;
+global using Swashbuckle.AspNetCore.SwaggerGen;
+global using System.Text;
+global using WebUI.Contracts.WorkItems.Requests;
+global using WebUI.Contracts.WorkItems.Responds;
+global using WebUI.Contracts.WorkTimes.Requests;
+global using WebUI.Contracts.WorkTimes.Responds;
+global using WebUI.Options;
+global using WebUI.Registrars;

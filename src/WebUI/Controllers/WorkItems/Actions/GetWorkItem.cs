@@ -1,10 +1,4 @@
-﻿using Application.CQRS.WorkItems.Queries;
-using Domain.Aggregates.WorkAggregate;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using WebUI.Contracts.WorkItems.Responds;
-
-namespace TaskTimeManage.Api.Controllers.WorkItems;
+﻿namespace TaskTimeManage.Api.Controllers.WorkItems;
 
 public partial class WorkItemController //NOSONAR
 {
@@ -14,13 +8,14 @@ public partial class WorkItemController //NOSONAR
   {
     try
     {
-      WorkItem? workItem =
+      var workItem =
         await _mediator.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(publicId), cancellationToken);
 
       if (workItem != null)
       {
-        WorkItemRespond retunValue = _mapper.Map<WorkItemRespond>(workItem);
+        var retunValue = _mapper.Map<WorkItemRespond>(workItem);
         retunValue.WorkTimes = retunValue.WorkTimes.OrderBy(o => o.Time).ToList();
+
         return Ok(retunValue);
       }
 

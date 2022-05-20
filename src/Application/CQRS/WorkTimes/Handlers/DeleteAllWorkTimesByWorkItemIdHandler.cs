@@ -1,9 +1,4 @@
-﻿using Application.Common.Interfaces;
-using Application.CQRS.WorkTimes.Commands;
-using Ardalis.GuardClauses;
-using MediatR;
-
-namespace Application.CQRS.WorkTimes.Handlers;
+﻿namespace Application.CQRS.WorkTimes.Handlers;
 
 public class DeleteAllWorkTimesByWorkItemIdHandler : IRequestHandler<DeleteAllWorkTimesByWorkItemIdCommand, bool>
 {
@@ -13,11 +8,12 @@ public class DeleteAllWorkTimesByWorkItemIdHandler : IRequestHandler<DeleteAllWo
 
   public async Task<bool> Handle(DeleteAllWorkTimesByWorkItemIdCommand request, CancellationToken cancellationToken)
   {
-    _ = Guard.Against.NegativeOrZero(request.WorkItemId);
+    Guard.Against.NegativeOrZero(request.WorkItemId);
 
     _data.WorkTime.RemoveRange(_data.WorkTime.Where(wt => wt.WorkItemId == request.WorkItemId));
 
-    _ = await _data.SaveChangesAsync(cancellationToken);
+    await _data.SaveChangesAsync(cancellationToken);
+
     return true;
   }
 }

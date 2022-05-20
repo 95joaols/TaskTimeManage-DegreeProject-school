@@ -1,13 +1,4 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
-using Application.CQRS.Authentication.Commands;
-
-using Ardalis.GuardClauses;
-
-using Domain.Aggregates.UserAggregate;
-
-using MediatR;
-
+﻿using Application.CQRS.Authentication.Commands;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -26,8 +17,8 @@ public class RegistrateUserHandler : IRequestHandler<RegistrateUserCommand, User
 
   public async Task<UserProfile> Handle(RegistrateUserCommand request, CancellationToken cancellationToken)
   {
-    _ = Guard.Against.NullOrWhiteSpace(request.Username);
-    _ = Guard.Against.NullOrWhiteSpace(request.Password);
+    Guard.Against.NullOrWhiteSpace(request.Username);
+    Guard.Against.NullOrWhiteSpace(request.Password);
 
     await ValidateIdentityDoesNotExist(request);
 
@@ -40,54 +31,61 @@ public class RegistrateUserHandler : IRequestHandler<RegistrateUserCommand, User
       createdUser = await CreateUserAsync(request, transaction, identity, cancellationToken);
       await transaction.CommitAsync(cancellationToken);
     }
-    catch (Exception ex)
+    catch (Exception)
     {
       await transaction.RollbackAsync(cancellationToken);
+
       throw;
     }
 
     return createdUser;
   }
 
-  private async Task<UserProfile> CreateUserAsync(RegistrateUserCommand request, IDbContextTransaction transaction, IdentityUser identity,
-       CancellationToken cancellationToken)
+  private async Task<UserProfile> CreateUserAsync(RegistrateUserCommand request, IDbContextTransaction transaction,
+    IdentityUser identity,
+    CancellationToken cancellationToken)
   {
     try
     {
-      UserProfile createdUser = UserProfile.CreateUser(request.Username, new Guid(identity.Id));
-      _ = await _data.UserProfile.AddAsync(createdUser, cancellationToken);
+      var createdUser = UserProfile.CreateUser(request.Username, new Guid(identity.Id));
+      await _data.UserProfile.AddAsync(createdUser, cancellationToken);
       await _data.SaveChangesAsync(cancellationToken);
 
       return createdUser;
-
     }
-    catch (Exception e)
+    catch (Exception)
     {
       await transaction.RollbackAsync(cancellationToken);
+
       throw;
     }
   }
+
   private async Task ValidateIdentityDoesNotExist(RegistrateUserCommand request)
   {
     var existingIdentity = await _userManager.FindByNameAsync(request.Username);
 
     if (existingIdentity != null)
-      throw new UserAlreadyExistsException();
-
-  }
-  private async Task<IdentityUser> CreateIdentityUserAsync(RegistrateUserCommand request, IDbContextTransaction transaction, string hassedPassword, CancellationToken cancellationToken)
-  {
-    var identity = new IdentityUser { Email = request.Username, UserName = request.Username };
-    var createdIdentity = await _userManager.CreateAsync(identity, hassedPassword);
-    if (!createdIdentity.Succeeded)
     {
-      await transaction.RollbackAsync(cancellationToken);
-
-      foreach (var identityError in createdIdentity.Errors)
-      {
-        throw new FailToCreateUserException();
-      }
+      throw new UserAlreadyExistsException();
     }
-    return identity;
+  }
+
+  private async Task<IdentityUser> CreateIdentityUserAsync(RegistrateUserCommand request,
+    IDbContextTransaction transaction, string hassedPassword, CancellationToken cancellationToken)
+  {
+    IdentityUser identity = new() {
+      Email = request.Username,
+      UserName = request.Username
+    };
+    var createdIdentity = await _userManager.CreateAsync(identity, hassedPassword);
+    if (createdIdentity.Succeeded)
+    {
+      return identity;
+    }
+
+    await transaction.RollbackAsync(cancellationToken);
+
+    throw new FailToCreateUserException();
   }
 }

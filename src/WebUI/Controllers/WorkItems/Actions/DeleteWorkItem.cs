@@ -1,8 +1,4 @@
-﻿using Application.CQRS.WorkItems.Commands;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
-namespace TaskTimeManage.Api.Controllers.WorkItems;
+﻿namespace TaskTimeManage.Api.Controllers.WorkItems;
 
 public partial class WorkItemController //NOSONAR
 {
@@ -18,7 +14,6 @@ public partial class WorkItemController //NOSONAR
       }
 
       return Problem(title: "Error Delete WorkItem", detail: "Did not Delete WorkItem", statusCode: 500);
-
     }
     catch (Exception ex)
     {

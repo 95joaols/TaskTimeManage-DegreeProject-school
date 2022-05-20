@@ -7,6 +7,7 @@ import UseMessage from "../../Hooks/UseMessage";
 import { useCreateUserMutation } from "../../store/api/authApi";
 import * as Yup from "yup";
 import YupPassword from "yup-password";
+
 YupPassword(Yup);
 
 const Signup = () => {

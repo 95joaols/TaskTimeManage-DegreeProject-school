@@ -1,17 +1,11 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Settings;
-using Application.CQRS.Authentication.Queries;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using WebUI.Contracts.Authentications.Requests;
-
-namespace TaskTimeManage.Api.Controllers.Authentications;
+﻿namespace TaskTimeManage.Api.Controllers.Authentications;
 
 public partial class AuthenticationController //NOSONAR
 {
   [HttpPost("Login")]
   [AllowAnonymous]
-  public async Task<ActionResult<string>> LoginAsync([FromBody] UserRequest reqest, CancellationToken cancellationToken)
+  public async Task<ActionResult<string>>
+    LoginAsync([FromBody] UserRequest reqest, CancellationToken cancellationToken)
   {
     if (reqest is null || string.IsNullOrWhiteSpace(reqest.Username) || string.IsNullOrWhiteSpace(reqest.Password))
     {
@@ -20,17 +14,15 @@ public partial class AuthenticationController //NOSONAR
 
     try
     {
-      JwtSettings? jwtSettings = _configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>();
+      _configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>();
 
       string token =
-        await _mediator.Send(new LoginQuery(reqest.Username, reqest.Password, jwtSettings.SigningKey, jwtSettings.Issuer),
-          cancellationToken);
-      if (string.IsNullOrWhiteSpace(token))
-      {
-        return Problem(statusCode: 500);
-      }
+        await _mediator.Send(
+          new LoginQuery(reqest.Username, reqest.Password),
+          cancellationToken
+        );
 
-      return Ok(token);
+      return string.IsNullOrWhiteSpace(token) ? Problem(statusCode: 500) : Ok(token);
     }
     catch (LogInWrongException e)
     {

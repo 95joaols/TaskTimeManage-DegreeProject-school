@@ -1,8 +1,4 @@
-﻿using Application.Common.Interfaces;
-using Application.CQRS.WorkItems.Commands;
-using Application.moq;
-
-using Domain.Aggregates.WorkAggregate;
+﻿using Application.CQRS.WorkItems.Commands;
 
 namespace Application.CQRS.WorkItems.Handlers;
 
@@ -18,20 +14,20 @@ public class UpdateWorkItemHandlerTester
   public async Task I_Can_Edit_The_Name_On_WorkItem(string oldName, string newName)
   {
     //Arrange 
-    using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
+    await using var dataAccess = await SetupHelper.CreateDataAccess();
 
 
     SetupHelper helper = new(dataAccess);
-    WorkItem workItem = await helper.SetupWorkItemAsync(oldName);
+    var workItem = await helper.SetupWorkItemAsync(oldName);
 
     UpdateWorkItemHandler sut = new(dataAccess);
     UpdateWorkItemCommand request = new(workItem.PublicId, newName);
 
     //Act
-    WorkItem? results = await sut.Handle(request, CancellationToken.None);
+    var results = await sut.Handle(request, CancellationToken.None);
 
     //Assert
-    _ = results.Should().NotBeNull();
-    _ = results.Name.Should().Be(newName);
+    results.Should().NotBeNull();
+    results.Name.Should().Be(newName);
   }
 }

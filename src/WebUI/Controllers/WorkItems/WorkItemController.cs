@@ -1,8 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
-namespace TaskTimeManage.Api.Controllers.WorkItems;
+﻿namespace TaskTimeManage.Api.Controllers.WorkItems;
 
 [Route("api/[controller]")]
 [ApiController]

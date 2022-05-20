@@ -1,11 +1,4 @@
-﻿using Application.Common.Interfaces;
-using Application.CQRS.Authentication.Queries;
-using Ardalis.GuardClauses;
-using Domain.Aggregates.UserAggregate;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-
-namespace Application.CQRS.Authentication.Handlers;
+﻿namespace Application.CQRS.Authentication.Handlers;
 
 public class GetUserByPublicIdHandler : IRequestHandler<GetUserByPublicIdQuery, UserProfile?>
 {
@@ -15,7 +8,7 @@ public class GetUserByPublicIdHandler : IRequestHandler<GetUserByPublicIdQuery, 
 
   public async Task<UserProfile?> Handle(GetUserByPublicIdQuery request, CancellationToken cancellationToken)
   {
-    _ = Guard.Against.Default(request.UserPublicId);
+    Guard.Against.Default(request.UserPublicId);
 
     return await _data.UserProfile.FirstOrDefaultAsync(u => u.PublicId == request.UserPublicId, cancellationToken);
   }
