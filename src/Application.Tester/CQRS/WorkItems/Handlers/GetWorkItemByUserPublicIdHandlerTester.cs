@@ -1,7 +1,5 @@
-﻿using Application.Common.Interfaces;
-using Application.CQRS.WorkItems.Queries;
+﻿using Application.CQRS.WorkItems.Queries;
 using Application.moq;
-
 using Domain.Aggregates.UserAggregate;
 using Domain.Aggregates.WorkAggregate;
 
@@ -22,7 +20,7 @@ public class GetWorkItemByUserPublicIdHandlerTester
     IEnumerable<string> names = fixture.CreateMany<string>(count);
     string username = fixture.Create<string>();
     string password = fixture.Create<string>();
-    using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
+    await using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
     List<WorkItem> workItems = new();
 
 

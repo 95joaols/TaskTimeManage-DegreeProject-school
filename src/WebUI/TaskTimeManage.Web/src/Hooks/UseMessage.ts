@@ -1,23 +1,23 @@
-import { useToast } from "@chakra-ui/react";
-import { SerializedError } from "@reduxjs/toolkit";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
+import {useToast} from "@chakra-ui/react";
+import {SerializedError} from "@reduxjs/toolkit";
+import {FetchBaseQueryError} from "@reduxjs/toolkit/dist/query";
 
 type Message =
     | {
-          type: "error";
-          objectType: "object";
-          errorOrMessage: FetchBaseQueryError | SerializedError | string | undefined;
-      }
+    type: "error";
+    objectType: "object";
+    errorOrMessage: FetchBaseQueryError | SerializedError | string | undefined;
+}
     | {
-          type: "success" | "error";
-          objectType: "text";
-          errorOrMessage: string;
-      };
+    type: "success" | "error";
+    objectType: "text";
+    errorOrMessage: string;
+};
 
 const UseMessage = () => {
     const toast = useToast();
 
-    const Message = ({ errorOrMessage, type, objectType: manual }: Message) => {
+    const Message = ({errorOrMessage, type, objectType: manual}: Message) => {
         if (manual === "text") {
             const message = errorOrMessage as string;
 

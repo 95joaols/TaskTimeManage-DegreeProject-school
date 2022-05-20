@@ -1,7 +1,5 @@
-﻿using Application.Common.Interfaces;
-using Application.CQRS.WorkTimes.Queries;
+﻿using Application.CQRS.WorkTimes.Queries;
 using Application.moq;
-
 using Domain.Aggregates.WorkAggregate;
 
 namespace Application.CQRS.WorkTimes.Handlers;
@@ -23,7 +21,7 @@ public class GetWorkTimesByWorkItemPublicIdHandlerTester
     string name = fixture.Create<string>();
     IEnumerable<DateTime> times = fixture.CreateMany<DateTime>(count);
 
-    using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
+    await using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
 
     SetupHelper helper = new(dataAccess);
     WorkItem workItem = await helper.SetupWorkItemAsync(name);

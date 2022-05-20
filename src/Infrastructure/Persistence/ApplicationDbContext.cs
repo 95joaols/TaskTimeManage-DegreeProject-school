@@ -1,12 +1,9 @@
 ﻿using Application.Common.Interfaces;
-
 using Domain.Aggregates.UserAggregate;
 using Domain.Aggregates.WorkAggregate;
 using Domain.Common;
-
 using Infrastructure.Persistence.Configurations;
 using Infrastructure.Persistence.Configurations.Identity;
-
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -17,15 +14,15 @@ namespace Infrastructure.Persistence;
 
 public class ApplicationDbContext : IdentityDbContext, IApplicationDbContext, IApplicationDbContextWithTransaction
 {
-  public ApplicationDbContext(DbContextOptions options) : base(options) {}
+  public ApplicationDbContext(DbContextOptions options) : base(options)
+  {
+  }
 
   public DbSet<UserProfile> UserProfile{ get; set; }
 
   public DbSet<WorkItem> WorkItem{ get; set; }
 
   public DbSet<WorkTime> WorkTime{ get; set; }
-
-  public async Task<IDbContextTransaction> CreateTransactionAsync(CancellationToken cancellationToken) => await Database.BeginTransactionAsync(cancellationToken);
 
 
   public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken)
@@ -47,6 +44,9 @@ public class ApplicationDbContext : IdentityDbContext, IApplicationDbContext, IA
 
     return result;
   }
+
+  public async Task<IDbContextTransaction> CreateTransactionAsync(CancellationToken cancellationToken) =>
+    await Database.BeginTransactionAsync(cancellationToken);
 
   protected override void OnModelCreating(ModelBuilder builder)
   {

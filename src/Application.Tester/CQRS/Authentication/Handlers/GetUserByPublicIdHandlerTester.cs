@@ -1,7 +1,5 @@
-﻿using Application.Common.Interfaces;
-using Application.CQRS.Authentication.Queries;
+﻿using Application.CQRS.Authentication.Queries;
 using Application.moq;
-
 using Domain.Aggregates.UserAggregate;
 
 namespace Application.CQRS.Authentication.Handlers;
@@ -12,7 +10,7 @@ public class GetUserByPublicIdHandlerTester
   public async Task I_Can_Get_A_User()
   {
     //Arrange 
-    using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
+    await using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
 
     SetupHelper helper = new(dataAccess);
     UserProfile user = await helper.SetupUserAsync("Test", "Test");

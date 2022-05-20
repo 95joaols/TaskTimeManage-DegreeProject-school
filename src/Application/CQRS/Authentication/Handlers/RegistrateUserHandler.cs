@@ -1,13 +1,9 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.CQRS.Authentication.Commands;
-
 using Ardalis.GuardClauses;
-
 using Domain.Aggregates.UserAggregate;
-
 using MediatR;
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -32,11 +28,11 @@ public class RegistrateUserHandler : IRequestHandler<RegistrateUserCommand, User
     await ValidateIdentityDoesNotExist(request);
 
 
-    await using var transaction = await _data.CreateTransactionAsync(cancellationToken);
+    await using IDbContextTransaction transaction = await _data.CreateTransactionAsync(cancellationToken);
     UserProfile createdUser;
     try
     {
-      var identity = await CreateIdentityUserAsync(request, transaction, request.Password, cancellationToken);
+      IdentityUser identity = await CreateIdentityUserAsync(request, transaction, request.Password, cancellationToken);
       createdUser = await CreateUserAsync(request, transaction, identity, cancellationToken);
       await transaction.CommitAsync(cancellationToken);
     }
@@ -49,8 +45,9 @@ public class RegistrateUserHandler : IRequestHandler<RegistrateUserCommand, User
     return createdUser;
   }
 
-  private async Task<UserProfile> CreateUserAsync(RegistrateUserCommand request, IDbContextTransaction transaction, IdentityUser identity,
-       CancellationToken cancellationToken)
+  private async Task<UserProfile> CreateUserAsync(RegistrateUserCommand request, IDbContextTransaction transaction,
+    IdentityUser identity,
+    CancellationToken cancellationToken)
   {
     try
     {
@@ -59,7 +56,6 @@ public class RegistrateUserHandler : IRequestHandler<RegistrateUserCommand, User
       await _data.SaveChangesAsync(cancellationToken);
 
       return createdUser;
-
     }
     catch (Exception e)
     {
@@ -67,27 +63,32 @@ public class RegistrateUserHandler : IRequestHandler<RegistrateUserCommand, User
       throw;
     }
   }
+
   private async Task ValidateIdentityDoesNotExist(RegistrateUserCommand request)
   {
-    var existingIdentity = await _userManager.FindByNameAsync(request.Username);
+    IdentityUser? existingIdentity = await _userManager.FindByNameAsync(request.Username);
 
     if (existingIdentity != null)
+    {
       throw new UserAlreadyExistsException();
-
+    }
   }
-  private async Task<IdentityUser> CreateIdentityUserAsync(RegistrateUserCommand request, IDbContextTransaction transaction, string hassedPassword, CancellationToken cancellationToken)
+
+  private async Task<IdentityUser> CreateIdentityUserAsync(RegistrateUserCommand request,
+    IDbContextTransaction transaction, string hassedPassword, CancellationToken cancellationToken)
   {
-    var identity = new IdentityUser { Email = request.Username, UserName = request.Username };
-    var createdIdentity = await _userManager.CreateAsync(identity, hassedPassword);
+    IdentityUser identity = new() { Email = request.Username, UserName = request.Username };
+    IdentityResult? createdIdentity = await _userManager.CreateAsync(identity, hassedPassword);
     if (!createdIdentity.Succeeded)
     {
       await transaction.RollbackAsync(cancellationToken);
 
-      foreach (var identityError in createdIdentity.Errors)
+      foreach (IdentityError? identityError in createdIdentity.Errors)
       {
         throw new FailToCreateUserException();
       }
     }
+
     return identity;
   }
 }

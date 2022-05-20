@@ -7,11 +7,11 @@ import {
     ModalHeader,
     ModalOverlay,
 } from "@chakra-ui/modal";
-import { Button, Text } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import {Button, Text} from "@chakra-ui/react";
+import React, {useEffect} from "react";
 import UseMessage from "../../Hooks/UseMessage";
-import { useDeleteWorkTimeMutation } from "../../store/api/WorkApi";
-import { WorkTime } from "../../Types/WorkTime";
+import {useDeleteWorkTimeMutation} from "../../store/api/WorkApi";
+import {WorkTime} from "../../Types/WorkTime";
 
 type Props = {
     onClose: () => void;
@@ -19,19 +19,19 @@ type Props = {
     workTime: WorkTime;
 };
 
-function RemoveWorkTimeModel({ onClose, isOpen, workTime }: Props) {
-    const [Delete, { data, isLoading, error, isError: createUserError }] = useDeleteWorkTimeMutation();
+function RemoveWorkTimeModel({onClose, isOpen, workTime}: Props) {
+    const [Delete, {data, isLoading, error, isError: createUserError}] = useDeleteWorkTimeMutation();
     const message = UseMessage();
 
     useEffect(() => {
         if (createUserError) {
-            message({ errorOrMessage: error, type: "error", objectType: "object" });
+            message({errorOrMessage: error, type: "error", objectType: "object"});
         }
     }, [createUserError, error]);
 
     useEffect(() => {
         if (data) {
-            message({ errorOrMessage: "Deleted", type: "success", objectType: "text" });
+            message({errorOrMessage: "Deleted", type: "success", objectType: "text"});
             onClose();
         }
     }, [data]);
@@ -43,10 +43,10 @@ function RemoveWorkTimeModel({ onClose, isOpen, workTime }: Props) {
     return (
         <>
             <Modal isCentered onClose={onClose} isOpen={isOpen} motionPreset="slideInBottom">
-                <ModalOverlay />
+                <ModalOverlay/>
                 <ModalContent>
                     <ModalHeader>confirm</ModalHeader>
-                    <ModalCloseButton />
+                    <ModalCloseButton/>
                     <ModalBody>
                         <Text>confirm delete Work Time</Text>
                     </ModalBody>

@@ -5,7 +5,9 @@ namespace Domain.Aggregates.WorkAggregate;
 
 public class WorkTime : BaseAggregate
 {
-  private WorkTime() {}
+  private WorkTime()
+  {
+  }
 
   public DateTimeOffset Time{ get; private set; }
 

@@ -7,34 +7,22 @@ namespace WebUI.Options;
 
 public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
 {
-  public ConfigureSwaggerOptions()
-  {
-  }
-
   public void Configure(SwaggerGenOptions options)
   {
-
-    var scheme = GetJwtSecurityScheme();
+    OpenApiSecurityScheme scheme = GetJwtSecurityScheme();
     options.AddSecurityDefinition(scheme.Reference.Id, scheme);
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-                {scheme, new string[0]}
-            });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement { { scheme, new string[0] } });
   }
 
   private OpenApiInfo CreateVersionInfo()
   {
-    var info = new OpenApiInfo {
-      Title = "CwkSocial",
-      Version = "V1"
-    };
+    OpenApiInfo info = new() { Title = "CwkSocial", Version = "V1" };
 
     return info;
   }
 
-  private OpenApiSecurityScheme GetJwtSecurityScheme()
-  {
-    return new OpenApiSecurityScheme {
+  private OpenApiSecurityScheme GetJwtSecurityScheme() =>
+    new() {
       Name = "JWT Authentication",
       Description = "Provide a JWT Bearer",
       In = ParameterLocation.Header,
@@ -42,9 +30,7 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
       Scheme = "bearer",
       BearerFormat = "JWT",
       Reference = new OpenApiReference {
-        Id = JwtBearerDefaults.AuthenticationScheme,
-        Type = ReferenceType.SecurityScheme
+        Id = JwtBearerDefaults.AuthenticationScheme, Type = ReferenceType.SecurityScheme
       }
     };
-  }
 }

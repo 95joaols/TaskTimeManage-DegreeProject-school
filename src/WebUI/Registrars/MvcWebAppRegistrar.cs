@@ -1,5 +1,4 @@
 ﻿using Infrastructure.Persistence;
-
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +25,5 @@ public class MvcWebAppRegistrar : IWebApplicationRegistrar
     app.UseAuthorization();
 
     app.MapControllers();
-
   }
 }

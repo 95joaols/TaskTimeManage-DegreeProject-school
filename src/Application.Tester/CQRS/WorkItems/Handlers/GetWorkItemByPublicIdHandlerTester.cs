@@ -1,7 +1,5 @@
-﻿using Application.Common.Interfaces;
-using Application.CQRS.WorkItems.Queries;
+﻿using Application.CQRS.WorkItems.Queries;
 using Application.moq;
-
 using Domain.Aggregates.WorkAggregate;
 
 namespace Application.CQRS.WorkItems.Handlers;
@@ -15,7 +13,7 @@ public class GetWorkItemByPublicIdHandlerTester
     Fixture fixture = new();
     string name = fixture.Create<string>();
 
-    using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
+    await using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
 
     SetupHelper helper = new(dataAccess);
     WorkItem workItem = await helper.SetupWorkItemAsync(name);

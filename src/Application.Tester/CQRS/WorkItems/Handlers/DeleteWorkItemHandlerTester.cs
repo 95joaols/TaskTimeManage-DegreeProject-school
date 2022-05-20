@@ -1,8 +1,6 @@
-﻿using Application.Common.Interfaces;
-using Application.CQRS.WorkItems.Commands;
+﻿using Application.CQRS.WorkItems.Commands;
 using Application.CQRS.WorkTimes.Commands;
 using Application.moq;
-
 using Domain.Aggregates.WorkAggregate;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +17,7 @@ public class DeleteWorkItemHandlerTester
     Fixture fixture = new();
     string name = fixture.Create<string>();
 
-    using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
+    await using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
 
     SetupHelper helper = new(dataAccess);
     WorkItem workItem = await helper.SetupWorkItemAsync(name);
@@ -46,7 +44,7 @@ public class DeleteWorkItemHandlerTester
     Fixture fixture = new();
     string name = fixture.Create<string>();
 
-    using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
+    await using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
 
     SetupHelper helper = new(dataAccess);
     WorkItem workItem = await helper.SetupWorkItemAsync(name);

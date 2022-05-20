@@ -1,25 +1,26 @@
-import { Flex, Grid, Heading, Stack, Text } from "@chakra-ui/layout";
-import { Form, Formik } from "formik";
-import { InputControl, SubmitButton } from "formik-chakra-ui";
-import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {Flex, Grid, Heading, Stack, Text} from "@chakra-ui/layout";
+import {Form, Formik} from "formik";
+import {InputControl, SubmitButton} from "formik-chakra-ui";
+import React, {useEffect} from "react";
+import {Link, useNavigate} from "react-router-dom";
 import UseMessage from "../../Hooks/UseMessage";
-import { useCreateUserMutation } from "../../store/api/authApi";
+import {useCreateUserMutation} from "../../store/api/authApi";
 import * as Yup from "yup";
 import YupPassword from "yup-password";
+
 YupPassword(Yup);
 
 const Signup = () => {
-    const [createUser, { data, isLoading, error, isError }] = useCreateUserMutation();
+    const [createUser, {data, isLoading, error, isError}] = useCreateUserMutation();
     const message = UseMessage();
     const navigate = useNavigate();
 
     useEffect(() => {
         if (isError && error) {
-            message({ errorOrMessage: error, type: "error", objectType: "object" });
+            message({errorOrMessage: error, type: "error", objectType: "object"});
         }
         if (data) {
-            message({ errorOrMessage: "Created", type: "success", objectType: "text" });
+            message({errorOrMessage: "Created", type: "success", objectType: "text"});
 
             navigate("/Login");
         }
@@ -27,10 +28,10 @@ const Signup = () => {
 
     return (
         <Formik
-            initialValues={{ username: "", password: "", repeatPassword: "" }}
+            initialValues={{username: "", password: "", repeatPassword: ""}}
             validationSchema={SignupSchema}
             onSubmit={(values) => {
-                const form = { ...values };
+                const form = {...values};
 
                 if (form.password === form.repeatPassword) {
                     createUser(form);

@@ -18,7 +18,6 @@ public partial class WorkItemController //NOSONAR
       }
 
       return Problem(title: "Error Delete WorkItem", detail: "Did not Delete WorkItem", statusCode: 500);
-
     }
     catch (Exception ex)
     {

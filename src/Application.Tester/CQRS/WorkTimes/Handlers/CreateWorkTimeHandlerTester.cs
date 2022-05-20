@@ -1,8 +1,6 @@
-﻿using Application.Common.Interfaces;
-using Application.CQRS.WorkItems.Queries;
+﻿using Application.CQRS.WorkItems.Queries;
 using Application.CQRS.WorkTimes.Commands;
 using Application.moq;
-
 using Domain.Aggregates.WorkAggregate;
 using MediatR;
 using Moq;
@@ -23,7 +21,7 @@ public class CreateWorkTimeHandlerTester
     DateTimeOffset time = fixture.Create<DateTimeOffset>();
 
 
-    using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
+    await using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
 
 
     SetupHelper helper = new(dataAccess);

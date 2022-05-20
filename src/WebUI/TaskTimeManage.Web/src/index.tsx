@@ -1,9 +1,9 @@
-import { ChakraProvider } from "@chakra-ui/react";
+import {ChakraProvider} from "@chakra-ui/react";
 import React from "react";
-import { createRoot } from "react-dom/client";
-import { Provider } from "react-redux";
+import {createRoot} from "react-dom/client";
+import {Provider} from "react-redux";
 import App from "./App";
-import { store } from "./store";
+import {store} from "./store";
 
 const container = document.getElementById("root");
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -11,7 +11,7 @@ const root = createRoot(container!); // createRoot(container!) if you use TypeSc
 root.render(
     <Provider store={store}>
         <ChakraProvider>
-            <App />
+            <App/>
         </ChakraProvider>
     </Provider>,
 );

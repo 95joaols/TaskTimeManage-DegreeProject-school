@@ -1,5 +1,4 @@
-﻿using Application.Common.Interfaces;
-using Application.CQRS.Authentication.Commands;
+﻿using Application.CQRS.Authentication.Commands;
 using Application.CQRS.Authentication.Handlers;
 using Application.CQRS.Authentication.Queries;
 using Application.CQRS.WorkItems.Commands;
@@ -8,15 +7,11 @@ using Application.CQRS.WorkItems.Queries;
 using Application.CQRS.WorkTimes.Commands;
 using Application.CQRS.WorkTimes.Handlers;
 using Application.moq;
-
 using Domain.Aggregates.UserAggregate;
 using Domain.Aggregates.WorkAggregate;
-
 using MediatR;
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-
 using Moq;
 
 namespace Application;
@@ -36,9 +31,9 @@ internal class SetupHelper
 
   public static Mock<UserManager<IdentityUser>> GetMockUserManager()
   {
-    var userStoreMock = new Mock<IUserStore<IdentityUser>>();
+    Mock<IUserStore<IdentityUser>> userStoreMock = new();
     return new Mock<UserManager<IdentityUser>>(
-    userStoreMock.Object, null, null, null, null, null, null, null, null);
+      userStoreMock.Object, null, null, null, null, null, null, null, null);
   }
 
   public async Task<UserProfile> SetupUserAsync(string username, string password, IdentityUser? identityUser = null)
@@ -46,20 +41,18 @@ internal class SetupHelper
     Mock<UserManager<IdentityUser>> userManager = GetMockUserManager();
     if (identityUser == null)
     {
-      identityUser = new();
-      identityUser.Id = Guid.NewGuid().ToString();
-      identityUser.UserName = username;
-      identityUser.PasswordHash = password;
+      identityUser = new IdentityUser { Id = Guid.NewGuid().ToString(), UserName = username, PasswordHash = password };
     }
 
-    userManager.SetupSequence(x => x.FindByNameAsync(It.IsAny<string>())).ReturnsAsync((IdentityUser)null).ReturnsAsync(identityUser);
+    userManager.SetupSequence(x => x.FindByNameAsync(It.IsAny<string>())).ReturnsAsync((IdentityUser)null)
+      .ReturnsAsync(identityUser);
 
 
     userManager.Setup(x =>
-    x.CreateAsync(It.IsAny<IdentityUser>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
+      x.CreateAsync(It.IsAny<IdentityUser>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
 
     userManager.Setup(x =>
-    x.CheckPasswordAsync(It.IsAny<IdentityUser>(), It.IsAny<string>())).ReturnsAsync(true);
+      x.CheckPasswordAsync(It.IsAny<IdentityUser>(), It.IsAny<string>())).ReturnsAsync(true);
 
 
     RegistrateUserHandler registrateUserHandler = new(_dataAccess, userManager.Object);
@@ -67,7 +60,6 @@ internal class SetupHelper
 
     return await registrateUserHandler.Handle(request, CancellationToken.None);
   }
-
 
 
   public async Task<WorkItem> SetupWorkItemAsync(string name)

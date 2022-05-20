@@ -25,7 +25,6 @@ public partial class WorkItemController //NOSONAR
       }
 
       return Problem(title: "Error Create WorkItem", detail: "Did not create WorkItem", statusCode: 500);
-
     }
     catch (Exception ex)
     {

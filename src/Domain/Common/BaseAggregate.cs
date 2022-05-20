@@ -2,7 +2,9 @@
 
 public class BaseAggregate
 {
-  protected BaseAggregate() {}
+  protected BaseAggregate()
+  {
+  }
 
   public int Id{ get; protected set; }
   public Guid PublicId{ get; protected set; }

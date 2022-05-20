@@ -14,15 +14,15 @@ namespace Application.moq;
 
 public class ApplicationDbContextMoq : IdentityDbContext, IApplicationDbContext, IApplicationDbContextWithTransaction
 {
-  public ApplicationDbContextMoq(DbContextOptions options) : base(options) {}
+  public ApplicationDbContextMoq(DbContextOptions options) : base(options)
+  {
+  }
 
   public DbSet<UserProfile> UserProfile{ get; set; }
 
   public DbSet<WorkItem> WorkItem{ get; set; }
 
   public DbSet<WorkTime> WorkTime{ get; set; }
-
-  public async Task<IDbContextTransaction> CreateTransactionAsync(CancellationToken cancellationToken) => await Database.BeginTransactionAsync(cancellationToken);
 
 
   public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken)
@@ -45,6 +45,9 @@ public class ApplicationDbContextMoq : IdentityDbContext, IApplicationDbContext,
 
     return result;
   }
+
+  public async Task<IDbContextTransaction> CreateTransactionAsync(CancellationToken cancellationToken) =>
+    await Database.BeginTransactionAsync(cancellationToken);
 
   protected override void OnModelCreating(ModelBuilder builder)
   {

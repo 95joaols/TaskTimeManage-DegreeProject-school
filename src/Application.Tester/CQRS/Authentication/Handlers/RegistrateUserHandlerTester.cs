@@ -1,10 +1,7 @@
 ﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
 using Application.CQRS.Authentication.Commands;
 using Application.moq;
-
 using Domain.Aggregates.UserAggregate;
-
 using Microsoft.AspNetCore.Identity;
 using Moq;
 
@@ -23,22 +20,20 @@ public class RegistrateUserHandlerTester
   public async Task I_Can_Registrate_A_New_User(string username, string password)
   {
     //Arrange 
-    using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
+    await using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
 
     Mock<UserManager<IdentityUser>> userManager = SetupHelper.GetMockUserManager();
-    IdentityUser identityUser = new();
-    identityUser.Id = Guid.NewGuid().ToString();
-    identityUser.UserName = username;
-    identityUser.PasswordHash = password;
+    IdentityUser identityUser = new() { Id = Guid.NewGuid().ToString(), UserName = username, PasswordHash = password };
 
-    userManager.SetupSequence(x => x.FindByNameAsync(It.Is<string>(x => x == username))).ReturnsAsync((IdentityUser)null).ReturnsAsync(identityUser);
+    userManager.SetupSequence(x => x.FindByNameAsync(It.Is<string>(x => x == username)))
+      .ReturnsAsync((IdentityUser)null).ReturnsAsync(identityUser);
 
 
     userManager.Setup(x =>
-    x.CreateAsync(It.IsAny<IdentityUser>(), It.Is<string>(x => x == password))).ReturnsAsync(IdentityResult.Success);
+      x.CreateAsync(It.IsAny<IdentityUser>(), It.Is<string>(x => x == password))).ReturnsAsync(IdentityResult.Success);
 
     userManager.Setup(x =>
-    x.CheckPasswordAsync(It.IsAny<IdentityUser>(), It.Is<string>(x => x == password))).ReturnsAsync(true);
+      x.CheckPasswordAsync(It.IsAny<IdentityUser>(), It.Is<string>(x => x == password))).ReturnsAsync(true);
 
     RegistrateUserHandler sut = new(dataAccess, userManager.Object);
     RegistrateUserCommand request = new(username, password);
@@ -62,21 +57,19 @@ public class RegistrateUserHandlerTester
   public async Task I_Cant_Create_Multiple_On_Same_Name(string username, string password)
   {
     //Arrange
-    using ApplicationDbContextMoq? dataAccess = await SetupHelper.CreateDataAccess();
+    await using ApplicationDbContextMoq? dataAccess = await SetupHelper.CreateDataAccess();
     Mock<UserManager<IdentityUser>> userManager = SetupHelper.GetMockUserManager();
 
-    IdentityUser identityUser = new();
-    identityUser.Id = Guid.NewGuid().ToString();
-    identityUser.UserName = username;
-    identityUser.PasswordHash = password;
-    userManager.SetupSequence(x => x.FindByNameAsync(It.Is<string>(x => x == username))).ReturnsAsync((IdentityUser)null).ReturnsAsync(identityUser).ReturnsAsync(identityUser);
+    IdentityUser identityUser = new() { Id = Guid.NewGuid().ToString(), UserName = username, PasswordHash = password };
+    userManager.SetupSequence(x => x.FindByNameAsync(It.Is<string>(x => x == username)))
+      .ReturnsAsync((IdentityUser)null).ReturnsAsync(identityUser).ReturnsAsync(identityUser);
 
 
     userManager.Setup(x =>
-    x.CreateAsync(It.IsAny<IdentityUser>(), It.Is<string>(x => x == password))).ReturnsAsync(IdentityResult.Success);
+      x.CreateAsync(It.IsAny<IdentityUser>(), It.Is<string>(x => x == password))).ReturnsAsync(IdentityResult.Success);
 
     userManager.Setup(x =>
-    x.CheckPasswordAsync(It.IsAny<IdentityUser>(), It.Is<string>(x => x == password))).ReturnsAsync(true);
+      x.CheckPasswordAsync(It.IsAny<IdentityUser>(), It.Is<string>(x => x == password))).ReturnsAsync(true);
 
 
     RegistrateUserHandler sut = new(dataAccess, userManager.Object);
