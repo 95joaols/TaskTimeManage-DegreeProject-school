@@ -27,6 +27,21 @@ export const workApi = createApi({
             query: (body) => ({
                 url: "WorkItem/UserId/" + body,
                 method: "GET",
+                responseHandler: (response) => {
+                    if (response.status === 204) {
+                        return response.text();
+                    }
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    if (
+                        !response.ok &&
+                        (response.status === 502 || response.status === 504 || response.status === 404)
+                    ) {
+                        return response.text();
+                    }
+                    return response.json();
+                },
             }),
             providesTags: ["WorkItem"],
         }),
@@ -34,6 +49,21 @@ export const workApi = createApi({
             query: (body) => ({
                 url: "WorkItem/" + body,
                 method: "GET",
+                responseHandler: (response) => {
+                    if (response.status === 204) {
+                        return response.text();
+                    }
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    if (
+                        !response.ok &&
+                        (response.status === 502 || response.status === 504 || response.status === 404)
+                    ) {
+                        return response.text();
+                    }
+                    return response.json();
+                },
             }),
 
             providesTags: ["WorkItem"],
@@ -43,6 +73,21 @@ export const workApi = createApi({
                 url: "WorkItem/",
                 method: "POST",
                 body: body,
+                responseHandler: (response) => {
+                    if (response.status === 204) {
+                        return response.text();
+                    }
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    if (
+                        !response.ok &&
+                        (response.status === 502 || response.status === 504 || response.status === 404)
+                    ) {
+                        return response.text();
+                    }
+                    return response.json();
+                },
             }),
             invalidatesTags: ["WorkItem"],
         }),
@@ -51,6 +96,21 @@ export const workApi = createApi({
                 url: "WorkItem/",
                 method: "PUT",
                 body: body,
+                responseHandler: (response) => {
+                    if (response.status === 204) {
+                        return response.text();
+                    }
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    if (
+                        !response.ok &&
+                        (response.status === 502 || response.status === 504 || response.status === 404)
+                    ) {
+                        return response.text();
+                    }
+                    return response.json();
+                },
             }),
             invalidatesTags: ["WorkItem"],
         }),
@@ -59,6 +119,18 @@ export const workApi = createApi({
                 url: "WorkItem/" + body,
                 method: "DELETE",
                 responseHandler: (response) => {
+                    if (response.status === 204) {
+                        return response.text();
+                    }
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    if (
+                        !response.ok &&
+                        (response.status === 502 || response.status === 504 || response.status === 404)
+                    ) {
+                        return response.text();
+                    }
                     return response.json();
                 },
             }),
@@ -69,6 +141,21 @@ export const workApi = createApi({
                 url: "WorkTime",
                 method: "POST",
                 body: body,
+                responseHandler: (response) => {
+                    if (response.status === 204) {
+                        return response.text();
+                    }
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    if (
+                        !response.ok &&
+                        (response.status === 502 || response.status === 504 || response.status === 404)
+                    ) {
+                        return response.text();
+                    }
+                    return response.json();
+                },
             }),
             invalidatesTags: ["WorkItem"],
         }),
@@ -77,6 +164,18 @@ export const workApi = createApi({
                 url: "WorkTime/" + body,
                 method: "DELETE",
                 responseHandler: (response) => {
+                    if (response.status === 204) {
+                        return response.text();
+                    }
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    if (
+                        !response.ok &&
+                        (response.status === 502 || response.status === 504 || response.status === 404)
+                    ) {
+                        return response.text();
+                    }
                     return response.json();
                 },
             }),
