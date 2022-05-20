@@ -34,16 +34,23 @@ internal class SetupHelper
     return dataAccessMoq;
   }
 
-  public static Mock<UserManager<IdentityUser>> GetMockUserManager(string username, string password)
+  public static Mock<UserManager<IdentityUser>> GetMockUserManager()
   {
     var userStoreMock = new Mock<IUserStore<IdentityUser>>();
-    var userManager = new Mock<UserManager<IdentityUser>>(
+    return new Mock<UserManager<IdentityUser>>(
     userStoreMock.Object, null, null, null, null, null, null, null, null);
+  }
 
-    IdentityUser identityUser = new();
-    identityUser.Id = Guid.NewGuid().ToString();
-    identityUser.UserName = username;
-    identityUser.PasswordHash = password;
+  public async Task<UserProfile> SetupUserAsync(string username, string password, IdentityUser? identityUser = null)
+  {
+    Mock<UserManager<IdentityUser>> userManager = GetMockUserManager();
+    if (identityUser == null)
+    {
+      identityUser = new();
+      identityUser.Id = Guid.NewGuid().ToString();
+      identityUser.UserName = username;
+      identityUser.PasswordHash = password;
+    }
 
     userManager.SetupSequence(x => x.FindByNameAsync(It.IsAny<string>())).ReturnsAsync((IdentityUser)null).ReturnsAsync(identityUser);
 
@@ -53,14 +60,6 @@ internal class SetupHelper
 
     userManager.Setup(x =>
     x.CheckPasswordAsync(It.IsAny<IdentityUser>(), It.IsAny<string>())).ReturnsAsync(true);
-
-    return userManager;
-  }
-
-  public async Task<UserProfile> SetupUserAsync(string username, string password)
-  {
-    Mock<UserManager<IdentityUser>> userManager = GetMockUserManager(username, password);
-
 
 
     RegistrateUserHandler registrateUserHandler = new(_dataAccess, userManager.Object);

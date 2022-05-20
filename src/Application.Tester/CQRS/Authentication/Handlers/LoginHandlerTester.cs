@@ -31,11 +31,21 @@ public class LoginHandlerTester
     jwtSettings.Issuer = config.GetSection("JwtSettings:Issuer").Value;
     jwtSettings.SigningKey = config.GetSection("JwtSettings:SigningKey").Value;
 
+    IdentityUser identityUser = new();
+    identityUser.UserName = username;
+    identityUser.PasswordHash = password;
 
     SetupHelper helper = new(dataAccess);
-    await helper.SetupUserAsync(username, password);
+    await helper.SetupUserAsync(username, password, identityUser);
 
-    Mock<UserManager<IdentityUser>> userManager = SetupHelper.GetMockUserManager(username, password);
+    identityUser.Id = dataAccess.UserProfile.FirstOrDefault().IdentityId.ToString();
+
+    Mock<UserManager<IdentityUser>> userManager = SetupHelper.GetMockUserManager();
+
+    userManager.Setup(x => x.FindByNameAsync(It.Is<string>(x => x == username))).ReturnsAsync(identityUser);
+
+    userManager.Setup(x =>
+    x.CheckPasswordAsync(It.Is<IdentityUser>(x => x == identityUser), It.Is<string>(x => x == password))).ReturnsAsync(true);
     var IdentityService = new IdentityService(jwtSettings);
 
     LoginHandler sut = new(dataAccess, userManager.Object, IdentityService);

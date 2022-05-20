@@ -11,7 +11,7 @@ public class DbRegistrar : IWebApplicationBuilderRegistrar
 {
   public void RegisterServices(WebApplicationBuilder builder)
   {
-    var cs = builder.Configuration.GetConnectionString("Default");
+    var cs = builder.Configuration.GetConnectionString("TaskTimeManagePostgres");
     builder.Services.AddDbContext<ApplicationDbContext>(options => {
       options.UseNpgsql(cs, b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
     });
@@ -27,6 +27,8 @@ public class DbRegistrar : IWebApplicationBuilderRegistrar
       options.Password.RequireNonAlphanumeric = false;
     })
         .AddEntityFrameworkStores<ApplicationDbContext>();
+
+   
 
   }
 }

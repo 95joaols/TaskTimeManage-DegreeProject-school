@@ -24,8 +24,21 @@ public class RegistrateUserHandlerTester
   {
     //Arrange 
     using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
-    Mock<UserManager<IdentityUser>> userManager = SetupHelper.GetMockUserManager(username, password);
 
+    Mock<UserManager<IdentityUser>> userManager = SetupHelper.GetMockUserManager();
+    IdentityUser identityUser = new();
+    identityUser.Id = Guid.NewGuid().ToString();
+    identityUser.UserName = username;
+    identityUser.PasswordHash = password;
+
+    userManager.SetupSequence(x => x.FindByNameAsync(It.Is<string>(x => x == username))).ReturnsAsync((IdentityUser)null).ReturnsAsync(identityUser);
+
+
+    userManager.Setup(x =>
+    x.CreateAsync(It.IsAny<IdentityUser>(), It.Is<string>(x => x == password))).ReturnsAsync(IdentityResult.Success);
+
+    userManager.Setup(x =>
+    x.CheckPasswordAsync(It.IsAny<IdentityUser>(), It.Is<string>(x => x == password))).ReturnsAsync(true);
 
     RegistrateUserHandler sut = new(dataAccess, userManager.Object);
     RegistrateUserCommand request = new(username, password);
@@ -38,17 +51,37 @@ public class RegistrateUserHandlerTester
     _ = user.UserName.Should().Be(username);
   }
 
-  [Fact]
-  public async Task I_Cant_Create_Multiple_On_Same_Name()
+  [Theory]
+  [InlineData("fgfgr", "dghf779j&35")]
+  [InlineData("fghdtry5", "dghfhbdtfrby779j&35")]
+  [InlineData("54ytyhg", "dghf779ntfyysj&35")]
+  [InlineData("zdfhgr5sy", "ybdruyu&35")]
+  [InlineData("test", "test")]
+  [InlineData("tdryntry5edynt", "hdtrydnnund5gb&35")]
+  [InlineData("fgfdtygr", "dghffgbhdrt774e779j&35")]
+  public async Task I_Cant_Create_Multiple_On_Same_Name(string username, string password)
   {
     //Arrange
     using ApplicationDbContextMoq? dataAccess = await SetupHelper.CreateDataAccess();
-    Mock<UserManager<IdentityUser>> userManager = SetupHelper.GetMockUserManager("Test", "Test");
+    Mock<UserManager<IdentityUser>> userManager = SetupHelper.GetMockUserManager();
+
+    IdentityUser identityUser = new();
+    identityUser.Id = Guid.NewGuid().ToString();
+    identityUser.UserName = username;
+    identityUser.PasswordHash = password;
+    userManager.SetupSequence(x => x.FindByNameAsync(It.Is<string>(x => x == username))).ReturnsAsync((IdentityUser)null).ReturnsAsync(identityUser).ReturnsAsync(identityUser);
+
+
+    userManager.Setup(x =>
+    x.CreateAsync(It.IsAny<IdentityUser>(), It.Is<string>(x => x == password))).ReturnsAsync(IdentityResult.Success);
+
+    userManager.Setup(x =>
+    x.CheckPasswordAsync(It.IsAny<IdentityUser>(), It.Is<string>(x => x == password))).ReturnsAsync(true);
 
 
     RegistrateUserHandler sut = new(dataAccess, userManager.Object);
 
-    RegistrateUserCommand request = new("Test", "Test");
+    RegistrateUserCommand request = new(username, password);
     _ = await sut.Handle(request, CancellationToken.None);
 
     //Act

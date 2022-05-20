@@ -33,16 +33,23 @@ public class RegistrateUserHandler : IRequestHandler<RegistrateUserCommand, User
 
 
     await using var transaction = await _data.CreateTransactionAsync(cancellationToken);
+    UserProfile createdUser;
+    try
+    {
 
     var identity = await CreateIdentityUserAsync(request, transaction, request.Password, cancellationToken);
 
 
 
-    UserProfile createdUser = await CreateUserAsync(request, transaction, identity, cancellationToken);
-    _ = await _data.UserProfile.AddAsync(createdUser, cancellationToken);
-    await _data.SaveChangesAsync(cancellationToken);
-
+    createdUser = await CreateUserAsync(request, transaction, identity, cancellationToken);
     await transaction.CommitAsync(cancellationToken);
+    }
+    catch(Exception ex)
+    {
+      transaction.Rollback();
+      throw ex;
+    }
+
     return createdUser;
   }
 
@@ -52,6 +59,7 @@ public class RegistrateUserHandler : IRequestHandler<RegistrateUserCommand, User
     try
     {
       UserProfile createdUser = UserProfile.CreateUser(request.Username,new Guid(identity.Id));
+      _ = await _data.UserProfile.AddAsync(createdUser, cancellationToken);
       await _data.SaveChangesAsync(cancellationToken);
 
       return createdUser;

@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Xml.Linq;
 
 namespace Application.CQRS.Authentication.Handlers;
 
