@@ -20,11 +20,11 @@ public class DbRegistrar : IWebApplicationBuilderRegistrar
     builder.Services.AddScoped<IApplicationDbContextWithTransaction>(provider => provider.GetService<ApplicationDbContext>());
 
     builder.Services.AddIdentityCore<IdentityUser>(options => {
-      options.Password.RequireDigit = false;
-      options.Password.RequiredLength = 5;
-      options.Password.RequireLowercase = false;
-      options.Password.RequireUppercase = false;
-      options.Password.RequireNonAlphanumeric = false;
+      options.Password.RequireDigit = true;
+      options.Password.RequiredLength = 8;
+      options.Password.RequireLowercase = true;
+      options.Password.RequireUppercase = true;
+      options.Password.RequireNonAlphanumeric = true;
     })
         .AddEntityFrameworkStores<ApplicationDbContext>();
 
