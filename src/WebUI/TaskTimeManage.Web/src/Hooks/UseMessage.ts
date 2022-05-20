@@ -18,11 +18,8 @@ const UseMessage = () => {
     const toast = useToast();
 
     const Message = ({ errorOrMessage, type, objectType: manual }: Message) => {
-        console.log("errorOrMessage", errorOrMessage, "type", type, "manual", manual);
-
         if (manual === "text") {
             const message = errorOrMessage as string;
-            console.log("message", message);
 
             if (message) {
                 toast({
@@ -37,8 +34,6 @@ const UseMessage = () => {
 
         const fetchBaseQueryError = errorOrMessage as FetchBaseQueryError;
         if (fetchBaseQueryError) {
-            console.log("fetchBaseQueryError.status", fetchBaseQueryError.status);
-
             switch (fetchBaseQueryError.status) {
                 case 400:
                 case 500:
