@@ -7,10 +7,10 @@ import {
     ModalHeader,
     ModalOverlay,
 } from "@chakra-ui/modal";
-import {Button, Text} from "@chakra-ui/react";
-import React, {useEffect} from "react";
+import { Button, Text } from "@chakra-ui/react";
+import React, { useEffect } from "react";
 import UseMessage from "../../Hooks/UseMessage";
-import {useDeleteWorkItemMutation} from "../../store/api/WorkApi";
+import { useDeleteWorkItemMutation } from "../../store/api/WorkApi";
 
 type Props = {
     onClose: () => void;
@@ -20,19 +20,19 @@ type Props = {
     activeWorkItem: string;
 };
 
-function RemoveWorkItemMode({onClose, onDeleted, isOpen, activeWorkItem}: Props) {
-    const [Delete, {data, isLoading, error, isError: createUserError}] = useDeleteWorkItemMutation();
+function RemoveWorkItemMode({ onClose, onDeleted, isOpen, activeWorkItem }: Props) {
+    const [Delete, { data, isLoading, error, isError: createUserError }] = useDeleteWorkItemMutation();
     const message = UseMessage();
 
     useEffect(() => {
         if (createUserError) {
-            message({errorOrMessage: error, type: "error", objectType: "object"});
+            message({ errorOrMessage: error, type: "error", objectType: "object" });
         }
     }, [createUserError, error]);
 
     useEffect(() => {
         if (data) {
-            message({errorOrMessage: "Deleted", type: "success", objectType: "text"});
+            message({ errorOrMessage: "Deleted", type: "success", objectType: "text" });
             onClose();
             onDeleted();
         }
@@ -45,10 +45,10 @@ function RemoveWorkItemMode({onClose, onDeleted, isOpen, activeWorkItem}: Props)
     return (
         <>
             <Modal isCentered onClose={onClose} isOpen={isOpen} motionPreset="slideInBottom">
-                <ModalOverlay/>
+                <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>confirm</ModalHeader>
-                    <ModalCloseButton/>
+                    <ModalCloseButton />
                     <ModalBody>
                         <Text>confirm delete Work Item</Text>
                     </ModalBody>

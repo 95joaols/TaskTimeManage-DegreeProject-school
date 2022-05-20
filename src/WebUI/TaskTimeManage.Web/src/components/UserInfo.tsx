@@ -1,11 +1,11 @@
-import {Box, Stack} from "@chakra-ui/layout";
-import {Button, Heading} from "@chakra-ui/react";
+import { Box, Stack } from "@chakra-ui/layout";
+import { Button, Heading } from "@chakra-ui/react";
 import React from "react";
-import {useDispatch} from "react-redux";
-import {useNavigate} from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import UseMessage from "../Hooks/UseMessage";
-import {useAppSelector} from "../store/hook";
-import {defaultState, selectLoginUser} from "../store/state/authSlice";
+import { useAppSelector } from "../store/hook";
+import { defaultState, selectLoginUser } from "../store/state/authSlice";
 
 function UserInfo() {
     const user = useAppSelector(selectLoginUser);
@@ -17,7 +17,7 @@ function UserInfo() {
         localStorage.removeItem("token");
         dispatch(defaultState());
 
-        message({errorOrMessage: "Goodbye", type: "success", objectType: "text"});
+        message({ errorOrMessage: "Goodbye", type: "success", objectType: "text" });
 
         navigate("/login");
     };

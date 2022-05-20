@@ -1,13 +1,13 @@
-import {Box} from "@chakra-ui/layout";
-import {Text} from "@chakra-ui/react";
-import React, {useEffect, useState} from "react";
-import {WorkTime} from "../Types/WorkTime";
+import { Box } from "@chakra-ui/layout";
+import { Text } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { WorkTime } from "../Types/WorkTime";
 
 type Props = {
     WorkTimes: WorkTime[] | undefined;
 };
 
-function CalculateTime({WorkTimes}: Props) {
+function CalculateTime({ WorkTimes }: Props) {
     const [time, setTime] = useState(0);
     const [timeText, setTimeText] = useState("0:00");
     const [domby, setDomby] = useState(false);

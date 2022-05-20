@@ -1,12 +1,12 @@
-import {Flex, Grid, GridItem, Stack, Text} from "@chakra-ui/react";
+import { Flex, Grid, GridItem, Stack, Text } from "@chakra-ui/react";
 import React from "react";
-import {WorkTime} from "../Types/WorkTime";
+import { WorkTime } from "../Types/WorkTime";
 
 type Props = {
     workTimes: WorkTime[] | undefined;
 };
 
-function WorkTimeList({workTimes}: Props) {
+function WorkTimeList({ workTimes }: Props) {
     return (
         <>
             {workTimes && workTimes.length > 0 && (
