@@ -145,7 +145,7 @@ namespace Infrastructure.Persistence.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    UserId1 = table.Column<int>(type: "integer", nullable: false),
                     PublicId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "uuid_generate_v4()"),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
@@ -154,8 +154,8 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_WorkItem", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_WorkItem_UserProfile_UserId",
-                        column: x => x.UserId,
+                        name: "FK_WorkItem_UserProfile_UserId1",
+                        column: x => x.UserId1,
                         principalTable: "UserProfile",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -197,9 +197,9 @@ namespace Infrastructure.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_WorkItem_UserId",
+                name: "IX_WorkItem_UserId1",
                 table: "WorkItem",
-                column: "UserId");
+                column: "UserId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkTime_PublicId",
