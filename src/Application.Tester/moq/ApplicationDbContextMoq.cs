@@ -7,11 +7,12 @@ using Domain.Common;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 
 namespace Application.moq;
 
-public class ApplicationDbContextMoq : IdentityDbContext, IApplicationDbContext
+public class ApplicationDbContextMoq : IdentityDbContext, IApplicationDbContext, IApplicationDbContextWithTransaction
 {
   public ApplicationDbContextMoq(DbContextOptions options) : base(options) {}
 
@@ -20,6 +21,9 @@ public class ApplicationDbContextMoq : IdentityDbContext, IApplicationDbContext
   public DbSet<WorkItem> WorkItem{ get; set; }
 
   public DbSet<WorkTime> WorkTime{ get; set; }
+
+  public async Task<IDbContextTransaction> CreateTransactionAsync(CancellationToken cancellationToken) => await Database.BeginTransactionAsync(cancellationToken);
+
 
   public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken)
   {

@@ -5,9 +5,9 @@ using WebUI.Contracts.WorkTimes.Responds;
 
 namespace WebUI.Mappings;
 
-public class MappingProfile : Profile
+public class WorkProfile : Profile
 {
-  public MappingProfile()
+  public WorkProfile()
   {
     _ = CreateMap<WorkItem, WorkItemRespond>()
       .ForMember(dest => dest.WorkTimes, opt =>

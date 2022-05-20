@@ -12,26 +12,20 @@ public class UserProfile : BaseAggregate
 
   public string UserName{ get; private set; }
 
-  public string IdentityId{ get; private set; }
+  public Guid IdentityId{ get; private set; }
 
-  public string HashedPassword{ get; private set; }
-
-  public string Salt{ get; private set; }
 
   public IEnumerable<WorkItem> WorkItems => _workItems;
 
-  public static UserProfile CreateUser(string userName, string userIdentityId, string hashedPassword, string salt)
+  public static UserProfile CreateUser(string userName, Guid userIdentityId)
   {
     Guard.Against.NullOrWhiteSpace(userName);
-    Guard.Against.NullOrWhiteSpace(userIdentityId);
-    Guard.Against.NullOrWhiteSpace(hashedPassword);
+    Guard.Against.Default(userIdentityId);
     Guard.Against.NullOrWhiteSpace(userName);
 
     return new UserProfile {
       UserName = userName.Trim(),
       IdentityId = userIdentityId,
-      HashedPassword = hashedPassword.Trim(),
-      Salt = salt.Trim(),
       CreatedAt = DateTimeOffset.Now,
       UpdatedAt = DateTimeOffset.Now
     };

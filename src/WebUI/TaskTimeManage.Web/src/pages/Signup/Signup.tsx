@@ -3,9 +3,11 @@ import { Form, Formik } from "formik";
 import { InputControl, SubmitButton } from "formik-chakra-ui";
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import * as Yup from "yup";
 import UseMessage from "../../Hooks/UseMessage";
 import { useCreateUserMutation } from "../../store/api/authApi";
+import * as Yup from "yup";
+import YupPassword from "yup-password";
+YupPassword(Yup);
 
 const Signup = () => {
     const [createUser, { data, isLoading, error, isError }] = useCreateUserMutation();
@@ -87,9 +89,9 @@ const Signup = () => {
 };
 
 const SignupSchema = Yup.object().shape({
-    username: Yup.string().required("Required"),
-    password: Yup.string().required("Required"),
-    repeatPassword: Yup.string().required("Required"),
+    username: Yup.string().required(),
+    password: Yup.string().password().required(),
+    repeatPassword: Yup.string().password().required(),
 });
 
 export default Signup;

@@ -1,5 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using Application.CQRS.WorkTimes.Commands;
+using Application.moq;
+
 using Domain.Aggregates.WorkAggregate;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,7 +25,7 @@ public class DeleteAllWorkTimesByWorkItemIdHandlerTester
     string name = fixture.Create<string>();
     IEnumerable<DateTimeOffset> times = fixture.CreateMany<DateTimeOffset>(count);
 
-    using IApplicationDbContext dataAccess = await SetupHelper.CreateDataAccess();
+    using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
 
     SetupHelper helper = new(dataAccess);
     WorkItem workItem = await helper.SetupWorkItemAsync(name);

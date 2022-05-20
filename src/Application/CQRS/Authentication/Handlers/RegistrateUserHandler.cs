@@ -1,45 +1,93 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Application.Common.Security;
 using Application.CQRS.Authentication.Commands;
+
 using Ardalis.GuardClauses;
+
 using Domain.Aggregates.UserAggregate;
+
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Application.CQRS.Authentication.Handlers;
 
 public class RegistrateUserHandler : IRequestHandler<RegistrateUserCommand, UserProfile>
 {
-  private readonly IApplicationDbContext _data;
+  private readonly IApplicationDbContextWithTransaction _data;
+  private readonly UserManager<IdentityUser> _userManager;
 
-  public RegistrateUserHandler(IApplicationDbContext data) => _data = data;
+  public RegistrateUserHandler(IApplicationDbContextWithTransaction data, UserManager<IdentityUser> userManager)
+  {
+    _data = data;
+    _userManager = userManager;
+  }
 
   public async Task<UserProfile> Handle(RegistrateUserCommand request, CancellationToken cancellationToken)
   {
     _ = Guard.Against.NullOrWhiteSpace(request.Username);
     _ = Guard.Against.NullOrWhiteSpace(request.Password);
-    UserProfile? user =
-      await _data.UserProfile.FirstOrDefaultAsync(u => u.UserName.ToLower() == request.Username.Trim().ToLower(),
-        cancellationToken);
-    if (user != null)
+
+    await ValidateIdentityDoesNotExist(request);
+
+
+    await using var transaction = await _data.CreateTransactionAsync(cancellationToken);
+    UserProfile createdUser;
+    try
     {
-      throw new UserAlreadyExistsException();
+      var identity = await CreateIdentityUserAsync(request, transaction, request.Password, cancellationToken);
+      createdUser = await CreateUserAsync(request, transaction, identity, cancellationToken);
+      await transaction.CommitAsync(cancellationToken);
+    }
+    catch (Exception ex)
+    {
+      await transaction.RollbackAsync(cancellationToken);
+      throw ex;
     }
 
-
-    UserProfile createdUser = CreateUser(request);
-    _ = await _data.UserProfile.AddAsync(createdUser, cancellationToken);
-    _ = await _data.SaveChangesAsync(cancellationToken);
     return createdUser;
   }
 
-  private static UserProfile CreateUser(RegistrateUserCommand request)
+  private async Task<UserProfile> CreateUserAsync(RegistrateUserCommand request, IDbContextTransaction transaction, IdentityUser identity,
+       CancellationToken cancellationToken)
   {
-    string salt = Cryptography.CreatSalt();
-    string hashedPassword =
-      Cryptography.Encrypt(Cryptography.Hash(Cryptography.Encrypt(request.Password.Trim(), salt), salt), salt);
-    UserProfile createdUser = UserProfile.CreateUser(request.Username, Guid.NewGuid().ToString(), hashedPassword, salt);
-    return createdUser;
+    try
+    {
+      UserProfile createdUser = UserProfile.CreateUser(request.Username, new Guid(identity.Id));
+      _ = await _data.UserProfile.AddAsync(createdUser, cancellationToken);
+      await _data.SaveChangesAsync(cancellationToken);
+
+      return createdUser;
+
+    }
+    catch (Exception e)
+    {
+      await transaction.RollbackAsync(cancellationToken);
+      throw;
+    }
+  }
+  private async Task ValidateIdentityDoesNotExist(RegistrateUserCommand request)
+  {
+    var existingIdentity = await _userManager.FindByNameAsync(request.Username);
+
+    if (existingIdentity != null)
+      throw new UserAlreadyExistsException();
+
+  }
+  private async Task<IdentityUser> CreateIdentityUserAsync(RegistrateUserCommand request, IDbContextTransaction transaction, string hassedPassword, CancellationToken cancellationToken)
+  {
+    var identity = new IdentityUser { Email = request.Username, UserName = request.Username };
+    var createdIdentity = await _userManager.CreateAsync(identity, hassedPassword);
+    if (!createdIdentity.Succeeded)
+    {
+      await transaction.RollbackAsync(cancellationToken);
+
+      foreach (var identityError in createdIdentity.Errors)
+      {
+        throw new FailToCreateUserException();
+      }
+    }
+    return identity;
   }
 }
