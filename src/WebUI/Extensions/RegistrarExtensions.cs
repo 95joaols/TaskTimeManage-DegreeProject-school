@@ -7,7 +7,7 @@ public static class RegistrarExtensions
     IEnumerable<IWebApplicationBuilderRegistrar> registrars =
       GetRegistrars<IWebApplicationBuilderRegistrar>(scanningType);
 
-    foreach (IWebApplicationBuilderRegistrar registrar in registrars)
+    foreach (var registrar in registrars)
     {
       registrar.RegisterServices(builder);
     }
@@ -16,7 +16,7 @@ public static class RegistrarExtensions
   public static void RegisterPipelineComponents(this WebApplication app, Type scanningType)
   {
     IEnumerable<IWebApplicationRegistrar> registrars = GetRegistrars<IWebApplicationRegistrar>(scanningType);
-    foreach (IWebApplicationRegistrar registrar in registrars)
+    foreach (var registrar in registrars)
     {
       registrar.RegisterPipelineComponents(app);
     }

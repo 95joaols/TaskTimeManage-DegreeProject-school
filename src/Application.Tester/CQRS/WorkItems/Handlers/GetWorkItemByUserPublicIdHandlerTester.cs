@@ -1,6 +1,4 @@
 ﻿using Application.CQRS.WorkItems.Queries;
-using Application.moq;
-using Domain.Aggregates.UserAggregate;
 using Domain.Aggregates.WorkAggregate;
 
 namespace Application.CQRS.WorkItems.Handlers;
@@ -20,12 +18,12 @@ public class GetWorkItemByUserPublicIdHandlerTester
     IEnumerable<string> names = fixture.CreateMany<string>(count);
     string username = fixture.Create<string>();
     string password = fixture.Create<string>();
-    await using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
+    await using var dataAccess = await SetupHelper.CreateDataAccess();
     List<WorkItem> workItems = new();
 
 
     SetupHelper helper = new(dataAccess);
-    UserProfile user = await helper.SetupUserAsync(username, password);
+    var user = await helper.SetupUserAsync(username, password);
     foreach (string? name in names)
     {
       workItems.Add(await helper.SetupWorkItemAsync(name, user));
@@ -35,13 +33,14 @@ public class GetWorkItemByUserPublicIdHandlerTester
     GetWorkItemTimeByUserPublicIdQuery request = new(user.PublicId);
 
     //Act
-    IEnumerable<WorkItem>? results = await sut.Handle(request, CancellationToken.None);
+    IEnumerable<WorkItem> results = await sut.Handle(request, CancellationToken.None);
 
     //Assert
-    _ = results.Should().NotBeNullOrEmpty();
-    _ = results.Should().HaveCount(count);
-    _ = results.ToList().Should().BeEquivalentTo(workItems, options =>
-      options.ExcludingNestedObjects()
+    results.Should().NotBeNullOrEmpty();
+    results.Should().HaveCount(count);
+    results.ToList().Should().BeEquivalentTo(workItems,
+      options =>
+        options.ExcludingNestedObjects()
     );
   }
 }

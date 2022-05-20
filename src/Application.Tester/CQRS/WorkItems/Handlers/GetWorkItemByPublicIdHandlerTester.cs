@@ -1,6 +1,4 @@
 ﻿using Application.CQRS.WorkItems.Queries;
-using Application.moq;
-using Domain.Aggregates.WorkAggregate;
 
 namespace Application.CQRS.WorkItems.Handlers;
 
@@ -13,20 +11,20 @@ public class GetWorkItemByPublicIdHandlerTester
     Fixture fixture = new();
     string name = fixture.Create<string>();
 
-    await using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
+    await using var dataAccess = await SetupHelper.CreateDataAccess();
 
     SetupHelper helper = new(dataAccess);
-    WorkItem workItem = await helper.SetupWorkItemAsync(name);
+    var workItem = await helper.SetupWorkItemAsync(name);
 
 
     GetWorkItemByPublicIdHandler sut = new(dataAccess);
     GetWorkItemWithWorkTimeByPublicIdQuery request = new(workItem.PublicId);
 
     //Act
-    WorkItem? results = await sut.Handle(request, CancellationToken.None);
+    var results = await sut.Handle(request, CancellationToken.None);
 
     //Assert
-    _ = results.Should().NotBeNull();
-    _ = results.Should().BeEquivalentTo(workItem);
+    results.Should().NotBeNull();
+    results.Should().BeEquivalentTo(workItem);
   }
 }

@@ -12,7 +12,7 @@ public class
   public async Task<IEnumerable<WorkTime>> Handle(GetWorkTimesByWorkItemPublicIdQuery request,
     CancellationToken cancellationToken)
   {
-    _ = Guard.Against.Default(request.PublicId);
+    Guard.Against.Default(request.PublicId);
 
     return await _data.WorkTime.Where(wt => wt.WorkItem.PublicId == request.PublicId).ToListAsync(cancellationToken);
   }

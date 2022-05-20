@@ -1,5 +1,4 @@
 ﻿using Application.CQRS.WorkTimes.Commands;
-using Application.moq;
 using Domain.Aggregates.WorkAggregate;
 
 namespace Application.CQRS.WorkTimes.Handlers;
@@ -24,19 +23,19 @@ public class UpdateWorkTimesHandlerTester
     string name = fixture.Create<string>();
     IEnumerable<DateTimeOffset> times = fixture.CreateMany<DateTimeOffset>(count);
 
-    await using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
+    await using var dataAccess = await SetupHelper.CreateDataAccess();
 
     SetupHelper helper = new(dataAccess);
-    WorkItem workItem = await helper.SetupWorkItemAsync(name);
+    var workItem = await helper.SetupWorkItemAsync(name);
     List<WorkTime> workTimes = new();
 
-    foreach (DateTimeOffset time in times)
+    foreach (var time in times)
     {
       workTimes.Add(await helper.SetupWorkTimeAsync(time, workItem));
     }
 
     List<WorkTime> toUpdate = new();
-    foreach (WorkTime? workTime in workTimes)
+    foreach (var workTime in workTimes)
     {
       toUpdate.Add(WorkTime.CreateWorkTime(workTime.PublicId, fixture.Create<DateTime>(), workItem));
     }
@@ -46,14 +45,14 @@ public class UpdateWorkTimesHandlerTester
     UpdateWorkTimesCommand request = new(toUpdate);
 
     //Act
-    IEnumerable<WorkTime>? results = await sut.Handle(request, CancellationToken.None);
+    IEnumerable<WorkTime> results = await sut.Handle(request, CancellationToken.None);
 
     //Assert
-    _ = results.Should().NotBeNullOrEmpty();
-    _ = results.Should().HaveCount(count);
-    foreach (WorkTime? result in results)
+    results.Should().NotBeNullOrEmpty();
+    results.Should().HaveCount(count);
+    foreach (var result in results)
     {
-      _ = result.Time.Should().Be(toUpdate.FirstOrDefault(x => x.PublicId == result.PublicId).Time);
+      result.Time.Should().Be(toUpdate.FirstOrDefault(x => x.PublicId == result.PublicId).Time);
     }
   }
 }

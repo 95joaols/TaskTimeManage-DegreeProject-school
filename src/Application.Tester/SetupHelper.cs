@@ -19,31 +19,44 @@ namespace Application;
 internal class SetupHelper
 {
   private readonly ApplicationDbContextMoq _dataAccess;
+
   public SetupHelper(ApplicationDbContextMoq data) => _dataAccess = data;
 
   public async static Task<ApplicationDbContextMoq> CreateDataAccess()
   {
     DbContextOptions<ApplicationDbContextMoq>? options = SqliteInMemory.CreateOptions<ApplicationDbContextMoq>();
     ApplicationDbContextMoq dataAccessMoq = new(options);
-    _ = await dataAccessMoq.Database.EnsureCreatedAsync();
+    await dataAccessMoq.Database.EnsureCreatedAsync();
+
     return dataAccessMoq;
   }
 
   public static Mock<UserManager<IdentityUser>> GetMockUserManager()
   {
     Mock<IUserStore<IdentityUser>> userStoreMock = new();
+
     return new Mock<UserManager<IdentityUser>>(
-      userStoreMock.Object, null, null, null, null, null, null, null, null
+      userStoreMock.Object,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
     );
   }
 
   public async Task<UserProfile> SetupUserAsync(string username, string password, IdentityUser? identityUser = null)
   {
     Mock<UserManager<IdentityUser>> userManager = GetMockUserManager();
-    if (identityUser == null)
+    identityUser ??= new IdentityUser
     {
-      identityUser = new IdentityUser { Id = Guid.NewGuid().ToString(), UserName = username, PasswordHash = password };
-    }
+      Id = Guid.NewGuid().ToString(),
+      UserName = username,
+      PasswordHash = password
+    };
 
     userManager.SetupSequence(x => x.FindByNameAsync(It.IsAny<string>())).ReturnsAsync((IdentityUser)null)
       .ReturnsAsync(identityUser);
@@ -72,10 +85,10 @@ internal class SetupHelper
     string password = fixture.Create<string>();
 
 
-    UserProfile user = await SetupUserAsync(username, password);
+    var user = await SetupUserAsync(username, password);
 
-    Mock<IMediator>? mediatorMoq = new();
-    _ = mediatorMoq.Setup(x => x.Send(new GetUserByPublicIdQuery(user.PublicId),
+    Mock<IMediator> mediatorMoq = new();
+    mediatorMoq.Setup(x => x.Send(new GetUserByPublicIdQuery(user.PublicId),
         It.IsAny<CancellationToken>()
       )
     ).ReturnsAsync(user);
@@ -88,10 +101,8 @@ internal class SetupHelper
 
   public async Task<WorkItem> SetupWorkItemAsync(string name, UserProfile user)
   {
-    Fixture fixture = new();
-
-    Mock<IMediator>? mediatorMoq = new();
-    _ = mediatorMoq.Setup(x => x.Send(new GetUserByPublicIdQuery(user.PublicId),
+    Mock<IMediator> mediatorMoq = new();
+    mediatorMoq.Setup(x => x.Send(new GetUserByPublicIdQuery(user.PublicId),
         It.IsAny<CancellationToken>()
       )
     ).ReturnsAsync(user);
@@ -107,9 +118,9 @@ internal class SetupHelper
     Fixture fixture = new();
     string name = fixture.Create<string>();
 
-    WorkItem workItem = await SetupWorkItemAsync(name);
-    Mock<IMediator>? mediatorMoq = new();
-    _ = mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(workItem.PublicId),
+    var workItem = await SetupWorkItemAsync(name);
+    Mock<IMediator> mediatorMoq = new();
+    mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(workItem.PublicId),
         It.IsAny<CancellationToken>()
       )
     ).ReturnsAsync(workItem);
@@ -122,10 +133,8 @@ internal class SetupHelper
 
   public async Task<WorkTime> SetupWorkTimeAsync(DateTimeOffset time, WorkItem workItem)
   {
-    Fixture fixture = new();
-
-    Mock<IMediator>? mediatorMoq = new();
-    _ = mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(workItem.PublicId),
+    Mock<IMediator> mediatorMoq = new();
+    mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(workItem.PublicId),
         It.IsAny<CancellationToken>()
       )
     ).ReturnsAsync(workItem);

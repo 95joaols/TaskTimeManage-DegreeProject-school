@@ -2,7 +2,5 @@
 
 public class UnableToDeleteWorkTimesException : Exception
 {
-  public UnableToDeleteWorkTimesException() : base("Error Cant delete All Work Times")
-  {
-  }
+  public UnableToDeleteWorkTimesException() : base("Error Cant delete All Work Times") {}
 }

@@ -7,7 +7,7 @@ public class IdentityRegistrar : IWebApplicationBuilderRegistrar
     JwtSettings jwtSettings = new();
     builder.Configuration.Bind(nameof(JwtSettings), jwtSettings);
 
-    IConfigurationSection? jwtSection = builder.Configuration.GetSection(nameof(JwtSettings));
+    var jwtSection = builder.Configuration.GetSection(nameof(JwtSettings));
     builder.Services.Configure<JwtSettings>(jwtSection);
 
     builder.Services

@@ -1,10 +1,10 @@
 using WebUI.Extensions;
 
-WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
 builder.RegisterServices(typeof(Program));
 
-WebApplication app = builder.Build();
+var app = builder.Build();
 
 app.RegisterPipelineComponents(typeof(Program));
 

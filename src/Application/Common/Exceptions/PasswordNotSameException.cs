@@ -2,7 +2,5 @@
 
 public class PasswordNotSameException : Exception
 {
-  public PasswordNotSameException() : base("Password Not Same")
-  {
-  }
+  public PasswordNotSameException() : base("Password Not Same") {}
 }

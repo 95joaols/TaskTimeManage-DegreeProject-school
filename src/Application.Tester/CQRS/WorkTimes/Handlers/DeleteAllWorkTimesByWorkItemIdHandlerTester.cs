@@ -1,6 +1,4 @@
 ﻿using Application.CQRS.WorkTimes.Commands;
-using Application.moq;
-using Domain.Aggregates.WorkAggregate;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.WorkTimes.Handlers;
@@ -25,13 +23,13 @@ public class DeleteAllWorkTimesByWorkItemIdHandlerTester
     string name = fixture.Create<string>();
     IEnumerable<DateTimeOffset> times = fixture.CreateMany<DateTimeOffset>(count);
 
-    await using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
+    await using var dataAccess = await SetupHelper.CreateDataAccess();
 
     SetupHelper helper = new(dataAccess);
-    WorkItem workItem = await helper.SetupWorkItemAsync(name);
-    foreach (DateTimeOffset time in times)
+    var workItem = await helper.SetupWorkItemAsync(name);
+    foreach (var time in times)
     {
-      _ = await helper.SetupWorkTimeAsync(time, workItem);
+      await helper.SetupWorkTimeAsync(time, workItem);
     }
 
     DeleteAllWorkTimesByWorkItemIdHandler sut = new(dataAccess);
@@ -41,7 +39,7 @@ public class DeleteAllWorkTimesByWorkItemIdHandlerTester
     bool results = await sut.Handle(request, CancellationToken.None);
 
     //Assert
-    _ = results.Should().BeTrue();
-    _ = (await dataAccess.WorkTime.AnyAsync(x => x.WorkItemId == workItem.Id)).Should().BeFalse();
+    results.Should().BeTrue();
+    (await dataAccess.WorkTime.AnyAsync(x => x.WorkItemId == workItem.Id)).Should().BeFalse();
   }
 }

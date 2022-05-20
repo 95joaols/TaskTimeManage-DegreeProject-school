@@ -3,7 +3,6 @@ using Domain.Common;
 using Infrastructure.Persistence.Configurations;
 using Infrastructure.Persistence.Configurations.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 
@@ -11,9 +10,7 @@ namespace Infrastructure.Persistence;
 
 public class ApplicationDbContext : IdentityDbContext, IApplicationDbContext, IApplicationDbContextWithTransaction
 {
-  public ApplicationDbContext(DbContextOptions options) : base(options)
-  {
-  }
+  public ApplicationDbContext(DbContextOptions options) : base(options) {}
 
   public DbSet<UserProfile> UserProfile{ get; set; }
 
@@ -24,7 +21,7 @@ public class ApplicationDbContext : IdentityDbContext, IApplicationDbContext, IA
 
   public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken)
   {
-    foreach (EntityEntry? entry in ChangeTracker.Entries().Where(x => x.Entity is BaseAggregate))
+    foreach (var entry in ChangeTracker.Entries().Where(x => x.Entity is BaseAggregate))
     {
       if (entry.State == EntityState.Added)
       {
@@ -48,7 +45,7 @@ public class ApplicationDbContext : IdentityDbContext, IApplicationDbContext, IA
   protected override void OnModelCreating(ModelBuilder builder)
   {
     // Addd the Postgres Extension for UUID generation
-    _ = builder.HasPostgresExtension("uuid-ossp");
+    builder.HasPostgresExtension("uuid-ossp");
 
     builder.ApplyConfiguration(new UserProfileConfig());
     builder.ApplyConfiguration(new WorkItemConfig());
@@ -60,5 +57,5 @@ public class ApplicationDbContext : IdentityDbContext, IApplicationDbContext, IA
   }
 
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
-    _ = optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
+    optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
 }

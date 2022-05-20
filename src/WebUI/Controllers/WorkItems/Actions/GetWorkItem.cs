@@ -8,13 +8,14 @@ public partial class WorkItemController //NOSONAR
   {
     try
     {
-      WorkItem? workItem =
+      var workItem =
         await _mediator.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(publicId), cancellationToken);
 
       if (workItem != null)
       {
-        WorkItemRespond retunValue = _mapper.Map<WorkItemRespond>(workItem);
+        var retunValue = _mapper.Map<WorkItemRespond>(workItem);
         retunValue.WorkTimes = retunValue.WorkTimes.OrderBy(o => o.Time).ToList();
+
         return Ok(retunValue);
       }
 

@@ -1,5 +1,4 @@
 ﻿using Application.CQRS.WorkTimes.Queries;
-using Application.moq;
 using Domain.Aggregates.WorkAggregate;
 
 namespace Application.CQRS.WorkTimes.Handlers;
@@ -23,13 +22,13 @@ public class GetWorkTimesByWorkItemPublicIdHandlerTester
     string name = fixture.Create<string>();
     IEnumerable<DateTime> times = fixture.CreateMany<DateTime>(count);
 
-    await using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
+    await using var dataAccess = await SetupHelper.CreateDataAccess();
 
     SetupHelper helper = new(dataAccess);
-    WorkItem workItem = await helper.SetupWorkItemAsync(name);
+    var workItem = await helper.SetupWorkItemAsync(name);
     List<WorkTime> workTimes = new();
 
-    foreach (DateTime time in times)
+    foreach (var time in times)
     {
       workTimes.Add(await helper.SetupWorkTimeAsync(time, workItem));
     }
@@ -39,13 +38,14 @@ public class GetWorkTimesByWorkItemPublicIdHandlerTester
     GetWorkTimesByWorkItemPublicIdQuery request = new(workItem.PublicId);
 
     //Act
-    IEnumerable<WorkTime>? results = await sut.Handle(request, CancellationToken.None);
+    IEnumerable<WorkTime> results = await sut.Handle(request, CancellationToken.None);
 
     //Assert
-    _ = results.Should().NotBeNullOrEmpty();
-    _ = results.Should().HaveCount(count);
-    _ = results.ToList().Should().BeEquivalentTo(workTimes, options =>
-      options.ExcludingNestedObjects()
+    results.Should().NotBeNullOrEmpty();
+    results.Should().HaveCount(count);
+    results.ToList().Should().BeEquivalentTo(workTimes,
+      options =>
+        options.ExcludingNestedObjects()
     );
   }
 }

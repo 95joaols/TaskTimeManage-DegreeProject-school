@@ -1,7 +1,5 @@
 ﻿using Application.CQRS.WorkItems.Queries;
 using Application.CQRS.WorkTimes.Commands;
-using Application.moq;
-using Domain.Aggregates.WorkAggregate;
 using MediatR;
 using Moq;
 
@@ -20,17 +18,17 @@ public class CreateWorkTimeHandlerTester
     );
 
     string name = fixture.Create<string>();
-    DateTimeOffset time = fixture.Create<DateTimeOffset>();
+    var time = fixture.Create<DateTimeOffset>();
 
 
-    await using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
+    await using var dataAccess = await SetupHelper.CreateDataAccess();
 
 
     SetupHelper helper = new(dataAccess);
-    WorkItem workItem = await helper.SetupWorkItemAsync(name);
+    var workItem = await helper.SetupWorkItemAsync(name);
 
-    Mock<IMediator>? mediatorMoq = new();
-    _ = mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(workItem.PublicId),
+    Mock<IMediator> mediatorMoq = new();
+    mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(workItem.PublicId),
         It.IsAny<CancellationToken>()
       )
     ).ReturnsAsync(workItem);
@@ -39,12 +37,12 @@ public class CreateWorkTimeHandlerTester
     CreateWorkTimeCommand request = new(time, workItem.PublicId);
 
     //Act
-    WorkTime? results = await sut.Handle(request, CancellationToken.None);
+    var results = await sut.Handle(request, CancellationToken.None);
 
     //Assert
-    _ = results.Should().NotBeNull();
-    _ = results.Id.Should().NotBe(0);
-    _ = results.PublicId.Should().NotBeEmpty();
-    _ = results.Time.Should().Be(time);
+    results.Should().NotBeNull();
+    results.Id.Should().NotBe(0);
+    results.PublicId.Should().NotBeEmpty();
+    results.Time.Should().Be(time);
   }
 }

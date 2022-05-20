@@ -1,8 +1,5 @@
 ﻿using Application.Common.Service;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace Application.CQRS.Authentication.Handlers;
 
@@ -22,12 +19,12 @@ public class LoginHandler : IRequestHandler<LoginQuery, string>
 
   public async Task<string> Handle(LoginQuery request, CancellationToken cancellationToken)
   {
-    _ = Guard.Against.NullOrWhiteSpace(request.Username);
-    _ = Guard.Against.NullOrWhiteSpace(request.Password);
+    Guard.Against.NullOrWhiteSpace(request.Username);
+    Guard.Against.NullOrWhiteSpace(request.Password);
 
-    IdentityUser identityUser = await ValidateAndGetIdentityAsync(request);
+    var identityUser = await ValidateAndGetIdentityAsync(request);
 
-    UserProfile? userProfile = await _data.UserProfile
+    var userProfile = await _data.UserProfile
       .FirstOrDefaultAsync(up => up.IdentityId == new Guid(identityUser.Id), cancellationToken);
 
     if (userProfile == null)
@@ -35,13 +32,12 @@ public class LoginHandler : IRequestHandler<LoginQuery, string>
       throw new LogInWrongException();
     }
 
-
     return GetJwtString(identityUser, userProfile);
   }
 
   private async Task<IdentityUser> ValidateAndGetIdentityAsync(LoginQuery request)
   {
-    IdentityUser? identityUser = await _userManager.FindByNameAsync(request.Username);
+    var identityUser = await _userManager.FindByNameAsync(request.Username);
 
     if (identityUser is null)
     {
@@ -61,13 +57,14 @@ public class LoginHandler : IRequestHandler<LoginQuery, string>
   private string GetJwtString(IdentityUser identityUser, UserProfile userProfile)
   {
     ClaimsIdentity claimsIdentity = new(new[] {
-      new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-      new Claim(JwtRegisteredClaimNames.UniqueName, userProfile.UserName), new Claim("IdentityId", identityUser.Id),
-      new Claim(ClaimTypes.NameIdentifier, userProfile.PublicId.ToString())
-    }
+        new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        new Claim(JwtRegisteredClaimNames.UniqueName, userProfile.UserName), new Claim("IdentityId", identityUser.Id),
+        new Claim(ClaimTypes.NameIdentifier, userProfile.PublicId.ToString())
+      }
     );
 
-    SecurityToken token = _identityService.CreateSecurityToken(claimsIdentity);
+    var token = _identityService.CreateSecurityToken(claimsIdentity);
+
     return _identityService.WriteToken(token);
   }
 }

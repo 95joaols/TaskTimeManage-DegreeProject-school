@@ -9,7 +9,7 @@ public partial class WorkTimeController //NOSONAR
   {
     try
     {
-      WorkTime workItem = await _mediator.Send(new CreateWorkTimeCommand(request.Time, request.WorkItemPublicId),
+      var workItem = await _mediator.Send(new CreateWorkTimeCommand(request.Time, request.WorkItemPublicId),
         cancellationToken
       );
       if (workItem == null)

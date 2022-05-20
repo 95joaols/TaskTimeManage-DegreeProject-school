@@ -9,7 +9,7 @@ public partial class WorkItemController //NOSONAR
   {
     try
     {
-      WorkItem workItem = await _mediator.Send(new CreateNewWorkItemCommand(reqest.Name, reqest.UserPublicId),
+      var workItem = await _mediator.Send(new CreateNewWorkItemCommand(reqest.Name, reqest.UserPublicId),
         cancellationToken
       );
 

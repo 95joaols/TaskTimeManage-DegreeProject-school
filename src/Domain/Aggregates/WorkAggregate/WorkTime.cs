@@ -2,9 +2,7 @@
 
 public class WorkTime : BaseAggregate
 {
-  private WorkTime()
-  {
-  }
+  private WorkTime() {}
 
   public DateTimeOffset Time{ get; private set; }
 
@@ -23,7 +21,10 @@ public class WorkTime : BaseAggregate
     }
 
     return new WorkTime {
-      Time = time, WorkItem = workItem, CreatedAt = DateTimeOffset.Now, UpdatedAt = DateTimeOffset.Now
+      Time = time,
+      WorkItem = workItem,
+      CreatedAt = DateTimeOffset.Now,
+      UpdatedAt = DateTimeOffset.Now
     };
   }
 

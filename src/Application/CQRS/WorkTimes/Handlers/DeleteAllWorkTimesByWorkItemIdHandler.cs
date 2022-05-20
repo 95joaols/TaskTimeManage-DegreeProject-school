@@ -8,11 +8,12 @@ public class DeleteAllWorkTimesByWorkItemIdHandler : IRequestHandler<DeleteAllWo
 
   public async Task<bool> Handle(DeleteAllWorkTimesByWorkItemIdCommand request, CancellationToken cancellationToken)
   {
-    _ = Guard.Against.NegativeOrZero(request.WorkItemId);
+    Guard.Against.NegativeOrZero(request.WorkItemId);
 
     _data.WorkTime.RemoveRange(_data.WorkTime.Where(wt => wt.WorkItemId == request.WorkItemId));
 
-    _ = await _data.SaveChangesAsync(cancellationToken);
+    await _data.SaveChangesAsync(cancellationToken);
+
     return true;
   }
 }

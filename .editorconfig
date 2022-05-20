@@ -16,7 +16,7 @@ csharp_new_line_before_catch = true
 #require members of object intializers to be on separate lines
 csharp_new_line_before_members_in_object_initializers = true
 #require braces to be on a new line for control_blocks, types, properties, and methods (also known as "Allman" style)
-csharp_new_line_before_open_brace = control_blocks, types, properties, methods
+csharp_new_line_before_open_brace = control_blocks, events, indexers, local_functions, methods, properties, types
 
 #Formatting - organize using options
 
@@ -138,17 +138,28 @@ csharp_style_expression_bodied_accessors = true:silent
 csharp_style_expression_bodied_lambdas = true:suggestion
 
 # ReSharper properties
-resharper_blank_lines_around_single_line_auto_property = 1
+resharper_blank_lines_around_single_line_auto_property = 0
+resharper_blank_lines_around_single_line_invocable = 0
 resharper_blank_lines_before_control_transfer_statements = 1
-resharper_csharp_blank_lines_around_single_line_invocable = 1
+resharper_csharp_blank_lines_around_single_line_invocable = 0
+resharper_csharp_empty_block_style = together_same_line
+resharper_csharp_invocable_declaration_braces = next_line
+resharper_csharp_type_declaration_braces = next_line
+resharper_csharp_wrap_arguments_style = chop_if_long
+resharper_for_simple_types = use_var
 resharper_instance_members_qualify_declared_in =
 resharper_keep_existing_declaration_block_arrangement = false
 resharper_keep_existing_embedded_block_arrangement = false
 resharper_keep_existing_enum_arrangement = false
-resharper_place_expr_method_on_single_line = true
+resharper_place_expr_method_on_single_line = if_owner_is_single_line
 resharper_place_expr_property_on_single_line = true
 resharper_space_before_singleline_accessorholder = false
+resharper_space_within_empty_braces = false
+resharper_use_heuristics_for_body_style = true
 resharper_wrap_object_and_collection_initializer_style = chop_always
+
+# Microsoft .NET properties
+csharp_indent_braces = false
 
 [*.{cs,vb}]
 indent_style = space

@@ -10,7 +10,7 @@ public class WorkItem : BaseAggregate
 
   public string Name{ get; private set; }
 
-  public int UserId{ get; private init; }
+  private int UserId{ get; init; }
 
   public UserProfile User{ get; private init; }
 
@@ -30,21 +30,6 @@ public class WorkItem : BaseAggregate
       UpdatedAt = DateTimeOffset.Now
     };
   }
-
-  public void AddWorkTime(WorkTime workItem)
-  {
-    Guard.Against.Null(workItem);
-
-    _workTimes.Add(workItem);
-  }
-
-  public void RemoveWorkTime(WorkTime workItem)
-  {
-    Guard.Against.Null(workItem);
-
-    _workTimes.Remove(workItem);
-  }
-
   public void UpdateName(string name)
   {
     Guard.Against.NullOrWhiteSpace(name);

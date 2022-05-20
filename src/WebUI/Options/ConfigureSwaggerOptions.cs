@@ -4,16 +4,12 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
 {
   public void Configure(SwaggerGenOptions options)
   {
-    OpenApiSecurityScheme scheme = GetJwtSecurityScheme();
+    var scheme = GetJwtSecurityScheme();
     options.AddSecurityDefinition(scheme.Reference.Id, scheme);
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement { { scheme, new string[0] } });
-  }
-
-  private OpenApiInfo CreateVersionInfo()
-  {
-    OpenApiInfo info = new() { Title = "CwkSocial", Version = "V1" };
-
-    return info;
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement {
+        { scheme, new string[0] }
+      }
+    );
   }
 
   private OpenApiSecurityScheme GetJwtSecurityScheme() =>
@@ -25,7 +21,8 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
       Scheme = "bearer",
       BearerFormat = "JWT",
       Reference = new OpenApiReference {
-        Id = JwtBearerDefaults.AuthenticationScheme, Type = ReferenceType.SecurityScheme
+        Id = JwtBearerDefaults.AuthenticationScheme,
+        Type = ReferenceType.SecurityScheme
       }
     };
 }

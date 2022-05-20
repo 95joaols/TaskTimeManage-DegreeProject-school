@@ -6,7 +6,6 @@ using Domain.Aggregates.WorkAggregate;
 using Domain.Common;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 
@@ -14,9 +13,7 @@ namespace Application.moq;
 
 public class ApplicationDbContextMoq : IdentityDbContext, IApplicationDbContext, IApplicationDbContextWithTransaction
 {
-  public ApplicationDbContextMoq(DbContextOptions options) : base(options)
-  {
-  }
+  public ApplicationDbContextMoq(DbContextOptions options) : base(options) {}
 
   public DbSet<UserProfile> UserProfile{ get; set; }
 
@@ -27,17 +24,20 @@ public class ApplicationDbContextMoq : IdentityDbContext, IApplicationDbContext,
 
   public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken)
   {
-    foreach (EntityEntry? entry in ChangeTracker.Entries().Where(x => x.Entity is BaseAggregate))
+    foreach (var entry in ChangeTracker.Entries().Where(x => x.Entity is BaseAggregate))
     {
-      if (entry.State == EntityState.Added)
+      switch (entry.State)
       {
-        entry.Property("PublicId").CurrentValue = Guid.NewGuid();
-        entry.Property("CreatedAt").CurrentValue = DateTimeOffset.UtcNow;
-        entry.Property("UpdatedAt").CurrentValue = DateTimeOffset.UtcNow;
-      }
-      else if (entry.State == EntityState.Modified)
-      {
-        entry.Property("UpdatedAt").CurrentValue = DateTimeOffset.UtcNow;
+        case EntityState.Added:
+          entry.Property("PublicId").CurrentValue = Guid.NewGuid();
+          entry.Property("CreatedAt").CurrentValue = DateTimeOffset.UtcNow;
+          entry.Property("UpdatedAt").CurrentValue = DateTimeOffset.UtcNow;
+
+          break;
+        case EntityState.Modified:
+          entry.Property("UpdatedAt").CurrentValue = DateTimeOffset.UtcNow;
+
+          break;
       }
     }
 
@@ -61,5 +61,5 @@ public class ApplicationDbContextMoq : IdentityDbContext, IApplicationDbContext,
   }
 
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
-    _ = optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
+    optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
 }

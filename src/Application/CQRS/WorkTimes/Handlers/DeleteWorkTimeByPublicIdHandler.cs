@@ -8,14 +8,15 @@ public class DeleteWorkTimeByPublicIdHandler : IRequestHandler<DeleteWorkTimeByP
 
   public async Task<bool> Handle(DeleteWorkTimeByPublicIdCommand request, CancellationToken cancellationToken)
   {
-    _ = Guard.Against.Default(request.PublicId);
+    Guard.Against.Default(request.PublicId);
 
-    WorkTime? workTime =
+    var workTime =
       await _data.WorkTime.FirstOrDefaultAsync(x => x.PublicId == request.PublicId, cancellationToken);
-    _ = Guard.Against.Null(workTime);
+    Guard.Against.Null(workTime);
 
 
-    _ = _data.WorkTime.Remove(workTime);
+    _data.WorkTime.Remove(workTime);
+
     return await _data.SaveChangesAsync(cancellationToken) == 1;
   }
 }

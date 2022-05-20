@@ -1,7 +1,5 @@
 ﻿using Application.Common.Exceptions;
 using Application.CQRS.Authentication.Commands;
-using Application.moq;
-using Domain.Aggregates.UserAggregate;
 using Microsoft.AspNetCore.Identity;
 using Moq;
 
@@ -20,10 +18,14 @@ public class RegistrateUserHandlerTester
   public async Task I_Can_Registrate_A_New_User(string username, string password)
   {
     //Arrange 
-    await using ApplicationDbContextMoq dataAccess = await SetupHelper.CreateDataAccess();
+    await using var dataAccess = await SetupHelper.CreateDataAccess();
 
     Mock<UserManager<IdentityUser>> userManager = SetupHelper.GetMockUserManager();
-    IdentityUser identityUser = new() { Id = Guid.NewGuid().ToString(), UserName = username, PasswordHash = password };
+    IdentityUser identityUser = new() {
+      Id = Guid.NewGuid().ToString(),
+      UserName = username,
+      PasswordHash = password
+    };
 
     userManager.SetupSequence(x => x.FindByNameAsync(It.Is<string>(x => x == username)))
       .ReturnsAsync((IdentityUser)null).ReturnsAsync(identityUser);
@@ -40,12 +42,12 @@ public class RegistrateUserHandlerTester
     RegistrateUserHandler sut = new(dataAccess, userManager.Object);
     RegistrateUserCommand request = new(username, password);
     //Act 
-    UserProfile? user = await sut.Handle(request, CancellationToken.None);
+    var user = await sut.Handle(request, CancellationToken.None);
     //Assert 
-    _ = user.Should().NotBeNull();
-    _ = user.Id.Should().NotBe(0);
-    _ = user.PublicId.Should().NotBeEmpty();
-    _ = user.UserName.Should().Be(username);
+    user.Should().NotBeNull();
+    user.Id.Should().NotBe(0);
+    user.PublicId.Should().NotBeEmpty();
+    user.UserName.Should().Be(username);
   }
 
   [Theory]
@@ -59,10 +61,14 @@ public class RegistrateUserHandlerTester
   public async Task I_Cant_Create_Multiple_On_Same_Name(string username, string password)
   {
     //Arrange
-    await using ApplicationDbContextMoq? dataAccess = await SetupHelper.CreateDataAccess();
+    await using var dataAccess = await SetupHelper.CreateDataAccess();
     Mock<UserManager<IdentityUser>> userManager = SetupHelper.GetMockUserManager();
 
-    IdentityUser identityUser = new() { Id = Guid.NewGuid().ToString(), UserName = username, PasswordHash = password };
+    IdentityUser identityUser = new() {
+      Id = Guid.NewGuid().ToString(),
+      UserName = username,
+      PasswordHash = password
+    };
     userManager.SetupSequence(x => x.FindByNameAsync(It.Is<string>(x => x == username)))
       .ReturnsAsync((IdentityUser)null).ReturnsAsync(identityUser).ReturnsAsync(identityUser);
 
@@ -79,11 +85,11 @@ public class RegistrateUserHandlerTester
     RegistrateUserHandler sut = new(dataAccess, userManager.Object);
 
     RegistrateUserCommand request = new(username, password);
-    _ = await sut.Handle(request, CancellationToken.None);
+    await sut.Handle(request, CancellationToken.None);
 
     //Act
     //Assert
-    _ = await sut.Invoking(s => s.Handle(request, CancellationToken.None)).Should()
+    await sut.Invoking(s => s.Handle(request, CancellationToken.None)).Should()
       .ThrowAsync<UserAlreadyExistsException>();
   }
 }

@@ -1,5 +1,3 @@
 ﻿namespace WebUI.Registrars;
 
-public interface IRegistrar
-{
-}
+public interface IRegistrar {}

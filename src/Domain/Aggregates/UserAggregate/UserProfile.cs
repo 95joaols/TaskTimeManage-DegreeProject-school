@@ -26,8 +26,4 @@ public class UserProfile : BaseAggregate
       UpdatedAt = DateTimeOffset.Now
     };
   }
-
-  public void AddWorkItem(WorkItem workItem) => _workItems.Add(workItem);
-
-  public void RemoveWorkItem(WorkItem workItem) => _workItems.Remove(workItem);
 }

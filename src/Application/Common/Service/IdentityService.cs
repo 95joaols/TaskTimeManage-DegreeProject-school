@@ -1,8 +1,4 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-
-namespace Application.Common.Service;
+﻿namespace Application.Common.Service;
 
 public class IdentityService
 {
@@ -25,7 +21,7 @@ public class IdentityService
 
   public SecurityToken CreateSecurityToken(ClaimsIdentity identity)
   {
-    SecurityTokenDescriptor tokenDescriptor = GetTokenDescriptor(identity);
+    var tokenDescriptor = GetTokenDescriptor(identity);
 
     return _tokenHandler.CreateToken(tokenDescriptor);
   }

@@ -17,23 +17,24 @@ public class RegistrateUserHandler : IRequestHandler<RegistrateUserCommand, User
 
   public async Task<UserProfile> Handle(RegistrateUserCommand request, CancellationToken cancellationToken)
   {
-    _ = Guard.Against.NullOrWhiteSpace(request.Username);
-    _ = Guard.Against.NullOrWhiteSpace(request.Password);
+    Guard.Against.NullOrWhiteSpace(request.Username);
+    Guard.Against.NullOrWhiteSpace(request.Password);
 
     await ValidateIdentityDoesNotExist(request);
 
 
-    await using IDbContextTransaction transaction = await _data.CreateTransactionAsync(cancellationToken);
+    await using var transaction = await _data.CreateTransactionAsync(cancellationToken);
     UserProfile createdUser;
     try
     {
-      IdentityUser identity = await CreateIdentityUserAsync(request, transaction, request.Password, cancellationToken);
+      var identity = await CreateIdentityUserAsync(request, transaction, request.Password, cancellationToken);
       createdUser = await CreateUserAsync(request, transaction, identity, cancellationToken);
       await transaction.CommitAsync(cancellationToken);
     }
-    catch (Exception ex)
+    catch (Exception)
     {
       await transaction.RollbackAsync(cancellationToken);
+
       throw;
     }
 
@@ -46,22 +47,23 @@ public class RegistrateUserHandler : IRequestHandler<RegistrateUserCommand, User
   {
     try
     {
-      UserProfile createdUser = UserProfile.CreateUser(request.Username, new Guid(identity.Id));
-      _ = await _data.UserProfile.AddAsync(createdUser, cancellationToken);
+      var createdUser = UserProfile.CreateUser(request.Username, new Guid(identity.Id));
+      await _data.UserProfile.AddAsync(createdUser, cancellationToken);
       await _data.SaveChangesAsync(cancellationToken);
 
       return createdUser;
     }
-    catch (Exception e)
+    catch (Exception)
     {
       await transaction.RollbackAsync(cancellationToken);
+
       throw;
     }
   }
 
   private async Task ValidateIdentityDoesNotExist(RegistrateUserCommand request)
   {
-    IdentityUser? existingIdentity = await _userManager.FindByNameAsync(request.Username);
+    var existingIdentity = await _userManager.FindByNameAsync(request.Username);
 
     if (existingIdentity != null)
     {
@@ -72,18 +74,18 @@ public class RegistrateUserHandler : IRequestHandler<RegistrateUserCommand, User
   private async Task<IdentityUser> CreateIdentityUserAsync(RegistrateUserCommand request,
     IDbContextTransaction transaction, string hassedPassword, CancellationToken cancellationToken)
   {
-    IdentityUser identity = new() { Email = request.Username, UserName = request.Username };
-    IdentityResult? createdIdentity = await _userManager.CreateAsync(identity, hassedPassword);
-    if (!createdIdentity.Succeeded)
+    IdentityUser identity = new() {
+      Email = request.Username,
+      UserName = request.Username
+    };
+    var createdIdentity = await _userManager.CreateAsync(identity, hassedPassword);
+    if (createdIdentity.Succeeded)
     {
-      await transaction.RollbackAsync(cancellationToken);
-
-      foreach (IdentityError? identityError in createdIdentity.Errors)
-      {
-        throw new FailToCreateUserException();
-      }
+      return identity;
     }
 
-    return identity;
+    await transaction.RollbackAsync(cancellationToken);
+
+    throw new FailToCreateUserException();
   }
 }

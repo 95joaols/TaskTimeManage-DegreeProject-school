@@ -1,5 +1,3 @@
 ﻿namespace Application;
 
-public class MediateRProject
-{
-}
+public class MediateRProject {}

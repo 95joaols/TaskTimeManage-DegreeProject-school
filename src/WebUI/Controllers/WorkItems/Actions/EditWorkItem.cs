@@ -9,11 +9,11 @@ public partial class WorkItemController //NOSONAR
   {
     try
     {
-      WorkItem workItem =
+      var workItem =
         await _mediator.Send(new UpdateWorkItemCommand(reqest.PublicId, reqest.Name), cancellationToken);
       if (reqest.WorkTimes.Any())
       {
-        _ = await _mediator.Send(
+        await _mediator.Send(
           new UpdateWorkTimesCommand(
             reqest.WorkTimes.Select(x => WorkTime.CreateWorkTime(x.PublicId, x.Time, workItem))
           ),
@@ -21,12 +21,7 @@ public partial class WorkItemController //NOSONAR
         );
       }
 
-      if (workItem != null)
-      {
-        return Ok(_mapper.Map<WorkItemRespond>(workItem));
-      }
-
-      return Problem(title: "Error Edit WorkItem", detail: "Did not Edit the WorkItem", statusCode: 500);
+      return workItem != null ? Ok(_mapper.Map<WorkItemRespond>(workItem)) : Problem(title: "Error Edit WorkItem", detail: "Did not Edit the WorkItem", statusCode: 500);
     }
     catch (Exception ex)
     {
