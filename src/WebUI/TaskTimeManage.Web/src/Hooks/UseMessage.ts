@@ -13,20 +13,14 @@ type Message =
           objectType: "text";
           errorOrMessage: string;
       };
-interface errorResponseType {
-    type: string;
-    title: string;
-    detail: string;
-    status: number;
-}
 
 const UseMessage = () => {
     const toast = useToast();
 
     const Message = ({ errorOrMessage, type, objectType: manual }: Message) => {
-        const fetchBaseQueryError = errorOrMessage as FetchBaseQueryError;
-        const message = errorOrMessage as string;
         if (manual === "text") {
+            const message = errorOrMessage as string;
+
             if (message) {
                 toast({
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -38,6 +32,7 @@ const UseMessage = () => {
             }
         }
 
+        const fetchBaseQueryError = errorOrMessage as FetchBaseQueryError;
         if (fetchBaseQueryError) {
             switch (fetchBaseQueryError.status) {
                 case 400:
@@ -54,23 +49,17 @@ const UseMessage = () => {
                         });
                         return;
                     }
-                    const errorMessageObj: errorResponseType = JSON.parse(fetchBaseQueryError.data as string);
-                    if (errorMessageObj && errorMessageObj.detail && errorMessageObj.title !== errorMessageObj.detail) {
-                        toast({
-                            title: errorMessageObj.title,
-                            description: errorMessageObj.detail,
-                            status: type,
-                            duration: 5000,
-                        });
-                    } else if (errorMessageObj) {
-                        toast({
-                            title: errorMessageObj.title,
-                            description: errorMessageObj.detail,
-                            status: type,
-                            duration: 5000,
-                        });
-                    }
                     return;
+                case 504:
+                case 502:
+                    toast({
+                        title: "Bad Gateway",
+                        description: "can get a connection with server",
+                        status: type,
+                        duration: 5000,
+                    });
+                    return;
+
                 case "CUSTOM_ERROR":
                 case "FETCH_ERROR":
                 case "PARSING_ERROR":

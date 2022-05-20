@@ -13,8 +13,15 @@ export const authApi = createApi({
                     url: "Login",
                     method: "post",
                     body,
+
                     responseHandler: (response) => {
                         if (response.ok) {
+                            return response.text();
+                        }
+                        if (
+                            !response.ok &&
+                            (response.status === 502 || response.status === 504 || response.status === 404)
+                        ) {
                             return response.text();
                         }
                         return response.json();
@@ -28,6 +35,19 @@ export const authApi = createApi({
                     url: "CreateUser",
                     method: "post",
                     body,
+
+                    responseHandler: (response) => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        if (
+                            !response.ok &&
+                            (response.status === 502 || response.status === 504 || response.status === 404)
+                        ) {
+                            return response.text();
+                        }
+                        return response.json();
+                    },
                 };
             },
         }),

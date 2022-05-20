@@ -43,7 +43,7 @@ public class RegistrateUserHandler : IRequestHandler<RegistrateUserCommand, User
     catch (Exception ex)
     {
       await transaction.RollbackAsync(cancellationToken);
-      throw ex;
+      throw;
     }
 
     return createdUser;
