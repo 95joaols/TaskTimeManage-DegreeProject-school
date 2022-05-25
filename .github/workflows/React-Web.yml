@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -25,14 +25,14 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        cache-dependency-path: 'src/WebUI/TaskTimeManage.Web/package-lock.json'
+        cache: 'yarn'
+        cache-dependency-path: 'src/WebUI/TaskTimeManage.Web/yarn.lock'
 
-    - run: npm ci
+    - run: yarn install
       working-directory: src/WebUI/TaskTimeManage.Web
-    - run: npm run build --if-present
+    - run: yarn run build
       working-directory: src/WebUI/TaskTimeManage.Web
     
     - name: Run lint
-      run: npm run lint --if-present
+      run: yarn run lint --if-present
       working-directory: src/WebUI/TaskTimeManage.Web
