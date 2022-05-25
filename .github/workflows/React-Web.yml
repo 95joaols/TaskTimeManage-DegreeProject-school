@@ -34,5 +34,5 @@ jobs:
       working-directory: src/WebUI/TaskTimeManage.Web
     
     - name: Run lint
-      run: yarn run lint --if-present
+      run: yarn run lint
       working-directory: src/WebUI/TaskTimeManage.Web
