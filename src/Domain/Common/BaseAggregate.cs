@@ -4,7 +4,7 @@ public class BaseAggregate
 {
   protected BaseAggregate() {}
 
-  public int Id{ get; protected set; }
+  public int Id{ get; protected init; }
 
   public Guid PublicId{ get; protected init; }
 
