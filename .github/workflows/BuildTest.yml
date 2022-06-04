@@ -17,9 +17,15 @@ jobs:
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 6.0.x
+        
     - name: Restore dependencies
       run: dotnet restore TaskTimeManage.sln
+      
     - name: Build
       run: dotnet build TaskTimeManage.sln --no-restore
+      
+    - name: Build a Test DB
+      run: docker run --name testsupport.test -e POSTGRES_PASSWORD=läyflyoyhpågklrtkdogkopsäkhflöhkkdlökho -p 5432:5432 -d postgres
+      
     - name: Test
       run: dotnet test TaskTimeManage.sln --no-build --verbosity normal
