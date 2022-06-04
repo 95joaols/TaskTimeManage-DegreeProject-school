@@ -5,7 +5,6 @@ import UseMessage from "../Hooks/UseMessage";
 import { useGetWorkItemForUserQuery } from "../store/api/WorkApi";
 import { useAppSelector } from "../store/hook";
 import { selectLoginUser } from "../store/state/authSlice";
-import { selectActiveWorkItemId } from "../store/state/workItemSlice";
 import WorkItemBox from "./WorkItemBox";
 
 type Props = {
