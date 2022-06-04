@@ -12,17 +12,16 @@ import { Button, Input } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import UseMessage from "../../Hooks/UseMessage";
 import { useCreateWorkItemMutation } from "../../store/api/WorkApi";
-import { useAppSelector } from "../../store/hook";
+import { useAppDispatch, useAppSelector } from "../../store/hook";
 import { selectLoginUser } from "../../store/state/authSlice";
-import { WorkItem } from "../../Types/WorkItem";
+import { setSelectedWorkItemId } from "../../store/state/workItemSlice";
 
 type Props = {
-    createWorkItem: (workItem: WorkItem) => void;
     onClose: () => void;
     isOpen: boolean;
 };
 
-function CreateWorkItemModel({ onClose, isOpen, createWorkItem }: Props) {
+function CreateWorkItemModel({ onClose, isOpen }: Props) {
     const user = useAppSelector(selectLoginUser);
     const firstUpdate = useRef(true);
     const [name, setName] = useState("");
@@ -31,6 +30,7 @@ function CreateWorkItemModel({ onClose, isOpen, createWorkItem }: Props) {
     const handleInputChange = (e: any) => setName(e.target.value);
     const [createWorkItemApi, { data, isLoading, error, isError: createUserError }] = useCreateWorkItemMutation();
     const message = UseMessage();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         if (firstUpdate.current) {
@@ -43,7 +43,7 @@ function CreateWorkItemModel({ onClose, isOpen, createWorkItem }: Props) {
     useEffect(() => {
         if (data) {
             message({ errorOrMessage: "Create", type: "success", objectType: "text" });
-            createWorkItem(data);
+            dispatch(setSelectedWorkItemId({ newActiveWorkItemId: data.publicId }));
             CustomOnClose();
         }
     }, [data]);

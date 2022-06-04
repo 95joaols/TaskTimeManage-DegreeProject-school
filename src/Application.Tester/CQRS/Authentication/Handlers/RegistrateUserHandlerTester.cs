@@ -18,7 +18,7 @@ public class RegistrateUserHandlerTester
   public async Task I_Can_Registrate_A_New_User(string username, string password)
   {
     //Arrange 
-    await using var dataAccess = await SetupHelper.CreateDataAccess();
+    await using var dataAccess = this.CreateDataAccess();
 
     Mock<UserManager<IdentityUser>> userManager = SetupHelper.GetMockUserManager();
     IdentityUser identityUser = new() {
@@ -61,7 +61,7 @@ public class RegistrateUserHandlerTester
   public async Task I_Cant_Create_Multiple_On_Same_Name(string username, string password)
   {
     //Arrange
-    await using var dataAccess = await SetupHelper.CreateDataAccess();
+    await using var dataAccess = this.CreateDataAccess();
     Mock<UserManager<IdentityUser>> userManager = SetupHelper.GetMockUserManager();
 
     IdentityUser identityUser = new() {

@@ -5,15 +5,14 @@ import UseMessage from "../Hooks/UseMessage";
 import { useGetWorkItemForUserQuery } from "../store/api/WorkApi";
 import { useAppSelector } from "../store/hook";
 import { selectLoginUser } from "../store/state/authSlice";
+import { selectActiveWorkItemId } from "../store/state/workItemSlice";
 import WorkItemBox from "./WorkItemBox";
 
 type Props = {
-    activeWorkItem: string | undefined;
     AddWorkItemPress: () => void;
-    onWorkItemPress: (id: string) => void;
 };
 
-function WorkItemMenu({ AddWorkItemPress, onWorkItemPress, activeWorkItem }: Props) {
+function WorkItemMenu({ AddWorkItemPress }: Props) {
     const user = useAppSelector(selectLoginUser);
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const { data: WorkItemList, isLoading, error } = useGetWorkItemForUserQuery(user.id!);
@@ -36,14 +35,7 @@ function WorkItemMenu({ AddWorkItemPress, onWorkItemPress, activeWorkItem }: Pro
                 {WorkItemList &&
                     WorkItemList.length > 0 &&
                     WorkItemList.map((wi) => {
-                        return (
-                            <WorkItemBox
-                                key={wi.publicId}
-                                workItem={wi}
-                                onPress={onWorkItemPress}
-                                activeWorkItem={activeWorkItem}
-                            />
-                        );
+                        return <WorkItemBox key={wi.publicId} workItem={wi} />;
                     })}
                 {isLoading && !WorkItemList && <Text>Loading...</Text>}
                 {!isLoading && ((WorkItemList && WorkItemList.length === 0) || !WorkItemList) && (

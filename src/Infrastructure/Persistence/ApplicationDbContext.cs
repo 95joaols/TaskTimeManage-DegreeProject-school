@@ -16,9 +16,6 @@ public class ApplicationDbContext : IdentityDbContext, IApplicationDbContext, IA
 
   public DbSet<WorkItem> WorkItem{ get; set; }
 
-  public DbSet<WorkTime> WorkTime{ get; set; }
-
-
   public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken)
   {
     foreach (var entry in ChangeTracker.Entries().Where(x => x.Entity is BaseAggregate))
@@ -44,12 +41,11 @@ public class ApplicationDbContext : IdentityDbContext, IApplicationDbContext, IA
 
   protected override void OnModelCreating(ModelBuilder builder)
   {
-    // Addd the Postgres Extension for UUID generation
+    // Add the Postgres Extension for UUID generation
     builder.HasPostgresExtension("uuid-ossp");
 
     builder.ApplyConfiguration(new UserProfileConfig());
     builder.ApplyConfiguration(new WorkItemConfig());
-    builder.ApplyConfiguration(new WorkTimeConfig());
 
     builder.ApplyConfiguration(new IdentityUserLoginConfig());
     builder.ApplyConfiguration(new IdentityUserRoleConfig());

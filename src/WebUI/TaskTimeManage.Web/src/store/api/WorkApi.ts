@@ -91,11 +91,11 @@ export const workApi = createApi({
             }),
             invalidatesTags: ["WorkItem"],
         }),
-        EditWorkItem: builder.mutation<WorkItem, EditWorkItemRequest>({
+        EditWorkItem: builder.mutation<WorkItem, { WorkItemId: string; editWorkItemRequest: EditWorkItemRequest }>({
             query: (body) => ({
-                url: "WorkItem/",
+                url: "WorkItem/" + body.WorkItemId,
                 method: "PUT",
-                body: body,
+                body: body.editWorkItemRequest,
                 responseHandler: (response) => {
                     if (response.status === 204) {
                         return response.text();
@@ -136,11 +136,14 @@ export const workApi = createApi({
             }),
             invalidatesTags: ["WorkItem"],
         }),
-        CreateWorkTime: builder.mutation<WorkTime, CreateWorkTimeRequest>({
+        CreateWorkTime: builder.mutation<
+            WorkTime,
+            { WorkItemId: string; createWorkTimeRequest: CreateWorkTimeRequest }
+        >({
             query: (body) => ({
-                url: "WorkTime",
+                url: `WorkItem/${body.WorkItemId}/WorkTime`,
                 method: "POST",
-                body: body,
+                body: body.createWorkTimeRequest,
                 responseHandler: (response) => {
                     if (response.status === 204) {
                         return response.text();
@@ -159,9 +162,9 @@ export const workApi = createApi({
             }),
             invalidatesTags: ["WorkItem"],
         }),
-        DeleteWorkTime: builder.mutation<boolean, string>({
+        DeleteWorkTime: builder.mutation<boolean, { WorkItemId: string; workTimeId: string }>({
             query: (body) => ({
-                url: "WorkTime/" + body,
+                url: `WorkItem/${body.WorkItemId}/WorkTime/${body.workTimeId}`,
                 method: "DELETE",
                 responseHandler: (response) => {
                     if (response.status === 204) {

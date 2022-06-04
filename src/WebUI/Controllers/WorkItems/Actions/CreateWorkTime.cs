@@ -1,15 +1,15 @@
-﻿namespace TaskTimeManage.Api.Controllers.WorkTimes;
+﻿namespace TaskTimeManage.Api.Controllers.WorkItems;
 
-public partial class WorkTimeController //NOSONAR
+public partial class WorkItemController //NOSONAR
 {
-  [HttpPost]
+  [HttpPost("{workItemPublicId:Guid}/WorkTime")]
   [Authorize]
-  public async Task<ActionResult<WorkTimeRespond>> CreateWorkTimeAsync([FromBody] CreateWorkTimeRequest request,
+  public async Task<ActionResult<WorkTimeRespond>> CreateWorkTimeAsync(Guid workItemPublicId, [FromBody] CreateWorkTimeRequest request,
     CancellationToken cancellationToken)
   {
     try
     {
-      var workItem = await _mediator.Send(new CreateWorkTimeCommand(request.Time, request.WorkItemPublicId),
+      var workItem = await _mediator.Send(new CreateWorkTimeCommand(request.Time, workItemPublicId),
         cancellationToken
       );
       if (workItem == null)

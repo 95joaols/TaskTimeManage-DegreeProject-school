@@ -2,26 +2,30 @@
 
 public partial class WorkItemController //NOSONAR
 {
-  [HttpPut]
+  [HttpPut("{publicId:guid}")]
   [Authorize]
-  public async Task<ActionResult<WorkItemRespond>> EditWorkItemAsync([FromBody] EditWorkItemRequest reqest,
-    CancellationToken cancellationToken)
+  public async Task<ActionResult<WorkItemRespond>> EditWorkItemAsync(Guid publicId,
+    [FromBody] EditWorkItemRequest request,
+    CancellationToken token)
   {
     try
     {
       var workItem =
-        await _mediator.Send(new UpdateWorkItemCommand(reqest.PublicId, reqest.Name), cancellationToken);
-      if (reqest.WorkTimes.Any())
+        await _mediator.Send(new UpdateWorkItemCommand(publicId, request.Name), token);
+      if (request.WorkTimes.Any())
       {
+
         await _mediator.Send(
-          new UpdateWorkTimesCommand(
-            reqest.WorkTimes.Select(x => WorkTime.CreateWorkTime(x.PublicId, x.Time, workItem))
+          new UpdateWorkTimesCommand(publicId,
+            request.WorkTimes.Select(x =>WorkTime.CreateWorkTime(x.PublicId, x.Time))
           ),
-          cancellationToken
+          token
         );
       }
 
-      return workItem != null ? Ok(_mapper.Map<WorkItemRespond>(workItem)) : Problem(title: "Error Edit WorkItem", detail: "Did not Edit the WorkItem", statusCode: 500);
+      return workItem != null
+        ? Ok(_mapper.Map<WorkItemRespond>(workItem))
+        : Problem(title: "Error Edit WorkItem", detail: "Did not Edit the WorkItem", statusCode: 500);
     }
     catch (Exception ex)
     {

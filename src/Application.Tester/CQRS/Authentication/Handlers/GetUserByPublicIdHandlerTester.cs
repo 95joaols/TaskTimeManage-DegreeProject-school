@@ -8,7 +8,7 @@ public class GetUserByPublicIdHandlerTester
   public async Task I_Can_Get_A_User()
   {
     //Arrange 
-    await using var dataAccess = await SetupHelper.CreateDataAccess();
+    await using var dataAccess = this.CreateDataAccess();
 
     SetupHelper helper = new(dataAccess);
     var user = await helper.SetupUserAsync("Test", "Test");
