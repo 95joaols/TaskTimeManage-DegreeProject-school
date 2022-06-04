@@ -1,4 +1,6 @@
-﻿namespace Application.CQRS.WorkTimes.Handlers;
+﻿using System.Xml.Linq;
+
+namespace Application.CQRS.WorkTimes.Handlers;
 
 public class CreateWorkTimeHandler : IRequestHandler<CreateWorkTimeCommand, WorkTime>
 {
@@ -21,9 +23,9 @@ public class CreateWorkTimeHandler : IRequestHandler<CreateWorkTimeCommand, Work
     Guard.Against.Null(workItem);
 
 
-    var workTime = WorkTime.CreateWorkTime(request.Time, workItem);
-
-    _data.WorkTime.Add(workTime);
+    var workTime = WorkTime.CreateWorkTime(request.Time);
+    workItem.AddWorkTimes(workTime);
+    _data.WorkItem.Update(workItem);
     await _data.SaveChangesAsync(cancellationToken);
 
     return workTime;

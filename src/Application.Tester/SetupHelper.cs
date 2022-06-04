@@ -6,30 +6,23 @@ using Application.CQRS.WorkItems.Handlers;
 using Application.CQRS.WorkItems.Queries;
 using Application.CQRS.WorkTimes.Commands;
 using Application.CQRS.WorkTimes.Handlers;
-using Application.moq;
 using Domain.Aggregates.UserAggregate;
 using Domain.Aggregates.WorkAggregate;
+using Infrastructure.Persistence;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Moq;
+using Test.Helpers;
 
 namespace Application;
 
 internal class SetupHelper
 {
-  private readonly ApplicationDbContextMoq _dataAccess;
+  private readonly ApplicationDbContext _dataAccess;
 
-  public SetupHelper(ApplicationDbContextMoq data) => _dataAccess = data;
-
-  public async static Task<ApplicationDbContextMoq> CreateDataAccess()
-  {
-    DbContextOptions<ApplicationDbContextMoq>? options = SqliteInMemory.CreateOptions<ApplicationDbContextMoq>();
-    ApplicationDbContextMoq dataAccessMoq = new(options);
-    await dataAccessMoq.Database.EnsureCreatedAsync();
-
-    return dataAccessMoq;
-  }
+  public SetupHelper(ApplicationDbContext data) => _dataAccess = data;
+  
 
   public static Mock<UserManager<IdentityUser>> GetMockUserManager()
   {
@@ -113,24 +106,6 @@ internal class SetupHelper
     return await createNewWorkItemHandler.Handle(request, CancellationToken.None);
   }
 
-  public async Task<WorkTime> SetupWorkTimeAsync(DateTimeOffset time)
-  {
-    Fixture fixture = new();
-    string name = fixture.Create<string>();
-
-    var workItem = await SetupWorkItemAsync(name);
-    Mock<IMediator> mediatorMoq = new();
-    mediatorMoq.Setup(x => x.Send(new GetWorkItemWithWorkTimeByPublicIdQuery(workItem.PublicId),
-        It.IsAny<CancellationToken>()
-      )
-    ).ReturnsAsync(workItem);
-
-    CreateWorkTimeHandler createWorkTimeHandler = new(_dataAccess, mediatorMoq.Object);
-    CreateWorkTimeCommand request = new(time, workItem.PublicId);
-
-    return await createWorkTimeHandler.Handle(request, CancellationToken.None);
-  }
-
   public async Task<WorkTime> SetupWorkTimeAsync(DateTimeOffset time, WorkItem workItem)
   {
     Mock<IMediator> mediatorMoq = new();
@@ -143,5 +118,16 @@ internal class SetupHelper
     CreateWorkTimeCommand request = new(time, workItem.PublicId);
 
     return await createWorkTimeHandler.Handle(request, CancellationToken.None);
+  }
+}
+
+internal static class SetupHelperExtensien
+{
+  public static ApplicationDbContext CreateDataAccess<T>(this T caller)
+  {
+    DbContextOptions<ApplicationDbContext>? options = caller.CreatePostgreSqlUniqueClassOptions<ApplicationDbContext>();
+    ApplicationDbContext dataAccess = new(options);
+    dataAccess.Database.EnsureClean();
+    return dataAccess;
   }
 }

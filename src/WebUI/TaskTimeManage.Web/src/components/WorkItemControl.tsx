@@ -3,17 +3,16 @@ import { Box, Button, Center, Flex, Heading, IconButton, Text, useDisclosure } f
 import React, { useEffect, useState } from "react";
 import UseMessage from "../Hooks/UseMessage";
 import { useCreateWorkTimeMutation, useLazyGetWorkItemQuery } from "../store/api/WorkApi";
+import { useAppSelector } from "../store/hook";
+import { selectActiveWorkItemId } from "../store/state/workItemSlice";
 import CalculateTime from "./CalculateTime";
 import EditWorkItemModel from "./Models/EditWorkItemModel";
 import WorkTimeList from "./WorkTimeList";
 
-type Props = {
-    activeWorkItem: string;
-    onReset: () => void;
-};
-
-function WorkItemControl({ activeWorkItem, onReset }: Props) {
+function WorkItemControl() {
     const { isOpen: isOpenEditModel, onOpen: onOpenEditModel, onClose: onCloseEditModel } = useDisclosure();
+
+    const activeWorkItemId = useAppSelector(selectActiveWorkItemId);
 
     const [LastActive, setLastActive] = useState<string>();
     const [workTimesCount, setWorkTimesCount] = useState(0);
@@ -45,27 +44,35 @@ function WorkItemControl({ activeWorkItem, onReset }: Props) {
     }, [CreateWorkTimeError]);
 
     useEffect(() => {
-        if (activeWorkItem) {
-            if (!LastActive || activeWorkItem !== LastActive) {
+        if (activeWorkItemId) {
+            if (!LastActive || activeWorkItemId !== LastActive) {
                 if (workTimesCount % 2 === 1) {
                     if (LastActive) {
-                        createWorkTimeApi({ time: new Date(), workItemPublicId: LastActive });
+                        createWorkTimeApi({
+                            WorkItemId: LastActive,
+                            createWorkTimeRequest: { time: new Date() },
+                        });
                     }
                 }
-                setLastActive(activeWorkItem);
-                trigger(activeWorkItem);
+                setLastActive(activeWorkItemId);
+                trigger(activeWorkItemId);
             }
         }
-    }, [activeWorkItem]);
+    }, [activeWorkItemId]);
 
     const onPress = () => {
-        createWorkTimeApi({ time: new Date(), workItemPublicId: activeWorkItem });
+        if (activeWorkItemId) {
+            createWorkTimeApi({
+                WorkItemId: activeWorkItemId,
+                createWorkTimeRequest: { time: new Date() },
+            });
+        }
     };
     return (
         <Box>
             <Center>
                 <Heading as="h1" size="lg">
-                    {!activeWorkItem && <Text>No Selected</Text>}
+                    {!activeWorkItemId && <Text>No Selected</Text>}
                     {WorkItemResult.data && WorkItemResult.data.name}
                 </Heading>
             </Center>
@@ -86,7 +93,6 @@ function WorkItemControl({ activeWorkItem, onReset }: Props) {
                         isOpen={isOpenEditModel}
                         onClose={onCloseEditModel}
                         workItem={WorkItemResult.data}
-                        onReset={onReset}
                     />
                 )}
             </Flex>

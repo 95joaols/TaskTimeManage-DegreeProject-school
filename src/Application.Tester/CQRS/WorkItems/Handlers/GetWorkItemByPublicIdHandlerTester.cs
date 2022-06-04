@@ -11,7 +11,7 @@ public class GetWorkItemByPublicIdHandlerTester
     Fixture fixture = new();
     string name = fixture.Create<string>();
 
-    await using var dataAccess = await SetupHelper.CreateDataAccess();
+    await using var dataAccess = this.CreateDataAccess();
 
     SetupHelper helper = new(dataAccess);
     var workItem = await helper.SetupWorkItemAsync(name);

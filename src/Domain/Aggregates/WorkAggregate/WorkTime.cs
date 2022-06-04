@@ -1,19 +1,33 @@
-﻿namespace Domain.Aggregates.WorkAggregate;
+﻿using System.Text.Json.Serialization;
 
-public class WorkTime : BaseAggregate
+namespace Domain.Aggregates.WorkAggregate;
+
+public class WorkTime
 {
   private WorkTime() {}
 
+  /// <summary>
+  /// Do not use this (This is only for JsonConstructor)
+  /// </summary>
+  [JsonConstructor]
+  public WorkTime(DateTimeOffset time, Guid publicId, DateTimeOffset createdAt, DateTimeOffset updatedAt)
+  {
+    Time = time;
+    PublicId = publicId;
+    CreatedAt = createdAt;
+    UpdatedAt = updatedAt;
+  }
+
   public DateTimeOffset Time{ get; private set; }
+  public Guid PublicId{ get; private init; }
 
-  public int WorkItemId{ get; private set; }
+  public DateTimeOffset CreatedAt{ get; private init; }
 
-  public WorkItem WorkItem{ get; private init; }
+  public DateTimeOffset UpdatedAt{ get; private set; }
 
-  public static WorkTime CreateWorkTime(DateTimeOffset time, WorkItem workItem)
+  public static WorkTime CreateWorkTime(DateTimeOffset time)
   {
     Guard.Against.Default(time);
-    Guard.Against.Null(workItem);
 
     if (time > DateTimeOffset.Now)
     {
@@ -21,18 +35,17 @@ public class WorkTime : BaseAggregate
     }
 
     return new WorkTime {
+      PublicId = Guid.NewGuid(),
       Time = time,
-      WorkItem = workItem,
       CreatedAt = DateTimeOffset.Now,
       UpdatedAt = DateTimeOffset.Now
     };
   }
 
-  public static WorkTime CreateWorkTime(Guid publicId, DateTimeOffset time, WorkItem workItem)
+  public static WorkTime CreateWorkTime(Guid publicId, DateTimeOffset time)
   {
     Guard.Against.Default(time);
     Guard.Against.Default(publicId);
-    Guard.Against.Null(workItem);
 
     if (time > DateTimeOffset.Now)
     {
@@ -42,7 +55,6 @@ public class WorkTime : BaseAggregate
     return new WorkTime {
       PublicId = publicId,
       Time = time,
-      WorkItem = workItem,
       CreatedAt = DateTimeOffset.Now,
       UpdatedAt = DateTimeOffset.Now
     };

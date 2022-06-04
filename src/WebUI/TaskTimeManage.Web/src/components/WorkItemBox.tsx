@@ -1,15 +1,17 @@
 import { Box, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../store/hook";
+import { selectActiveWorkItemId, setSelectedWorkItemId } from "../store/state/workItemSlice";
 import { WorkItem } from "../Types/WorkItem";
 
 type Props = {
-    onPress: (id: string) => void;
     workItem: WorkItem;
-    activeWorkItem: string | undefined;
 };
 
-function WorkItemBox({ workItem, onPress, activeWorkItem }: Props) {
+function WorkItemBox({ workItem }: Props) {
     const [Color, setColor] = useState("green");
+    const dispatch = useAppDispatch();
+    const activeWorkItem = useAppSelector(selectActiveWorkItemId);
 
     useEffect(() => {
         const isActive = workItem.publicId === activeWorkItem;
@@ -27,7 +29,7 @@ function WorkItemBox({ workItem, onPress, activeWorkItem }: Props) {
             p={5}
             onClick={() => {
                 if (workItem.publicId) {
-                    onPress(workItem.publicId);
+                    dispatch(setSelectedWorkItemId({ newActiveWorkItemId: workItem.publicId }));
                 }
             }}
         >

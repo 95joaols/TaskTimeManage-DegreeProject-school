@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Domain.Aggregates.WorkAggregate;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -145,7 +147,8 @@ namespace Infrastructure.Persistence.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    UserId1 = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    WorkTimes = table.Column<IEnumerable<WorkTime>>(type: "jsonb", nullable: false),
                     PublicId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "uuid_generate_v4()"),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
@@ -154,32 +157,9 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     table.PrimaryKey("PK_WorkItem", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_WorkItem_UserProfile_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_WorkItem_UserProfile_UserId",
+                        column: x => x.UserId,
                         principalTable: "UserProfile",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "WorkTime",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Time = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    WorkItemId = table.Column<int>(type: "integer", nullable: false),
-                    PublicId = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "uuid_generate_v4()"),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WorkTime", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_WorkTime_WorkItem_WorkItemId",
-                        column: x => x.WorkItemId,
-                        principalTable: "WorkItem",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -197,20 +177,9 @@ namespace Infrastructure.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_WorkItem_UserId1",
+                name: "IX_WorkItem_UserId",
                 table: "WorkItem",
-                column: "UserId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WorkTime_PublicId",
-                table: "WorkTime",
-                column: "PublicId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WorkTime_WorkItemId",
-                table: "WorkTime",
-                column: "WorkItemId");
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -235,9 +204,6 @@ namespace Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserTokens");
-
-            migrationBuilder.DropTable(
-                name: "WorkTime");
 
             migrationBuilder.DropTable(
                 name: "WorkItem");

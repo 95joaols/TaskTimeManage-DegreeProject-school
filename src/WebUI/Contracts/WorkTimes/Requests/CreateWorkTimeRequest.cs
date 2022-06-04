@@ -1,3 +1,3 @@
 ﻿namespace WebUI.Contracts.WorkTimes.Requests;
 
-public record CreateWorkTimeRequest(DateTime Time, Guid WorkItemPublicId);
+public record CreateWorkTimeRequest(DateTime Time);

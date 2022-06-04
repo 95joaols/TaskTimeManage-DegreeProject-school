@@ -21,8 +21,7 @@ public class CreateWorkTimeHandlerTester
     var time = fixture.Create<DateTimeOffset>();
 
 
-    await using var dataAccess = await SetupHelper.CreateDataAccess();
-
+    await using var dataAccess = this.CreateDataAccess();
 
     SetupHelper helper = new(dataAccess);
     var workItem = await helper.SetupWorkItemAsync(name);
@@ -41,7 +40,6 @@ public class CreateWorkTimeHandlerTester
 
     //Assert
     results.Should().NotBeNull();
-    results.Id.Should().NotBe(0);
     results.PublicId.Should().NotBeEmpty();
     results.Time.Should().Be(time);
   }

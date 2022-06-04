@@ -11,6 +11,8 @@ import { Button, Text } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import UseMessage from "../../Hooks/UseMessage";
 import { useDeleteWorkTimeMutation } from "../../store/api/WorkApi";
+import { useAppSelector } from "../../store/hook";
+import { selectActiveWorkItemId } from "../../store/state/workItemSlice";
 import { WorkTime } from "../../Types/WorkTime";
 
 type Props = {
@@ -21,6 +23,8 @@ type Props = {
 
 function RemoveWorkTimeModel({ onClose, isOpen, workTime }: Props) {
     const [Delete, { data, isLoading, error, isError: createUserError }] = useDeleteWorkTimeMutation();
+    const activeWorkItem = useAppSelector(selectActiveWorkItemId);
+
     const message = UseMessage();
 
     useEffect(() => {
@@ -37,7 +41,9 @@ function RemoveWorkTimeModel({ onClose, isOpen, workTime }: Props) {
     }, [data]);
 
     const DeleteWorkTime = () => {
-        Delete(workTime.publicId);
+        if (activeWorkItem) {
+            Delete({ WorkItemId: activeWorkItem, workTimeId: workTime.publicId });
+        }
     };
 
     return (

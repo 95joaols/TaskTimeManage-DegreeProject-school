@@ -14,7 +14,7 @@ public class UpdateWorkItemHandlerTester
   public async Task I_Can_Edit_The_Name_On_WorkItem(string oldName, string newName)
   {
     //Arrange 
-    await using var dataAccess = await SetupHelper.CreateDataAccess();
+    await using var dataAccess = this.CreateDataAccess();
 
 
     SetupHelper helper = new(dataAccess);

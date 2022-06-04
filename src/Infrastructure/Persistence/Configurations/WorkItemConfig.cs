@@ -13,6 +13,7 @@ public class WorkItemConfig : IEntityTypeConfiguration<WorkItem>
 
 
     builder.Property(x => x.Name).IsRequired();
+    builder.Property(x => x.WorkTimes).HasColumnType("jsonb");
 
     builder.HasOne(x => x.User)
       .WithMany(x => x.WorkItems)

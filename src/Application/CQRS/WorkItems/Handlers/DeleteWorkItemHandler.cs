@@ -3,12 +3,10 @@
 public class DeleteWorkItemHandler : IRequestHandler<DeleteWorkItemCommand, bool>
 {
   private readonly IApplicationDbContext _data;
-  private readonly IMediator _mediator;
 
-  public DeleteWorkItemHandler(IApplicationDbContext data, IMediator mediator)
+  public DeleteWorkItemHandler(IApplicationDbContext data)
   {
     _data = data;
-    _mediator = mediator;
   }
 
   public async Task<bool> Handle(DeleteWorkItemCommand request, CancellationToken cancellationToken)
@@ -17,13 +15,7 @@ public class DeleteWorkItemHandler : IRequestHandler<DeleteWorkItemCommand, bool
 
     var workItem =
       await _data.WorkItem.FirstOrDefaultAsync(t => t.PublicId == request.PublicId, cancellationToken);
-
     Guard.Against.Null(workItem);
-
-    if (!await _mediator.Send(new DeleteAllWorkTimesByWorkItemIdCommand(workItem.Id), cancellationToken))
-    {
-      throw new UnableToDeleteWorkTimesException();
-    }
 
     _data.WorkItem.Remove(workItem);
 

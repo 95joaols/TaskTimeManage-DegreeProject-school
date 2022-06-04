@@ -11,7 +11,7 @@ public class GetWorkItemByPublicIdHandler : IRequestHandler<GetWorkItemWithWorkT
   {
     Guard.Against.Default(request.PublicId);
 
-    return await _data.WorkItem.Include(x => x.WorkTimes)
+    return await _data.WorkItem
       .FirstOrDefaultAsync(wt => wt.PublicId == request.PublicId, cancellationToken);
   }
 }

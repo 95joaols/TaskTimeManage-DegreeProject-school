@@ -18,7 +18,7 @@ public class GetWorkItemByUserPublicIdHandlerTester
     IEnumerable<string> names = fixture.CreateMany<string>(count);
     string username = fixture.Create<string>();
     string password = fixture.Create<string>();
-    await using var dataAccess = await SetupHelper.CreateDataAccess();
+    await using var dataAccess = this.CreateDataAccess();
     List<WorkItem> workItems = new();
 
 

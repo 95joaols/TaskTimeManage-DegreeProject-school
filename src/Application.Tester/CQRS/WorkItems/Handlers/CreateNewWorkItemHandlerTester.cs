@@ -16,7 +16,7 @@ public class CreateNewWorkItemHandlerTester
     string username = fixture.Create<string>();
     string password = fixture.Create<string>();
 
-    await using var dataAccess = await SetupHelper.CreateDataAccess();
+    await using var dataAccess = this.CreateDataAccess();
 
 
     SetupHelper helper = new(dataAccess);

@@ -12,6 +12,8 @@ import { Box, Button, Flex, FormControl, FormLabel, IconButton, Input, Spacer, u
 import React, { useEffect, useState } from "react";
 import UseMessage from "../../Hooks/UseMessage";
 import { useEditWorkItemMutation } from "../../store/api/WorkApi";
+import { useAppDispatch, useAppSelector } from "../../store/hook";
+import { selectActiveWorkItemId, setSelectedWorkItemId } from "../../store/state/workItemSlice";
 import { WorkItem } from "../../Types/WorkItem";
 import { WorkTime } from "../../Types/WorkTime";
 import RemoveWorkItemMode from "./RemoveWorkItemMode";
@@ -19,12 +21,11 @@ import RemoveWorkTimeModel from "./RemoveWorkTimeModel";
 
 type Props = {
     onClose: () => void;
-    onReset: () => void;
     isOpen: boolean;
     workItem: WorkItem;
 };
 
-function EditWorkItemModel({ onClose, isOpen, workItem, onReset }: Props) {
+function EditWorkItemModel({ onClose, isOpen, workItem }: Props) {
     const [Edit, { data: dataEdit, isLoading: isLoadingEdit, error, isError }] = useEditWorkItemMutation();
 
     const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
@@ -39,6 +40,8 @@ function EditWorkItemModel({ onClose, isOpen, workItem, onReset }: Props) {
     const [name, SetName] = useState(workItem.name);
     const [workTimes, SetWorkTimes] = useState(workItem.workTimes);
 
+    const activeWorkItem = useAppSelector(selectActiveWorkItemId);
+    const dispatch = useAppDispatch();
     const message = UseMessage();
 
     useEffect(() => {
@@ -70,8 +73,10 @@ function EditWorkItemModel({ onClose, isOpen, workItem, onReset }: Props) {
     };
 
     const OnSaveWorkItem = () => {
-        const workItemToSave: WorkItem = { ...workItem, name, workTimes };
-        Edit(workItemToSave);
+        if (activeWorkItem) {
+            const workItemToSave: WorkItem = { ...workItem, name, workTimes };
+            Edit({ WorkItemId: activeWorkItem, editWorkItemRequest: workItemToSave });
+        }
     };
 
     const OpenDeleteModel = (workTime: WorkTime) => {
@@ -154,7 +159,7 @@ function EditWorkItemModel({ onClose, isOpen, workItem, onReset }: Props) {
                 <RemoveWorkItemMode
                     onDeleted={() => {
                         onCloseDeleteWorkItem();
-                        onReset();
+                        dispatch(setSelectedWorkItemId({ newActiveWorkItemId: undefined }));
                     }}
                     isOpen={isOpenDeleteWorkItem}
                     onClose={onCloseDeleteWorkItem}
